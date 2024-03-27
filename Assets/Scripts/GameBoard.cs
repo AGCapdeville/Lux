@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
 
 public class GameBoard
 {
@@ -9,15 +10,16 @@ public class GameBoard
     // Constructor
     public GameBoard()
     {
-        CreateBoard(20);
+        List<BoardSpace> GameBoard = CreateBoard(20);
     }
 
-    void CreateBoard(int numberOfSpaces)
+    List<BoardSpace> CreateBoard(int numberOfSpaces)
     {
         GameObject SpacePrefab = Resources.Load<GameObject>("SpacePrefab");
-
         Renderer renderer = SpacePrefab.GetComponent<Renderer>();
 
+        List<BoardSpace> Board = new List<BoardSpace>();
+        return Board;
         // calculate the angle between spaces on the board
         float angleBetweenSpaces = 360 / numberOfSpaces;
 
@@ -47,8 +49,8 @@ public class GameBoard
             // Instantiate(SpacePrefab, spawnPosition, Quaternion.identity);
             GameObject.Instantiate(SpacePrefab, spawnPosition, Quaternion.identity);
 
-
             spawnText(i.ToString(), x, 1, z);
+            Board.Add(new BoardSpace(i)); 
         }
     }
 

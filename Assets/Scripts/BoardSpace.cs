@@ -1,9 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
-using UnityEngine;
 
 public class BoardSpace
 {
@@ -12,7 +7,7 @@ public class BoardSpace
     public GamePiece[] Contents { get; set; } // Represents the space number
 
     // Constructor
-    public BoardSpace(int spaceNumber, GamePiece[] piecesToBePlacedHere)
+    public BoardSpace(int spaceNumber, GamePiece[] piecesToBePlacedHere = null)
     {
         SpaceNumber = spaceNumber;
         Contents = piecesToBePlacedHere;
