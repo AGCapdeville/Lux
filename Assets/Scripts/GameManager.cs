@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour
         List<List<GameObject>> board = new List<List<GameObject>>();
         for (int row = 0; row < numberOfRows; row++)
         {
+            board.Add(new List<GameObject>());
             for (int col = 0; col < numberOfColumns; col++)
             {
                 GameObject space = new GameObject("space ["  + (row * spaceWidth) + "," + (col * spaceHeight) + "]");
