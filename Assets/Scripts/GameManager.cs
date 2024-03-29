@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
         int spaceWidth = 5;
         int spaceHeight = 5;
 
-        List<GameObject> Board = GenerateBoard(numberOfRows, numberOfColumns, spaceWidth, spaceHeight);
+        List<List<GameObject>> Board = GenerateBoard(numberOfRows, numberOfColumns, spaceWidth, spaceHeight);
 
         player = new Player(0, "Orion", 2, (0,0));
     }
@@ -42,10 +42,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-
-    List<GameObject> GenerateBoard(int numberOfRows, int numberOfColumns, int spaceWidth, int spaceHeight) {
-        List<GameObject> board = new List<GameObject>();
+    List<List<GameObject>> GenerateBoard(int numberOfRows, int numberOfColumns, int spaceWidth, int spaceHeight) {
+        List<List<GameObject>> board = new List<List<GameObject>>();
         for (int row = 0; row < numberOfRows; row++)
         {
             for (int col = 0; col < numberOfColumns; col++)
@@ -53,7 +51,7 @@ public class GameManager : MonoBehaviour
                 GameObject space = new GameObject("space ["  + (row * spaceWidth) + "," + (col * spaceHeight) + "]");
                 space.transform.localScale = new Vector3(spaceWidth, 1f, spaceHeight);
                 space.transform.position = new Vector3(row * spaceWidth, 0f, col * spaceHeight);
-                board.Add(space);
+                board[row].Add(space);
             }   
         }
         GenerateBoardGrid(numberOfRows, numberOfColumns, spaceWidth, spaceHeight);

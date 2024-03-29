@@ -31,4 +31,12 @@ public class Player
     public void movePlayer((int, int) newPosition) {
         playerPiece.transform.position = new Vector3(newPosition.Item1, 0f, newPosition.Item2);
     }
+
+    // Takes in the current state of the game board, and retuns what spaces (tiles) 
+    //   sprites should be rendered for move range of the player.
+    public List<List<int>> displayMovementRange(List<List<GameObject>> board) {
+        List<List<int>> boardHover = new List<List<int>>();
+
+        return boardHover;
+    }
 }
