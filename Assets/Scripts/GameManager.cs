@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,193 +10,124 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+
+    private Player player;
+
     void Start()
     {
         // CreatePrefabsInCircle(40, spacePrefab);
         // GameBoard = CreateBoard(10, spacePrefab);
         // GameBoard GB = new GameBoard();
-
         // CreateJourneyTree();
         
-        CreateGameGrid(16,22,1,1);
+        int numberOfRows = 5;
+        int numberOfColumns = 5;
+        int spaceWidth = 5;
+        int spaceHeight = 5;
 
+        List<GameObject> Board = GenerateBoard(numberOfRows, numberOfColumns, spaceWidth, spaceHeight);
+
+        player = new Player(0, "Orion", 2, (0,0));
     }
 
-    void CreateGameGrid(int row, int column, int spaceWidth, int spaceHeight) {
-        // Create a plane with a grid of 16 x 22
-        // Each space on the plane is a 4 x 4 unit space (1 Unit is the default unit in unity)
-        // Each space is blank but contains a space object.
-
-        GameObject space = GameObject.CreatePrimitive(PrimitiveType.Plane);
-
-        space.transform.localScale = new Vector3(spaceWidth, 1f, spaceHeight);
-        Renderer renderer = space.GetComponent<Renderer>();
-        Color newColor = HexToColor("006700"); // dark-green 006700
-        renderer.material.color = newColor;
-
-        for (int r = 0; r < row; r++)
+    void Update()
+    {
+        if (Input.GetButtonDown("Fire1"))  // Change "Fire1" to the appropriate button name
         {
-            for (int c = 0; c < column; c++)
+            // Button click detected
+            
+            player.movePlayer((5,5));
+            
+            // You can add your logic here, such as executing a function or changing game state
+        }
+    }
+
+
+
+    List<GameObject> GenerateBoard(int numberOfRows, int numberOfColumns, int spaceWidth, int spaceHeight) {
+        List<GameObject> board = new List<GameObject>();
+        for (int row = 0; row < numberOfRows; row++)
+        {
+            for (int col = 0; col < numberOfColumns; col++)
             {
-                space.transform.position = new Vector3(r, 0f, c);
-                GameObject.Instantiate(space);
+                GameObject space = new GameObject("space ["  + (row * spaceWidth) + "," + (col * spaceHeight) + "]");
+                space.transform.localScale = new Vector3(spaceWidth, 1f, spaceHeight);
+                space.transform.position = new Vector3(row * spaceWidth, 0f, col * spaceHeight);
+                board.Add(space);
             }   
         }
-
-        // GameObject space = new GameObject("space");
-        // space.transform.localScale = new Vector3(spaceWidth, 1f, spaceHeight); // Adjust scale as needed
-
-
-        // space.transform.position = new Vector3(0f, 0f, 0f);
-
-
-        // GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
-        // plane.transform.localScale = new Vector3(10f, 1f, 10f); // Adjust scale as needed
-        // Optionally, you can adjust the position, rotation, and scale of the plane
-        // plane.transform.position = new Vector3(0f, 0f, 0f);
-        // Renderer renderer = plane.GetComponent<Renderer>();
-
-        // Check if the Renderer component exists
-        // if (renderer != null)
-        // {
-        //     Color newColor = HexToColor("006700"); // dark-green 006700
-        //     // Set the color of the plane
-        //     renderer.material.color = newColor;
-        // }
-        // else
-        // {
-        //     Debug.LogWarning("Renderer component not found!");
-        // }
-
-
+        GenerateBoardGrid(numberOfRows, numberOfColumns, spaceWidth, spaceHeight);
+        return board;
     }
 
-    // Function to convert a hexadecimal color code to a Color struct
-    Color HexToColor(string hex)
+    void GenerateBoardGrid(int numberOfRows, int numberOfColumns, int spaceWidth, int spaceHeight)
     {
-        // Remove '#' from the beginning if present
-        hex = hex.TrimStart('#');
+        // Create a new mesh
+        Mesh mesh = new Mesh();
 
-        // Convert the hexadecimal color code to a Color struct
-        Color color = new Color();
-        UnityEngine.ColorUtility.TryParseHtmlString("#" + hex, out color);
+        // Vertices array to hold positions of all vertices
+        Vector3[] vertices = new Vector3[(numberOfRows + 1) * (numberOfColumns + 1)];
 
-        return color;
+        // Generate vertices
+        for (int col = 0; col <= numberOfColumns; col++)
+        {
+            for (int row = 0; row <= numberOfRows; row++)
+            {
+                vertices[col * (numberOfRows + 1) + row] = new Vector3((float)(row * spaceWidth - 0.5 * spaceWidth), 0, (float)(col * spaceHeight - 0.5 * spaceHeight));
+            }
+        }
+
+        // Assign vertices to the mesh
+        mesh.vertices = vertices;
+
+        // Generate horizontal lines
+        int numHorizontalLines = numberOfRows * (numberOfColumns + 1);
+        int[] horizontalLineIndices = new int[numHorizontalLines * 2];
+        int index = 0;
+        for (int col = 0; col <= numberOfColumns; col++)
+        {
+            for (int row = 0; row < numberOfRows; row++)
+            {
+                horizontalLineIndices[index++] = col * (numberOfRows + 1) + row;
+                horizontalLineIndices[index++] = col * (numberOfRows + 1) + row + 1;
+            }
+        }
+
+        // Generate vertical lines
+        int numVerticalLines = (numberOfRows + 1) * numberOfColumns;
+        int[] verticalLineIndices = new int[numVerticalLines * 2];
+        index = 0;
+        for (int row = 0; row <= numberOfRows; row++)
+        {
+            for (int col = 0; col < numberOfColumns; col++)
+            {
+                verticalLineIndices[index++] = col * (numberOfRows + 1) + row;
+                verticalLineIndices[index++] = (col + 1) * (numberOfRows + 1) + row;
+            }
+        }
+
+        // Combine horizontal and vertical lines
+        int[] allLineIndices = new int[numHorizontalLines * 2 + numVerticalLines * 2];
+        horizontalLineIndices.CopyTo(allLineIndices, 0);
+        verticalLineIndices.CopyTo(allLineIndices, numHorizontalLines * 2);
+
+        // Assign the indices for the lines
+        mesh.SetIndices(allLineIndices, MeshTopology.Lines, 0);
+
+        // Create a mesh renderer and filter to render the mesh
+        MeshRenderer renderer = gameObject.AddComponent<MeshRenderer>();
+        MeshFilter filter = gameObject.AddComponent<MeshFilter>();
+
+        // Assign the mesh to the filter
+        filter.mesh = mesh;
+
+        // Create a new material for the grid lines
+        Material gridMaterial = new Material(Shader.Find("Unlit/Color"));
+        Color gridColor = Color.white; // Color of the grid lines
+        gridMaterial.color = gridColor;
+
+        // Assign the material to the renderer
+        renderer.material = gridMaterial;
     }
+
 }
-
-
-// WIP
-//     void CreateJourneyTree() {
-//         // Create starting node
-//         GameObject SpacePrefab = Resources.Load<GameObject>("SpacePrefab");
-//         GameObject startingPath = Instantiate(SpacePrefab, Vector3.zero, Quaternion.identity);
-//         int firstRowOfSpaces = UnityEngine.Random.Range(2,5);
-//         for (int i = 0; i < firstRowOfSpaces; i++)
-//         {
-//             GameObject path = Instantiate(SpacePrefab, new Vector3(7f,0,7f), Quaternion.identity);
-//             float d = Vector3.Distance(startingPath.transform.position, path.transform.position);
-//             // creae the line that will go between the two paths.
-//             GameObject line = GameObject.CreatePrimitive(PrimitiveType.Cube);
-//             // Z: is the forward direction (important for turning direction)
-//             line.transform.localScale = new Vector3(0.25f, 0.25f, d);
-//             // set position of line to be in the middle of the two paths.
-//             // rotate the line so that the line connects the two paths.
-//             line.transform.position = CalculateMidpoint(startingPath.transform.position, nextPathZero.transform.position);
-//             // Calculate the direction vector from the starting point to the next point
-//             Vector3 direction = (nextPathZero.transform.position - startingPath.transform.position).normalized;
-//             // Calculate the rotation to align the line with the direction vector
-//             Quaternion rotation = Quaternion.LookRotation(direction);
-//             // Set the rotation of the line
-//             line.transform.rotation = rotation;
-//         }
-//         // Create and link all 12 levls
-//         // int numberOfLevelsOnFloor = 12;
-//         // for (int level = 1; level < numberOfLevelsOnFloor; level++)
-//         // {
-//         //     List<Location> FirstRow = new List<Location>();;
-//         //     int numberOfCurrentLocations = UnityEngine.Random.Range(2, 5);
-//         //     for (int n = 0; n < numberOfCurrentLocations; n++)
-//         //     {
-//         //         Location location = new Location(1, "Location Name");
-//         //         FirstRow.Add(location);
-//         //     }
-//         //     level++;
-//         //     List<Location> SecondRow = new List<Location>();;
-//         //     numberOfCurrentLocations = UnityEngine.Random.Range(2, 5);
-//         //     for (int n = 0; n < numberOfCurrentLocations; n++)
-//         //     {
-//         //         Location location = new Location(1, "Location Name");
-//         //         SecondRow.Add(location);
-//         //     }
-//         //     int availablePathCount = SecondRow.Count;
-//         //     int pathsToMake = UnityEngine.Random.Range(1, availablePathCount);
-//         //     for (int s = 0; s < SecondRow.Count; s++)
-//         //     {
-//         //     }
-//         //     // Loop through each location in first row and connect paths to next row
-//         //     for (int firstLocation = 1; firstLocation < FirstRow.Count; firstLocation++)
-//         //     {
-//         //         availablePathCount = 0;
-//         //         // Count number of available locations to path to in second row.
-//         //         foreach (var secondLocation in SecondRow)
-//         //         {
-//         //         }
-//         //     }
-//         //     // 1)   Create nodes left to right 
-//         //     // 1.5) FirstRow = firstRow[Nodes]
-//         //     // 2)   Create next row from left to right
-//         //     // 2.5) SecondRow = secondRow[Nodes]
-//         //     // 3)   Loop through each node in FirstRow[nodes]
-//         //     // 3.1)   for each node from left to right, calculate how any nodes from secondRow the node will go to
-//         //     // 3.2)   repeat until each node in the first lane is pointing to 1 node in the next row.
-//         //     // 3.3)   if all nodes are pointed to at a node, then just point this node to the furthest right node.
-//         //     // 4)     spawn nodes
-//         // }
-
-//     }
-//     Vector3 CalculateMidpoint(Vector3 point1, Vector3 point2)
-//     {
-//         // Calculate the midpoint using vector arithmetic
-//         return ((point1 + point2) / 2f);
-//     }
-// }
-
-
-
-// TESTING OUT MAKING LINES Between spaces
-//         GameObject nextPathOne = Instantiate(SpacePrefab, new Vector3(7f,0,7f), Quaternion.identity);
-
-//         float distance0 = Vector3.Distance(startingPath.transform.position, nextPathZero.transform.position);
-//         float distance1 = Vector3.Distance(startingPath.transform.position, nextPathOne.transform.position);
-
-//         // creae the line that will go between the two paths.
-//         GameObject line = GameObject.CreatePrimitive(PrimitiveType.Cube);
-//         // Z: is the forward direction (important for turning direction)
-//         line.transform.localScale = new Vector3(0.25f, 0.25f, distance0);
-//         // set position of line to be in the middle of the two paths.
-//         // rotate the line so that the line connects the two paths.
-
-//         line.transform.position = CalculateMidpoint(startingPath.transform.position, nextPathZero.transform.position);
-//         // Calculate the direction vector from the starting point to the next point
-//         Vector3 direction = (nextPathZero.transform.position - startingPath.transform.position).normalized;
-//         // Calculate the rotation to align the line with the direction vector
-//         Quaternion rotation = Quaternion.LookRotation(direction);
-//         // Set the rotation of the line
-//         line.transform.rotation = rotation;
-
-
-
-//         // creae the line that will go between the two paths.
-//         GameObject line2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-//         line2.transform.localScale = new Vector3(0.25f, 0.25f, distance1);
-//         // rotate the line so that the line connects the two paths.
-//         // create the function that goes here to rotate the line two angle between the two points.
-
-//         line2.transform.position = CalculateMidpoint(startingPath.transform.position, nextPathOne.transform.position);
-//         // Calculate the direction vector from the starting point to the next point
-//         direction = (nextPathOne.transform.position - startingPath.transform.position).normalized;
-//         // Calculate the rotation to align the line with the direction vector
-//         rotation = Quaternion.LookRotation(direction);
-//         // Set the rotation of the line
-//         line2.transform.rotation = rotation;
