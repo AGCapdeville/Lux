@@ -1,6 +1,9 @@
 
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
 public class Player
@@ -38,5 +41,81 @@ public class Player
         List<List<int>> boardHover = new List<List<int>>();
 
         return boardHover;
+    }
+
+
+    // Gets the spaces which the player can potentally move to and returns them.
+    public HashSet<GameObject> getMovementRange(List<List<GameObject>> board){
+
+        // THis needs to be passed from the creation of the board 
+        // I put it here just for now to see if it is getting the correct movement range
+        int spaceWidth = 5;
+        int spaceLength = 5;
+
+        HashSet<Vector3> rangeSet = new HashSet<Vector3>
+        {
+            //Starting Postion of the player
+            playerPiece.transform.position
+        };
+
+        for(int i = 0; i < movement; i++){
+
+            HashSet<Vector3> tempSet =  new HashSet<Vector3>();
+
+            foreach(Vector3 pos in rangeSet){
+
+                if(isValidSpace(board, new Vector3(pos.x + spaceWidth, pos.y, pos.z)))
+                    tempSet.Add(new Vector3(pos.x + spaceWidth, pos.y, pos.z));
+                
+                if(isValidSpace(board, new Vector3(pos.x - spaceWidth, pos.y, pos.z)))
+                    tempSet.Add(new Vector3(pos.x - spaceWidth, pos.y, pos.z));
+                
+                if(isValidSpace(board, new Vector3(pos.x, pos.y, pos.z  + spaceLength)))
+                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z  + spaceLength));
+                
+                if(isValidSpace(board, new Vector3(pos.x, pos.y, pos.z - spaceLength)))
+                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z - spaceLength));
+
+            }
+
+            rangeSet.UnionWith(tempSet);
+        }
+
+        HashSet<GameObject> MovementSpaces = new HashSet<GameObject>(); 
+        bool found = false;
+
+        foreach(Vector3 space in rangeSet){
+
+            foreach(List<GameObject> row in board)
+            {
+                foreach(GameObject boardSpace in row){
+                    if(boardSpace.transform.position == space){
+                         MovementSpaces.Add(boardSpace);
+                         found = true;
+                         break;
+                    }
+                }
+                if(found){
+                    found = false;
+                    break;
+                }
+            }
+        }
+        
+        return MovementSpaces;
+
+    }
+
+    private bool isValidSpace(List<List<GameObject>> board, Vector3 vectorToCheck ){
+
+        List<Vector3> spaces = new List<Vector3>();
+
+        foreach(List<GameObject> row in board){
+            foreach(GameObject space in row){
+                spaces.Add(space.transform.position);
+            }
+        }
+        
+        return spaces.Contains(vectorToCheck);
     }
 }

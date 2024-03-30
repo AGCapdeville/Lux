@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 
@@ -12,6 +13,9 @@ public class GameManager : MonoBehaviour
 {
 
     private Player player;
+
+    private List<List<GameObject>> Board;
+
 
     void Start()
     {
@@ -25,7 +29,7 @@ public class GameManager : MonoBehaviour
         int spaceWidth = 5;
         int spaceHeight = 5;
 
-        List<List<GameObject>> Board = GenerateBoard(numberOfRows, numberOfColumns, spaceWidth, spaceHeight);
+        Board = GenerateBoard(numberOfRows, numberOfColumns, spaceWidth, spaceHeight);
 
         player = new Player(0, "Orion", 2, (0,0));
     }
@@ -34,9 +38,20 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1"))  // Change "Fire1" to the appropriate button name
         {
+            foreach(GameObject space in player.getMovementRange(Board)){
+                print(space.transform.position);
+            }
             // Button click detected
-            
+
             player.movePlayer((5,5));
+
+            //Checking if we can compare vectors instead of the indiviual values
+            // foreach(List<GameObject> row in Board){
+            //     foreach(GameObject space in row){
+            //         print(space.transform.position == new Vector3(0,0,5));
+            //     }
+            // }
+
             
             // You can add your logic here, such as executing a function or changing game state
         }
