@@ -14,16 +14,17 @@ public class Player
     public int Movement { get; }
     public GameObject Piece {get; set;}
 
+    private List<GameObject> MovementTiles;
     private HashSet<GameObject> MovementGridSpaces;
 
     // Constructor to initialize event_id and event_name
-    public Player(int id, string name, int movement, (int, int) position, Board board)
+    public Player(int id, string name, int movement, Vector3 position, Board board)
     {
         PlayerID = id;
         Name = name;
         Movement = movement;
         Piece = new GameObject("player");
-        Piece.transform.position = new Vector3(position.Item1, 0f, position.Item2);
+        Piece.transform.position = position;
 
         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
         // Set the cube's position, rotation, and scale (optional)
@@ -35,8 +36,8 @@ public class Player
 
     }
 
-    public void Move((int, int) position, Board board) {
-        Piece.transform.position = new Vector3(position.Item1, 0f, position.Item2);
+    public void Move(Vector3 position, Board board) {
+        Piece.transform.position = position;
         UpdateMovementRange(board);
     }
 
@@ -44,17 +45,29 @@ public class Player
     //   sprites should be rendered for move range of the player.
     public void DisplayMovementRange(Board board) {
         UpdateMovementRange(board);
-
+        MovementTiles = new List<GameObject>();
         // Light up board with MovementGridSpaces, and create planes in those spaces...
         foreach (GameObject space in MovementGridSpaces)
         {
-
             GameObject movementTile = GameObject.Instantiate(board.MovementTile, Vector3.zero, Quaternion.identity);
             movementTile.transform.position = space.transform.position;
-            DestroyAfterDelay(movementTile, 1f);
+            MovementTiles.Add(movementTile);
+            // DestroyAfterDelay(movementTile, 1f);
             // movementTile.transform.SetParent(space.transform); // Set the parent to make it a child of this GameObject
         }
     }
+
+    public void HideMovementRange() {
+        // UpdateMovementRange(board);
+        // Light up board with MovementGridSpaces, and create planes in those spaces...
+        foreach (GameObject tile in MovementTiles)
+        {
+            GameObject.Destroy(tile);
+        }
+        MovementTiles = new List<GameObject>();
+    }
+
+    
 
     public void MoveToRandomBoardSpace(Board board) {
         int location = GetRandomNumber(0, MovementGridSpaces.Count);
@@ -81,7 +94,6 @@ public class Player
         // Destroy the gameObject after the specified delay
         GameObject.Destroy(gameObjectToDestroy, delay);
     }
-
 
     public void UpdateMovementRange(Board board) {
 
@@ -136,7 +148,6 @@ public class Player
         }
         MovementGridSpaces = MovementSpaces;
     }
-
 
     // Gets the spaces which the player can potentally move to and returns them.
     public HashSet<GameObject> GetMovementRange(Board board) {

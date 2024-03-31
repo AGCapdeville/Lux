@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     private Player player;
 
     private Board board;
-
+    private bool DISP = false;
     void Start()
     {
         int rows = 5;
@@ -27,19 +27,39 @@ public class GameManager : MonoBehaviour
         board = new Board(rows, columns, spaceWidth, spaceHeight);
         board.SetParent(gameObject); // Set the board game object's parent to GameManager Game Object
 
-        player = new Player(0, "Orion", 2, (0,0), board);
+        player = new Player(0, "Orion", 2, Vector3.zero, board);
     }
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))  // Change "Fire1" to the appropriate button name
-        {
-            player.MoveToRandomBoardSpace(board);
-            
-        }
+        // Testing
+        // if (Input.GetButtonDown("Fire1"))  // Change "Fire1" to the appropriate button name
+        // {
+        //     player.MoveToRandomBoardSpace(board);   
+        // }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            player.DisplayMovementRange(board);
+            if (!DISP) {
+                player.DisplayMovementRange(board);
+                DISP = true;
+            } else {
+                player.HideMovementRange();
+                DISP = false;
+            }
+        }
+    }
+
+    public void ObjectInteract(string message, Vector3 targetPosition)
+    {
+        // Instruct the player to move to the clicked location
+        // player.MoveTo(targetPosition);
+        Debug.Log("Object Interaction:" + message);
+        // TODO: Filter interations based on message or something.
+        if (message == "movement_tile") {
+            DISP = false;
+            player.HideMovementRange();
+            player.Move(targetPosition, board);
         }
     }
 }
