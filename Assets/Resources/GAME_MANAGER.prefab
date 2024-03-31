@@ -44,5 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5df93274e32c64ae3a6e1bc74bfe86e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cylinderRadius: 5
-  cylinderHeight: 0.25
+  prefabGameManager: {fileID: 5897688115455659922}
