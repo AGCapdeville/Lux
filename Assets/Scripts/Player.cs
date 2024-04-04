@@ -1,11 +1,9 @@
 
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
-// using System;
+using System.Collections.Generic;
+
+using Vector3 = UnityEngine.Vector3;
+using Quaternion = UnityEngine.Quaternion;
 
 public class Player
 {
@@ -13,9 +11,9 @@ public class Player
     public string Name { get; }
     public int Movement { get; }
     public GameObject Piece {get; set;}
-
+    public Vector3 Direction {get; set;}
     private List<GameObject> MovementTiles;
-    private HashSet<GameObject> MovementGridSpaces;
+    private HashSet<Space> MovementGridSpaces;
 
     // Constructor to initialize event_id and event_name
     public Player(int id, string name, int movement, Vector3 position, Board board)
@@ -25,15 +23,13 @@ public class Player
         Movement = movement;
         Piece = new GameObject("player");
         Piece.transform.position = position;
+        Direction = Vector3.forward;
 
-        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        // Set the cube's position, rotation, and scale (optional)
-        cube.transform.localScale = new Vector3(1f, 1f, 1f); // Example scale
-        // Set the cube's parent to parent game object
-        cube.transform.parent = Piece.transform;
+        GameObject tri = Resources.Load<GameObject>("Triangle");
+        GameObject triObj = GameObject.Instantiate(tri, Vector3.zero, Quaternion.identity);
+        triObj.transform.parent = Piece.transform;
 
         UpdateMovementRange(board);
-
     }
 
     public void Move(Vector3 position, Board board) {
@@ -47,18 +43,22 @@ public class Player
         UpdateMovementRange(board);
         MovementTiles = new List<GameObject>();
         // Light up board with MovementGridSpaces, and create planes in those spaces...
-        foreach (GameObject space in MovementGridSpaces)
+        foreach (Space space in MovementGridSpaces)
         {
             GameObject movementTile = GameObject.Instantiate(board.MovementTile, Vector3.zero, Quaternion.identity);
-            movementTile.transform.position = space.transform.position;
+            movementTile.transform.position = new Vector3(
+                space.Object.transform.position.x,
+                space.Object.transform.position.y + 1,
+                space.Object.transform.position.z
+            );
+
             MovementTiles.Add(movementTile);
             // DestroyAfterDelay(movementTile, 1f);
             // movementTile.transform.SetParent(space.transform); // Set the parent to make it a child of this GameObject
         }
     }
-
-    public void HideMovementRange() {
-        // UpdateMovementRange(board);
+    public void HideMovementRange(Board board) {
+        UpdateMovementRange(board);
         // Light up board with MovementGridSpaces, and create planes in those spaces...
         foreach (GameObject tile in MovementTiles)
         {
@@ -66,35 +66,6 @@ public class Player
         }
         MovementTiles = new List<GameObject>();
     }
-
-    
-
-    public void MoveToRandomBoardSpace(Board board) {
-        int location = GetRandomNumber(0, MovementGridSpaces.Count);
-        int index = 0;
-        foreach (GameObject space in MovementGridSpaces) {
-            if (index++ == location) {
-                Piece.transform.position = space.transform.position;
-                UpdateMovementRange(board);
-            }
-        }
-    }
-
-    static int GetRandomNumber(int minValue, int maxValue)
-    {
-        // Create a Random object
-        System.Random random = new System.Random();
-        // Generate a random number within the range
-        int randomNumber = random.Next(minValue, maxValue + 1);
-        return randomNumber;
-    }
-
-    private void DestroyAfterDelay(GameObject gameObjectToDestroy, float delay)
-    {
-        // Destroy the gameObject after the specified delay
-        GameObject.Destroy(gameObjectToDestroy, delay);
-    }
-
     public void UpdateMovementRange(Board board) {
 
         HashSet<Vector3> rangeSet = new HashSet<Vector3>
@@ -126,16 +97,16 @@ public class Player
             rangeSet.UnionWith(tempSet);
         }
 
-        HashSet<GameObject> MovementSpaces = new HashSet<GameObject>(); 
+        HashSet<Space> MovementSpaces = new HashSet<Space>(); 
         bool found = false;
 
-        foreach(Vector3 space in rangeSet){
+        foreach(Vector3 position in rangeSet){
 
-            foreach(List<GameObject> row in board.Grid)
+            foreach(List<Space> row in board.Grid)
             {
-                foreach(GameObject boardSpace in row){
-                    if(boardSpace.transform.position == space){
-                         MovementSpaces.Add(boardSpace);
+                foreach(Space space in row){
+                    if(space.Object.transform.position == position){
+                         MovementSpaces.Add(space);
                          found = true;
                          break;
                     }
@@ -150,7 +121,7 @@ public class Player
     }
 
     // Gets the spaces which the player can potentally move to and returns them.
-    public HashSet<GameObject> GetMovementRange(Board board) {
+    public HashSet<Space> GetMovementRange(Board board) {
 
         HashSet<Vector3> rangeSet = new HashSet<Vector3>
         {
@@ -181,18 +152,18 @@ public class Player
             rangeSet.UnionWith(tempSet);
         }
 
-        HashSet<GameObject> MovementSpaces = new HashSet<GameObject>(); 
+        HashSet<Space> MovementSpaces = new HashSet<Space>(); 
         bool found = false;
 
-        foreach(Vector3 space in rangeSet){
+        foreach(Vector3 position in rangeSet){
 
-            foreach(List<GameObject> row in board.Grid)
+            foreach(List<Space> row in board.Grid)
             {
-                foreach(GameObject boardSpace in row){
-                    if(boardSpace.transform.position == space){
-                         MovementSpaces.Add(boardSpace);
-                         found = true;
-                         break;
+                foreach(Space space in row){
+                    if(space.Object.transform.position == position){
+                        MovementSpaces.Add(space);
+                        found = true;
+                        break;
                     }
                 }
                 if(found){
@@ -205,16 +176,17 @@ public class Player
         return MovementSpaces;
     }
 
-    private bool IsValidSpace(List<List<GameObject>> grid, Vector3 vectorToCheck ){
+    private bool IsValidSpace(List<List<Space>> grid, Vector3 vectorToCheck ){
 
         List<Vector3> spaces = new List<Vector3>();
 
-        foreach(List<GameObject> row in grid){
-            foreach(GameObject space in row){
-                spaces.Add(space.transform.position);
+        foreach(List<Space> row in grid){
+            foreach(Space space in row){
+                spaces.Add(space.Object.transform.position);
             }
         }
         
         return spaces.Contains(vectorToCheck);
     }
+
 }

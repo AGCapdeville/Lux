@@ -33,7 +33,6 @@ public class MovementTile : MonoBehaviour
                 if (hit.collider.gameObject == gameObject)
                 {
                     // Object clicked, do something...
-                    Debug.Log("Movement Tile Pos: " + gameObject.transform.position);
                     PlayerInteract();
                 }
             }

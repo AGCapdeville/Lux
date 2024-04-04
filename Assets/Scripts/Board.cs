@@ -6,15 +6,12 @@ using System.Collections.Generic;
 public class Board
 {
     // Properties
-    public List<List<GameObject>> Grid {get; set;}
+    public List<List<Space>> Grid {get; set;}
     public int SpaceWidth {get; set;}
     public int SpaceHeight {get; set;}
     public int NumberOfRows {get; set;}
     public int NumberOfColumns {get; set;}
-
     public GameObject MovementTile {get;}
-
-
     private GameObject GameBoardObject {get; set;}
 
     // Constructor
@@ -35,20 +32,21 @@ public class Board
         GameBoardObject.transform.parent = go.transform;
     }
 
-    List<List<GameObject>> GenerateGrid() {
-        List<List<GameObject>> spaces = new List<List<GameObject>>();
+    List<List<Space>> GenerateGrid() {
+        List<List<Space>> spaces = new List<List<Space>>();
         for (int row = 0; row < NumberOfRows; row++)
         {
-            spaces.Add(new List<GameObject>());
+            spaces.Add(new List<Space>());
             for (int col = 0; col < NumberOfColumns; col++)
             {
-                GameObject space = new GameObject("space ["  + (row * SpaceWidth) + "," + (col * SpaceHeight) + "]");
-                space.transform.localScale = new Vector3(SpaceWidth, 1f, SpaceHeight);
-                space.transform.position = new Vector3(row * SpaceWidth, 0f, col * SpaceHeight);
-                spaces[row].Add(space);
+                spaces[row].Add(
+                    new Space(
+                        new Vector3(row * SpaceWidth, 0f, col * SpaceHeight), 
+                        new Vector3(SpaceWidth, 1f, SpaceHeight) 
+                    )
+                );
             }   
         }
-    
         GenerateGridLines();
         return spaces;
     }

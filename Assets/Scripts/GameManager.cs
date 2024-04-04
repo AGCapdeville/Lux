@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
                 player.DisplayMovementRange(board);
                 DISP = true;
             } else {
-                player.HideMovementRange();
+                player.HideMovementRange(board);
                 DISP = false;
             }
         }
@@ -58,8 +58,8 @@ public class GameManager : MonoBehaviour
         // TODO: Filter interations based on message or something.
         if (message == "movement_tile") {
             DISP = false;
-            player.HideMovementRange();
-            player.Move(targetPosition, board);
+            player.HideMovementRange(board);
+            player.Move(new Vector3(targetPosition.x, 0f, targetPosition.z), board);
         }
     }
 }
