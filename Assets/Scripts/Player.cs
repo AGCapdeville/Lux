@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using Vector3 = UnityEngine.Vector3;
 using Quaternion = UnityEngine.Quaternion;
+using System.Runtime.ExceptionServices;
 
 public class Player
 {
@@ -13,7 +14,9 @@ public class Player
     public GameObject Piece {get; set;}
     public Vector3 Direction {get; set;}
     private List<GameObject> MovementTiles;
-    private HashSet<Space> MovementGridSpaces;
+    public HashSet<Space> MovementGridSpaces {get; set;}
+
+    private Space EndingSpace;
 
     // Constructor to initialize event_id and event_name
     public Player(int id, string name, int movement, Vector3 position, Board board)
@@ -36,6 +39,41 @@ public class Player
         Piece.transform.position = position;
         UpdateMovementRange(board);
     }
+
+    public void MoveToSpace(Space space, Board board) {
+        // Clicked on movement tile, 
+        // Use Calculated Path to move player along path
+    }
+
+    private void CalculatePath(Space space, Board board)  {
+        EndingSpace = space;
+
+
+        // players start space
+        // ending space
+
+        // 1) calculate the minimal movement
+        // 2) for loop create all possible paths to ending space
+
+        // heristics: amount of movement required, weight of the space
+
+
+        // players starting to EndingSpace = movement distance (ex: 2)
+
+        // EndingSpace = <1,0,1>
+        // PlayersStarting = <0,0,0> 
+
+        // first loop:
+        // move up,
+        // move down,
+        // move right,
+        // move left
+
+
+    }
+
+
+
 
     // Takes in the current state of the game board, and retuns what spaces (tiles) 
     //   sprites should be rendered for move range of the player.
@@ -188,5 +226,7 @@ public class Player
         
         return spaces.Contains(vectorToCheck);
     }
+
+    
 
 }

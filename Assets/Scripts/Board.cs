@@ -8,17 +8,17 @@ public class Board
     // Properties
     public List<List<Space>> Grid {get; set;}
     public int SpaceWidth {get; set;}
-    public int SpaceHeight {get; set;}
+    public int SpaceLength {get; set;}
     public int NumberOfRows {get; set;}
     public int NumberOfColumns {get; set;}
     public GameObject MovementTile {get;}
     private GameObject GameBoardObject {get; set;}
 
     // Constructor
-    public Board(int numberOfRows, int numberOfColumns, int spaceWidth, int spaceHeight)
+    public Board(int numberOfRows, int numberOfColumns, int spaceWidth, int spaceLength)
     {
         SpaceWidth = spaceWidth;
-        SpaceHeight = spaceHeight;
+        SpaceLength = spaceLength;
         NumberOfRows = numberOfRows;
         NumberOfColumns = numberOfColumns;
 
@@ -41,8 +41,8 @@ public class Board
             {
                 spaces[row].Add(
                     new Space(
-                        new Vector3(row * SpaceWidth, 0f, col * SpaceHeight), 
-                        new Vector3(SpaceWidth, 1f, SpaceHeight) 
+                        new Vector3(row * SpaceWidth, 0f, col * SpaceLength), 
+                        new Vector3(SpaceWidth, 1f, SpaceLength)
                     )
                 );
             }   
@@ -64,7 +64,7 @@ public class Board
         {
             for (int row = 0; row <= NumberOfRows; row++)
             {
-                vertices[col * (NumberOfRows + 1) + row] = new Vector3((float)(row * SpaceWidth - 0.5 * SpaceWidth), 0, (float)(col * SpaceHeight - 0.5 * SpaceHeight));
+                vertices[col * (NumberOfRows + 1) + row] = new Vector3((float)(row * SpaceWidth - 0.5 * SpaceWidth), 0, (float)(col * SpaceLength - 0.5 * SpaceLength));
             }
         }
 

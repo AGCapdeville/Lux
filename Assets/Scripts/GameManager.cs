@@ -13,9 +13,9 @@ public class GameManager : MonoBehaviour
 {
     // public GameObject gameManager;
 
-    private Player player;
+    private Player Player;
 
-    private Board board;
+    private Board Board;
     private bool DISP = false;
     void Start()
     {
@@ -24,10 +24,13 @@ public class GameManager : MonoBehaviour
         int spaceWidth = 10; // Looks like 10 equates to 1 unit in plane
         int spaceHeight = 10;
 
-        board = new Board(rows, columns, spaceWidth, spaceHeight);
-        board.SetParent(gameObject); // Set the board game object's parent to GameManager Game Object
+        Board = new Board(rows, columns, spaceWidth, spaceHeight);
+        Board.SetParent(gameObject); // Set the board game object's parent to GameManager Game Object
 
-        player = new Player(0, "Orion", 2, Vector3.zero, board);
+        Player = new Player(0, "Orion", 2, Vector3.zero, Board);
+
+
+
     }
 
     void Update()
@@ -41,13 +44,17 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (!DISP) {
-                player.DisplayMovementRange(board);
+                Player.DisplayMovementRange(Board);
                 DISP = true;
             } else {
-                player.HideMovementRange(board);
+                Player.HideMovementRange(Board);
                 DISP = false;
             }
+
+            Node n = new Node(0,0);
+            n.Testing(Player.Piece.transform.position, Player.MovementGridSpaces, Board.SpaceWidth, Board.SpaceLength);
         }
+
     }
 
     public void ObjectInteract(string message, Vector3 targetPosition)
@@ -58,8 +65,8 @@ public class GameManager : MonoBehaviour
         // TODO: Filter interations based on message or something.
         if (message == "movement_tile") {
             DISP = false;
-            player.HideMovementRange(board);
-            player.Move(new Vector3(targetPosition.x, 0f, targetPosition.z), board);
+            Player.HideMovementRange(Board);
+            Player.Move(new Vector3(targetPosition.x, 0f, targetPosition.z), Board);
         }
     }
 }

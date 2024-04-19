@@ -17,6 +17,32 @@ public class MovementTile : MonoBehaviour
         gameManager.ObjectInteract("movement_tile", transform.position);
     }
 
+    
+    void OnMouseEnter()
+    {
+        // Check if object A has not been spawned yet
+        // if (spawnedObject == null)
+        // {
+        //     // Spawn object A at the position of object B
+        //     spawnedObject = Instantiate(objectToSpawn, transform.position, Quaternion.identity);
+        // }
+    }
+
+
+    void OnMouseExit()
+    {
+        // Check if object A exists before attempting to destroy it
+        // if (spawnedObject != null)
+        // {
+        //     // Destroy object A
+        //     Destroy(spawnedObject);
+        //     // Reset the reference
+        //     spawnedObject = null;
+        // }
+    }
+
+
+
     void Update()
     {
         // Check if the left mouse button is clicked
