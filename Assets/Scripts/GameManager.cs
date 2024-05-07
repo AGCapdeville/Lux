@@ -54,6 +54,18 @@ public class GameManager : MonoBehaviour
             Node n = new Node(0,0);
             n.Testing(Player.Piece.transform.position, Player.MovementGridSpaces, Board.SpaceWidth, Board.SpaceLength);
         }
+        
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            Player.rotateLeft();
+        }
+
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            Player.rotateRight();
+        }
+
 
     }
 

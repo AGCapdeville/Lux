@@ -72,7 +72,18 @@ public class Player
 
     }
 
+    public void rotateRight(){
 
+        Vector3 rot = Piece.transform.localRotation.eulerAngles; 
+        Piece.transform.rotation = Quaternion.Euler(rot.x, rot.y + 90, rot.z);
+
+    }
+    public void rotateLeft(){
+
+        Vector3 rot = Piece.transform.localRotation.eulerAngles; 
+        Piece.transform.rotation = Quaternion.Euler(rot.x, rot.y - 90, rot.z);
+
+    }
 
 
     // Takes in the current state of the game board, and retuns what spaces (tiles) 
@@ -124,11 +135,11 @@ public class Player
                 if(IsValidSpace(board.Grid, new Vector3(pos.x - board.SpaceWidth, pos.y, pos.z)))
                     tempSet.Add(new Vector3(pos.x - board.SpaceWidth, pos.y, pos.z));
                 
-                if(IsValidSpace(board.Grid, new Vector3(pos.x, pos.y, pos.z  + board.SpaceHeight)))
-                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z  + board.SpaceHeight));
+                if(IsValidSpace(board.Grid, new Vector3(pos.x, pos.y, pos.z  + board.SpaceLength)))
+                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z  + board.SpaceLength));
                 
-                if(IsValidSpace(board.Grid, new Vector3(pos.x, pos.y, pos.z - board.SpaceHeight)))
-                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z - board.SpaceHeight));
+                if(IsValidSpace(board.Grid, new Vector3(pos.x, pos.y, pos.z - board.SpaceLength)))
+                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z - board.SpaceLength));
 
             }
 
@@ -179,11 +190,11 @@ public class Player
                 if(IsValidSpace(board.Grid, new Vector3(pos.x - board.SpaceWidth, pos.y, pos.z)))
                     tempSet.Add(new Vector3(pos.x - board.SpaceWidth, pos.y, pos.z));
                 
-                if(IsValidSpace(board.Grid, new Vector3(pos.x, pos.y, pos.z  + board.SpaceHeight)))
-                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z  + board.SpaceHeight));
+                if(IsValidSpace(board.Grid, new Vector3(pos.x, pos.y, pos.z  + board.SpaceLength)))
+                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z  + board.SpaceLength));
                 
-                if(IsValidSpace(board.Grid, new Vector3(pos.x, pos.y, pos.z - board.SpaceHeight)))
-                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z - board.SpaceHeight));
+                if(IsValidSpace(board.Grid, new Vector3(pos.x, pos.y, pos.z - board.SpaceLength)))
+                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z - board.SpaceLength));
 
             }
 
