@@ -124,11 +124,11 @@ public class Player
                 if(IsValidSpace(board.Grid, new Vector3(pos.x - board.SpaceWidth, pos.y, pos.z)))
                     tempSet.Add(new Vector3(pos.x - board.SpaceWidth, pos.y, pos.z));
                 
-                if(IsValidSpace(board.Grid, new Vector3(pos.x, pos.y, pos.z  + board.SpaceHeight)))
-                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z  + board.SpaceHeight));
+                if(IsValidSpace(board.Grid, new Vector3(pos.x, pos.y, pos.z  + board.SpaceLength)))
+                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z  + board.SpaceLength));
                 
-                if(IsValidSpace(board.Grid, new Vector3(pos.x, pos.y, pos.z - board.SpaceHeight)))
-                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z - board.SpaceHeight));
+                if(IsValidSpace(board.Grid, new Vector3(pos.x, pos.y, pos.z - board.SpaceLength)))
+                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z - board.SpaceLength));
 
             }
 
@@ -179,11 +179,11 @@ public class Player
                 if(IsValidSpace(board.Grid, new Vector3(pos.x - board.SpaceWidth, pos.y, pos.z)))
                     tempSet.Add(new Vector3(pos.x - board.SpaceWidth, pos.y, pos.z));
                 
-                if(IsValidSpace(board.Grid, new Vector3(pos.x, pos.y, pos.z  + board.SpaceHeight)))
-                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z  + board.SpaceHeight));
+                if(IsValidSpace(board.Grid, new Vector3(pos.x, pos.y, pos.z  + board.SpaceLength)))
+                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z  + board.SpaceLength));
                 
-                if(IsValidSpace(board.Grid, new Vector3(pos.x, pos.y, pos.z - board.SpaceHeight)))
-                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z - board.SpaceHeight));
+                if(IsValidSpace(board.Grid, new Vector3(pos.x, pos.y, pos.z - board.SpaceLength)))
+                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z - board.SpaceLength));
 
             }
 

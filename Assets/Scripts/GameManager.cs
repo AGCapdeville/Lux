@@ -43,15 +43,15 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (!DISP) {
-                Player.DisplayMovementRange(Board);
-                DISP = true;
-            } else {
-                Player.HideMovementRange(Board);
-                DISP = false;
-            }
+            // if (!DISP) {
+            //     Player.DisplayMovementRange(Board);
+            //     DISP = true;
+            // } else {
+            //     Player.HideMovementRange(Board);
+            //     DISP = false;
+            // }
 
-            Node n = new Node(0,0);
+            Node n = new Node(0,0,1);
             n.Testing(Player.Piece.transform.position, Player.MovementGridSpaces, Board.SpaceWidth, Board.SpaceLength);
         }
 
