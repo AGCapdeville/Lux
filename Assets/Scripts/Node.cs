@@ -45,20 +45,29 @@ public class Node {
         Node start = new Node(position.x, position.z, 1);
 
         // Node start = new Node(0,0,1); // where character is located
-        Node end = new Node(1,2,1); // location player clicked on to move to
+        Node end = new Node(10,20,1); // location player clicked on to move to
 
         List<Node> openList = new List<Node>(){start};
         List<Node> closedList = new List<Node>();
 
-        Node n = FindNextNode(start, end, spacingWidth, spacingLength, openList, map);
+        List<Node> path = new List<Node>(){start};
+
+        Node n = start;
+        while (n.X != end.X && n.Z != end.Z) {
+            n = FindNextNode(n, end, spacingWidth, spacingLength, openList, map);
+            path.Add(n);
+        }
         
-        Debug.Log("Closest Node: [" + n.X + "][" + n.Z + "], G: " + n.G + ", H: " + n.H + ", F: " + n.F);
+        for (int i = 0; i < path.Count; i++)
+        {
+            Debug.Log("N(" + i + "): [" + path[i].X + "][" + path[i].Z + "], G: " + path[i].G + ", H: " + path[i].H + ", F: " + path[i].F);
+        }
     }
 
 
     private Node FindNextNode(Node currentNode, Node end, int spacingWidth, int spacingLength, List<Node> openList, List<Tuple<float, float>> map) {
-        Debug.Log("Starting Node: [" + (currentNode.X * spacingWidth) +"][" + (currentNode.Z * spacingLength) +"]");
-        Debug.Log("Ending Node: [" + (end.X * spacingWidth) + "][" + (end.Z * spacingLength) + "]");
+        Debug.Log("Starting Node: [" + (currentNode.X) +"][" + (currentNode.Z) +"]");
+        Debug.Log("Ending Node: [" + (end.X ) + "][" + (end.Z) + "]");
 
         Node leftNode = new Node(currentNode.X - spacingWidth, currentNode.Z, 1);
         Node rightNode = new Node(currentNode.X + spacingWidth, currentNode.Z, 1);
