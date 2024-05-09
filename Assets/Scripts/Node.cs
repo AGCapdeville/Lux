@@ -3,30 +3,32 @@
 
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
 public class Node {
 
-    public int X;
-    public int Z;
+    public float X;
+    public float Z;
 
     public Node LastNode;
-    public float G;
-    public double H;
-    public float F;
+    public double H; // Heuristic: Cost to get to goal
+    public float G; // Cost to get to here so far
+    public float F; // Total Weight
 
+    private float MoveCost;
 
-
-    public Node(int x, int z) {
+    public Node(float x, float z, float cost) {
         X = x;
         Z = z;
+        MoveCost = cost;
     }
 
-    public float CalculateWeight (Node end, Node lastNode, int moveCost) {
+    public float CalculateWeight (Node end, Node lastNode) {
         LastNode = lastNode;
         H = Math.Sqrt( Math.Pow(end.X - X, 2) + Math.Pow(end.Z - Z, 2) );
-        G = moveCost + lastNode.G;
+        G = MoveCost + lastNode.G;
         F = (float)H + G;
         return F;
     }
@@ -40,51 +42,74 @@ public class Node {
 
         // start working through logic:
         
-        // Node start = new Node(position.x, position.z);
+        Node start = new Node(position.x, position.z, 1);
 
-        Node start = new Node(0,0); // where character is located
-        Node end = new Node(1,2); // location player clicked on to move to
+        // Node start = new Node(0,0,1); // where character is located
+        Node end = new Node(10,20,1); // location player clicked on to move to
 
         List<Node> openList = new List<Node>(){start};
         List<Node> closedList = new List<Node>();
 
-        Node currentNode = start;
+        List<Node> path = new List<Node>(){start};
 
-        Node leftNode = new Node(currentNode.X - spacingWidth, currentNode.Z);
-        Node rightNode = new Node(currentNode.X + spacingWidth, currentNode.Z);
-        Node upNode = new Node(currentNode.X, currentNode.Z + spacingLength);
-        Node downNode = new Node(currentNode.X, currentNode.Z - spacingLength);
+        Node n = start;
+        while (n.X != end.X && n.Z != end.Z) {
+            n = FindNextNode(n, end, spacingWidth, spacingLength, openList, map);
+            path.Add(n);
+        }
+        
+        for (int i = 0; i < path.Count; i++)
+        {
+            Debug.Log("N(" + i + "): [" + path[i].X + "][" + path[i].Z + "], G: " + path[i].G + ", H: " + path[i].H + ", F: " + path[i].F);
+        }
+    }
+
+
+    private Node FindNextNode(Node currentNode, Node end, int spacingWidth, int spacingLength, List<Node> openList, List<Tuple<float, float>> map) {
+        Debug.Log("Starting Node: [" + (currentNode.X) +"][" + (currentNode.Z) +"]");
+        Debug.Log("Ending Node: [" + (end.X ) + "][" + (end.Z) + "]");
+
+        Node leftNode = new Node(currentNode.X - spacingWidth, currentNode.Z, 1);
+        Node rightNode = new Node(currentNode.X + spacingWidth, currentNode.Z, 1);
+        Node upNode = new Node(currentNode.X, currentNode.Z + spacingLength, 1);
+        Node downNode = new Node(currentNode.X, currentNode.Z - spacingLength, 1);
 
         Tuple<float, float> temp = new Tuple<float, float>(leftNode.X, leftNode.Z);
         if (map.Contains(temp)) {
-            leftNode.CalculateWeight(end, currentNode, 1);
+            leftNode.CalculateWeight(end, currentNode);
             openList.Add(leftNode);
         }
 
         temp = new Tuple<float, float>(rightNode.X, rightNode.Z);
         if (map.Contains(temp)) {
-            rightNode.CalculateWeight(end, currentNode, 1);
+            rightNode.CalculateWeight(end, currentNode);
             openList.Add(rightNode);
         }
 
         temp = new Tuple<float, float>(upNode.X, upNode.Z);
         if (map.Contains(temp)) {
-            upNode.CalculateWeight(end, currentNode, 1);
+            upNode.CalculateWeight(end, currentNode);
             openList.Add(upNode);
         }
 
         temp = new Tuple<float, float>(downNode.X, downNode.Z);
         if (map.Contains(temp)) {
-            downNode.CalculateWeight(end, currentNode, 1);
+            downNode.CalculateWeight(end, currentNode);
             openList.Add(downNode);
         }
 
 
+        float minDist = 1000f;
+        Node minNode = new Node(currentNode.X, currentNode.Z, 1);
         foreach(Node cn in openList) {
-            Debug.Log("[" + cn.X + "][" + cn.Z + "], G: " + cn.G + ", H: " + cn.H + ", F: " + cn.F);
+            Debug.Log("Node: [" + cn.X + "][" + cn.Z + "], G: " + cn.G + ", H: " + cn.H + ", F: " + cn.F);
+            if (cn.F < minDist && cn.F != 0) {
+                minDist = cn.F;
+                minNode = cn;
+            }
         }
 
-
+        return minNode;
     }
 
 
