@@ -33,34 +33,56 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public static Dictionary<(int, int), Node> GenerateMap(List<(int, int)> blocked, int distance)
+    {
+        var genMap = new Dictionary<(int, int), Node>();
+        for (int x = 0; x < 5; x++)
+        {
+            for (int y = 0; y < 5; y++)
+            {
+                var node = new Node(x * distance, y * distance);
+                if (blocked.Contains((x, y)))
+                {
+                    node.Type = SpaceEnum.Block;
+                }
+                genMap[(x * distance, y * distance)] = node;
+            }
+        }
+        return genMap;
+    }
+
     void Update()
     {
-        // Testing
-        // if (Input.GetButtonDown("Fire1"))  // Change "Fire1" to the appropriate button name
-        // {
-        //     player.MoveToRandomBoardSpace(board);   
-        // }
-
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            // if (!DISP) {
-            //     Player.DisplayMovementRange(Board);
-            //     DISP = true;
-            // } else {
-            //     Player.HideMovementRange(Board);
-            //     DISP = false;
-            // }
 
-            Node n = new Node(0,0,1);
-            n.Testing(Player.Piece.transform.position, Player.MovementGridSpaces, Board.SpaceWidth, Board.SpaceLength);
+            var blockedLocations = new List<(int, int)> { (0, 3), (1, 2) };
+            int distance = 10;
+            var mapData = GenerateMap(blockedLocations, distance);
+            
+            Node playerNode = new Node(0,0);
+            playerNode.Type = SpaceEnum.Player;
+            Node endNode = new Node(0,40);
+
+            Pathing playerPathing = new Pathing(mapData, distance);
+            playerPathing.ClosedList[(playerNode.Position["x"], playerNode.Position["y"])] = playerNode;
+
+            List<Node> path = playerPathing.FindPath(playerNode, endNode);
+
+            foreach (var n in path)
+            {
+                Debug.Log($"({n.Position["x"]}, {n.Position["y"]})");
+            }
+
         }
         
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             Player.rotateLeft();
+            Console.Write("hello");
         }
-
+ 
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             Player.rotateRight();
