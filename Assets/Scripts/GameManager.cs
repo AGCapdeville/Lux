@@ -17,6 +17,33 @@ public class GameManager : MonoBehaviour
 
     private Board Board;
     private bool DISP = false;
+
+
+    private LineRenderer lineRenderer;
+    void DrawPath(List<Node> path)
+    {
+        if (lineRenderer == null)
+        {
+            GameObject lineObj = new GameObject("PathLine");
+            lineRenderer = lineObj.AddComponent<LineRenderer>();
+
+            // Configure the LineRenderer
+            lineRenderer.startWidth = 0.2f;
+            lineRenderer.endWidth = 0.2f;
+            lineRenderer.material = new Material(Shader.Find("Sprites/Default")); // Use a default material
+            lineRenderer.positionCount = path.Count;
+            lineRenderer.useWorldSpace = true;
+        }
+
+        for (int i = 0; i < path.Count; i++)
+        {
+            Vector3 position = new Vector3(path[i].Position["x"], 0, path[i].Position["y"]);
+            lineRenderer.SetPosition(i, position);
+        }
+    }
+
+
+
     void Start()
     {
         int rows = 5;
@@ -53,28 +80,10 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-
-            var blockedLocations = new List<(int, int)> { (0, 3), (1, 2) };
-            int distance = 10;
-            var mapData = GenerateMap(blockedLocations, distance);
+        // if (Input.GetKeyDown(KeyCode.Space))
+        // {
             
-            Node playerNode = new Node(0,0);
-            playerNode.Type = SpaceEnum.Player;
-            Node endNode = new Node(0,40);
-
-            Pathing playerPathing = new Pathing(mapData, distance);
-            playerPathing.ClosedList[(playerNode.Position["x"], playerNode.Position["y"])] = playerNode;
-
-            List<Node> path = playerPathing.FindPath(playerNode, endNode);
-
-            foreach (var n in path)
-            {
-                Debug.Log($"({n.Position["x"]}, {n.Position["y"]})");
-            }
-
-        }
+        // }
         
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -103,4 +112,32 @@ public class GameManager : MonoBehaviour
             Player.Move(new Vector3(targetPosition.x, 0f, targetPosition.z), Board);
         }
     }
+
+
+
+            // Then fetch map data:
+            // var blockedLocations = new List<(int, int)> {(0,3),(1,2)};
+            // int distance = 10;
+            // var mapData = GenerateMap(blockedLocations, distance);
+            
+            // // Then fetch character position [x,z]
+            // Node playerNode = new Node(0,0);
+            // playerNode.Type = SpaceEnum.Player;
+
+            // // Then we need to get the cube we clicked on position [x,z]
+            // Node endNode = new Node(0,40);
+
+            // // Calculate shortest path to clicked location
+            // Pathing playerPathing = new Pathing(mapData, distance);
+            // playerPathing.ClosedList[(playerNode.Position["x"], playerNode.Position["y"])] = playerNode;
+            // List<Node> path = playerPathing.FindPath(playerNode, endNode);
+
+
+            // DrawPath(path);
+
+            // // Then we need to draw said shortest path...
+            // foreach (var n in path)
+            // {
+            //     Debug.Log($"({n.Position["x"]}, {n.Position["y"]})");
+            // }
 }
