@@ -40,38 +40,6 @@ public class Player
         UpdateMovementRange(board);
     }
 
-    public void MoveToSpace(Space space, Board board) {
-        // Clicked on movement tile, 
-        // Use Calculated Path to move player along path
-    }
-
-    private void CalculatePath(Space space, Board board)  {
-        EndingSpace = space;
-
-
-        // players start space
-        // ending space
-
-        // 1) calculate the minimal movement
-        // 2) for loop create all possible paths to ending space
-
-        // heristics: amount of movement required, weight of the space
-
-
-        // players starting to EndingSpace = movement distance (ex: 2)
-
-        // EndingSpace = <1,0,1>
-        // PlayersStarting = <0,0,0> 
-
-        // first loop:
-        // move up,
-        // move down,
-        // move right,
-        // move left
-
-
-    }
-
     public void rotateRight(){
 
         Vector3 rot = Piece.transform.localRotation.eulerAngles; 
@@ -168,7 +136,6 @@ public class Player
         }
         MovementGridSpaces = MovementSpaces;
     }
-
     // Gets the spaces which the player can potentally move to and returns them.
     public HashSet<Space> GetMovementRange(Board board) {
 
@@ -224,7 +191,6 @@ public class Player
         
         return MovementSpaces;
     }
-
     private bool IsValidSpace(List<List<Space>> grid, Vector3 vectorToCheck ){
 
         List<Vector3> spaces = new List<Vector3>();

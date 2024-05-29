@@ -51,13 +51,11 @@ public class GameManager : MonoBehaviour
         int spaceWidth = 10; // Looks like 10 equates to 1 unit in plane
         int spaceHeight = 10;
 
+        // TODO: Update board to contain map_data? 
         Board = new Board(rows, columns, spaceWidth, spaceHeight);
         Board.SetParent(gameObject); // Set the board game object's parent to GameManager Game Object
 
         Player = new Player(0, "Orion", 2, Vector3.zero, Board);
-
-
-
     }
 
     public static Dictionary<(int, int), Node> GenerateMap(List<(int, int)> blocked, int distance)
@@ -80,10 +78,16 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        // if (Input.GetKeyDown(KeyCode.Space))
-        // {
-            
-        // }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (DISP) {
+                DISP = false;
+                Player.HideMovementRange(Board);
+            } else {
+                DISP = true;
+                Player.DisplayMovementRange(Board);
+            }
+        }
         
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -114,30 +118,4 @@ public class GameManager : MonoBehaviour
     }
 
 
-
-            // Then fetch map data:
-            // var blockedLocations = new List<(int, int)> {(0,3),(1,2)};
-            // int distance = 10;
-            // var mapData = GenerateMap(blockedLocations, distance);
-            
-            // // Then fetch character position [x,z]
-            // Node playerNode = new Node(0,0);
-            // playerNode.Type = SpaceEnum.Player;
-
-            // // Then we need to get the cube we clicked on position [x,z]
-            // Node endNode = new Node(0,40);
-
-            // // Calculate shortest path to clicked location
-            // Pathing playerPathing = new Pathing(mapData, distance);
-            // playerPathing.ClosedList[(playerNode.Position["x"], playerNode.Position["y"])] = playerNode;
-            // List<Node> path = playerPathing.FindPath(playerNode, endNode);
-
-
-            // DrawPath(path);
-
-            // // Then we need to draw said shortest path...
-            // foreach (var n in path)
-            // {
-            //     Debug.Log($"({n.Position["x"]}, {n.Position["y"]})");
-            // }
 }
