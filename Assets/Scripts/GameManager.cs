@@ -55,7 +55,20 @@ public class GameManager : MonoBehaviour
         Board = new Board(rows, columns, spaceWidth, spaceHeight);
         Board.SetParent(gameObject); // Set the board game object's parent to GameManager Game Object
 
+
+        // PlayerID = id;
+        // Name = name;        
+        // Hero = hero;
+
+//     public Player(int id, string name, Hero hero)
+
         Player = new Player(0, "Orion", 2, Vector3.zero, Board);
+        // float movement, int health, Vector3 position, Direction direction, string heroName, GameObject gamePiece)
+
+        Hero = new Hero(5, 100, Vector3.zero, Direction.North, "Orion" );
+        Player = new Player(0, "P1", );
+
+        Board.AddUnit(Player, Vector3.zero);
     }
 
     public static Dictionary<(int, int), Node> GenerateMap(List<(int, int)> blocked, int distance)
@@ -80,13 +93,14 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (DISP) {
-                DISP = false;
-                Player.HideMovementRange(Board);
-            } else {
-                DISP = true;
-                Player.DisplayMovementRange(Board);
-            }
+            // TODO: Migrate over to board for player.
+            // if (DISP) {
+            //     DISP = false;
+            //     Player.HideMovementRange(Board);
+            // } else {
+            //     DISP = true;
+            //     Player.DisplayMovementRange(Board);
+            // }
         }
         
 
