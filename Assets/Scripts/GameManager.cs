@@ -13,36 +13,10 @@ public class GameManager : MonoBehaviour
 {
     // public GameObject gameManager;
 
-    private Player Player;
+    private Player Player_0;
 
     private Board Board;
-    private bool DISP = false;
-
-
-    private LineRenderer lineRenderer;
-    void DrawPath(List<Node> path)
-    {
-        if (lineRenderer == null)
-        {
-            GameObject lineObj = new GameObject("PathLine");
-            lineRenderer = lineObj.AddComponent<LineRenderer>();
-
-            // Configure the LineRenderer
-            lineRenderer.startWidth = 0.2f;
-            lineRenderer.endWidth = 0.2f;
-            lineRenderer.material = new Material(Shader.Find("Sprites/Default")); // Use a default material
-            lineRenderer.positionCount = path.Count;
-            lineRenderer.useWorldSpace = true;
-        }
-
-        for (int i = 0; i < path.Count; i++)
-        {
-            Vector3 position = new Vector3(path[i].Position["x"], 0, path[i].Position["y"]);
-            lineRenderer.SetPosition(i, position);
-        }
-    }
-
-
+    // private bool DISP = false;
 
     void Start()
     {
@@ -56,64 +30,42 @@ public class GameManager : MonoBehaviour
         Board.SetParent(gameObject); // Set the board game object's parent to GameManager Game Object
 
 
-        // PlayerID = id;
-        // Name = name;        
-        // Hero = hero;
+        // Player chosen hero:
+        // Load the hero prefab
+        GameObject heroPrefab = Resources.Load<GameObject>("Triangel");
+        Hero playerHero = new Hero(5, 100, Vector3.zero, Direction.North, "Orion", heroPrefab);
+        
+        // Instantiate player with chosen hero:
+        Player_0 = new Player(0, "P1", playerHero);
 
-//     public Player(int id, string name, Hero hero)
-
-        Player = new Player(0, "Orion", 2, Vector3.zero, Board);
-        // float movement, int health, Vector3 position, Direction direction, string heroName, GameObject gamePiece)
-
-        Hero = new Hero(5, 100, Vector3.zero, Direction.North, "Orion" );
-        Player = new Player(0, "P1", );
-
-        Board.AddUnit(Player, Vector3.zero);
-    }
-
-    public static Dictionary<(int, int), Node> GenerateMap(List<(int, int)> blocked, int distance)
-    {
-        var genMap = new Dictionary<(int, int), Node>();
-        for (int x = 0; x < 5; x++)
-        {
-            for (int y = 0; y < 5; y++)
-            {
-                var node = new Node(x * distance, y * distance);
-                if (blocked.Contains((x, y)))
-                {
-                    node.Type = SpaceEnum.Block;
-                }
-                genMap[(x * distance, y * distance)] = node;
-            }
-        }
-        return genMap;
+        // Add Player's Hero to board (Board Setup)
+        Board.AddEntity(Player_0.Hero);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            // TODO: Migrate over to board for player.
-            // if (DISP) {
-            //     DISP = false;
-            //     Player.HideMovementRange(Board);
-            // } else {
-            //     DISP = true;
-            //     Player.DisplayMovementRange(Board);
-            // }
-        }
-        
+        // if (Input.GetKeyDown(KeyCode.Space))
+        // {
+        //     // TODO: Migrate over to board for player.
+        //     // if (DISP) {
+        //     //     DISP = false;
+        //     //     Player.HideMovementRange(Board);
+        //     // } else {
+        //     //     DISP = true;
+        //     //     Player.DisplayMovementRange(Board);
+        //     // }
+        // }
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            Player.rotateLeft();
-            Console.Write("hello");
-        }
+        // // if (Input.GetKeyDown(KeyCode.LeftArrow))
+        // // {
+        // //     Player.rotateLeft();
+        // //     Console.Write("hello");
+        // // }
  
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            Player.rotateRight();
-        }
+        // // if (Input.GetKeyDown(KeyCode.RightArrow))
+        // // {
+        // //     Player.rotateRight();
+        // // }
 
 
     }
@@ -123,13 +75,13 @@ public class GameManager : MonoBehaviour
         // Instruct the player to move to the clicked location
         // player.MoveTo(targetPosition);
         Debug.Log("Object Interaction:" + message);
-        // TODO: Filter interations based on message or something.
-        if (message == "movement_tile") {
-            DISP = false;
-            Player.HideMovementRange(Board);
-            Player.Move(new Vector3(targetPosition.x, 0f, targetPosition.z), Board);
-        }
-    }
 
+        // TODO: Filter interations based on message or something.
+        // if (message == "movement_tile") {
+        //     DISP = false;
+        //     Player.HideMovementRange(Board);
+        //     Player.Move(new Vector3(targetPosition.x, 0f, targetPosition.z), Board);
+        // }
+    }
 
 }

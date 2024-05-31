@@ -1,3 +1,14 @@
+using UnityEngine;
+using System.Collections.Generic;
+
+public enum Direction
+{
+    North,
+    South,
+    East,
+    West
+}
+
 public class DirectionMap
 {
     private static readonly Dictionary<Direction, Vector3> directionMap = new Dictionary<Direction, Vector3>

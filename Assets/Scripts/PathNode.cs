@@ -10,17 +10,17 @@ public enum SpaceEnum
     // Add more mappings as needed
 }
 
-public class Node
+public class PathNode
 {
     public Dictionary<string, int> Position { get; set; }
     public int G { get; set; }
     public double H { get; set; }
     public double F { get; set; }
-    public Node Prev { get; set; }
+    public PathNode Prev { get; set; }
     public SpaceEnum Type { get; set; }
     public int Cost { get; set; }
 
-    public Node(int x, int y)
+    public PathNode(int x, int y)
     {
         Position = new Dictionary<string, int> { { "x", x }, { "y", y } };
         G = 0;

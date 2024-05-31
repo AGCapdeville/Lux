@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class Hero : Entity
 {
     public string HeroName { get; set; }

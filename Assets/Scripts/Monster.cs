@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class Monster : Entity
 {
     public string MonsterType { get; set; }

@@ -3,22 +3,22 @@ using System.Collections.Generic;
 
 public class Pathing
 {
-    private Dictionary<(int, int), Node> MapData;
-    public Dictionary<(int, int), Node> OpenList { get; private set; }
-    public Dictionary<(int, int), Node> ClosedList { get; private set; }
+    private Dictionary<(int, int), PathNode> MapData;
+    public Dictionary<(int, int), PathNode> OpenList { get; private set; }
+    public Dictionary<(int, int), PathNode> ClosedList { get; private set; }
     private int Distance;
 
-    public Pathing(Dictionary<(int, int), Node> mapData, int distance)
+    public Pathing(Dictionary<(int, int), PathNode> mapData, int distance)
     {
         MapData = mapData;
-        OpenList = new Dictionary<(int, int), Node>();
-        ClosedList = new Dictionary<(int, int), Node>();
+        OpenList = new Dictionary<(int, int), PathNode>();
+        ClosedList = new Dictionary<(int, int), PathNode>();
         Distance = distance;
     }
 
-    public List<Node> FindPath(Node start, Node end)
+    public List<PathNode> FindPath(PathNode start, PathNode end)
     {
-        Node currentNode = start;
+        PathNode currentNode = start;
         while (currentNode.Position["x"] != end.Position["x"] || currentNode.Position["y"] != end.Position["y"])
         {
             FindOpenPaths(currentNode, end);
@@ -28,8 +28,8 @@ public class Pathing
             currentNode = node;
         }
 
-        List<Node> path = new List<Node> { end };
-        Node cursor = end;
+        List<PathNode> path = new List<PathNode> { end };
+        PathNode cursor = end;
         while (cursor.Position["x"] != start.Position["x"] || cursor.Position["y"] != start.Position["y"])
         {
             cursor = ClosedList[(cursor.Position["x"], cursor.Position["y"])].Prev;
@@ -39,7 +39,7 @@ public class Pathing
         return path;
     }
 
-    private void FindOpenPaths(Node currentNode, Node endNode)
+    private void FindOpenPaths(PathNode currentNode, PathNode endNode)
     {
         var cardinalDirections = new List<Dictionary<string, int>>
         {
@@ -57,7 +57,7 @@ public class Pathing
 
             if (MapData.ContainsKey(newLocation) && !ClosedList.ContainsKey(newLocation))
             {
-                Node neighbor = MapData[newLocation];
+                PathNode neighbor = MapData[newLocation];
 
                 if (neighbor.Type != SpaceEnum.Block)
                 {
@@ -89,11 +89,11 @@ public class Pathing
         }
     }
 
-    private (ValueTuple<int, int>, Node) FindBestPath()
+    private (ValueTuple<int, int>, PathNode) FindBestPath()
     {
         double smallestF = double.PositiveInfinity;
         (int, int) smallestKey = (0, 0);
-        Node smallestNode = null;
+        PathNode smallestNode = null;
 
         foreach (var item in OpenList)
         {

@@ -10,7 +10,7 @@ public class Player
 {
     public int PlayerID { get; }
     public string Name { get; }
-    private Hero Hero { get; }
+    public Hero Hero { get; }
 
     // Constructor to initialize event_id and event_name
     public Player(int id, string name, Hero hero)
