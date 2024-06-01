@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Scripts.Enums;
 
 public class PathingSpaces
 {
@@ -41,7 +42,7 @@ public class PathingSpaces
         Space cursor = end;
         while (cursor.Position.x != start.Position.x || cursor.Position.z != start.Position.z)
         {
-            cursor = ClosedList[(cursor.Position.x, cursor.Position.z)].Prev;
+            cursor = ClosedList[((int)cursor.Position.x, (int)cursor.Position.z)].Prev;
             path.Add(cursor);
         }
         path.Reverse();
@@ -60,18 +61,18 @@ public class PathingSpaces
 
         foreach (var direction in cardinalDirections)
         {
-            int newX = current.Position.x + direction["x"];
-            int newZ = current.Position.z + direction["z"];
+            int newX = (int)current.Position.x + (int)direction["x"];
+            int newZ = (int)current.Position.z + (int)direction["z"];
             var newLocation = (newX, newZ);
 
             if (BoardSpaces.ContainsKey(newLocation) && !ClosedList.ContainsKey(newLocation))
             {
                 Space neighbor = BoardSpaces[newLocation];
 
-                if (neighbor.Type != SpaceEnum.Block)
+                if (neighbor.SpaceMarking != SpaceEnum.Block)
                 {
                     int G = neighbor.Cost + current.G;
-                    double H = Math.Sqrt(Math.Pow(end.Position["x"] - newX, 2) + Math.Pow(end.Position["y"] - newZ, 2));
+                    double H = Math.Sqrt(Math.Pow((int)end.Position.x - newX, 2) + Math.Pow((int)end.Position.z - newZ, 2));
                     double F = G + H;
 
                     if (OpenList.ContainsKey(newLocation))

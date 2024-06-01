@@ -22,12 +22,16 @@ public class Board
     private List<Entity> Entities;
 
     // FOR MAP DATA
-    public Dictionary<(int, int), PathNode> MapData {get; set;}
+    public Dictionary<(int, int), Space> MapData {get; set;}
     private List<(int, int)> Blocked_Locations;
 
     // FOR DRAWING line for pathing 
     private LineRenderer lineRenderer;
     private GameObject lineObj;
+
+    // ENUMS
+    // public SpaceEnum blocked = SpaceEnum.Block; // not used yet...
+
 
     // Constructor
     public Board(int numberOfRows, int numberOfColumns, int spaceWidth, int spaceLength)
@@ -40,12 +44,12 @@ public class Board
         MovementTile = Resources.Load<GameObject>("MovementTile");
         GameBoardObject = new GameObject("Board");
 
-        Grid = GenerateGrid();
         Entities = new List<Entity>();
 
         // Empty blocked list
-        List<(int, int)> Blocked_Locations = new List<(int, int)>();
-        MapData = GenerateMap(Blocked_Locations, 10);
+        // List<(int, int)> Blocked_Locations = new List<(int, int)>();
+
+        MapData = GenerateBoardSpaces(NumberOfRows, NumberOfColumns, SpaceWidth, SpaceLength);
 
     }
 
@@ -60,39 +64,21 @@ public class Board
         GameBoardObject.transform.parent = go.transform;
     }
 
-    List<List<Space>> GenerateGrid() {
-        List<List<Space>> spaces = new List<List<Space>>();
-        for (int row = 0; row < NumberOfRows; row++)
-        {
-            spaces.Add(new List<Space>());
-            for (int col = 0; col < NumberOfColumns; col++)
-            {
-                spaces[row].Add(
-                    new Space(
-                        new Vector3(row * SpaceWidth, 0f, col * SpaceLength), 
-                        new Vector3(SpaceWidth, 1f, SpaceLength)
-                    )
-                );
-            }   
-        }
-        GenerateGridLines();
-        return spaces;
-    }
-
-    void GenerateGridLines()
+    /// <summary>Draws grid lines onto the board.</summary>
+    public void DrawGridLines(int Rows, int Columns)
     {
         // Create a new mesh
         Mesh mesh = new Mesh();
 
         // Vertices array to hold positions of all vertices
-        Vector3[] vertices = new Vector3[(NumberOfRows + 1) * (NumberOfColumns + 1)];
+        Vector3[] vertices = new Vector3[(Rows + 1) * (Columns + 1)];
 
         // Generate vertices
-        for (int col = 0; col <= NumberOfColumns; col++)
+        for (int col = 0; col <= Columns; col++)
         {
-            for (int row = 0; row <= NumberOfRows; row++)
+            for (int row = 0; row <= Rows; row++)
             {
-                vertices[col * (NumberOfRows + 1) + row] = new Vector3((float)(row * SpaceWidth - 0.5 * SpaceWidth), 0, (float)(col * SpaceLength - 0.5 * SpaceLength));
+                vertices[col * (Rows + 1) + row] = new Vector3((float)(row * SpaceWidth - 0.5 * SpaceWidth), 0, (float)(col * SpaceLength - 0.5 * SpaceLength));
             }
         }
 
@@ -100,28 +86,28 @@ public class Board
         mesh.vertices = vertices;
 
         // Generate horizontal lines
-        int numHorizontalLines = NumberOfRows * (NumberOfColumns + 1);
+        int numHorizontalLines = Rows * (Columns + 1);
         int[] horizontalLineIndices = new int[numHorizontalLines * 2];
         int index = 0;
-        for (int col = 0; col <= NumberOfColumns; col++)
+        for (int col = 0; col <= Columns; col++)
         {
-            for (int row = 0; row < NumberOfRows; row++)
+            for (int row = 0; row < Rows; row++)
             {
-                horizontalLineIndices[index++] = col * (NumberOfRows + 1) + row;
-                horizontalLineIndices[index++] = col * (NumberOfRows + 1) + row + 1;
+                horizontalLineIndices[index++] = col * (Rows + 1) + row;
+                horizontalLineIndices[index++] = col * (Rows + 1) + row + 1;
             }
         }
 
         // Generate vertical lines
-        int numVerticalLines = (NumberOfRows + 1) * NumberOfColumns;
+        int numVerticalLines = (Rows + 1) * Columns;
         int[] verticalLineIndices = new int[numVerticalLines * 2];
         index = 0;
-        for (int row = 0; row <= NumberOfRows; row++)
+        for (int row = 0; row <= Rows; row++)
         {
-            for (int col = 0; col < NumberOfColumns; col++)
+            for (int col = 0; col < Columns; col++)
             {
-                verticalLineIndices[index++] = col * (NumberOfRows + 1) + row;
-                verticalLineIndices[index++] = (col + 1) * (NumberOfRows + 1) + row;
+                verticalLineIndices[index++] = col * (Rows + 1) + row;
+                verticalLineIndices[index++] = (col + 1) * (Rows + 1) + row;
             }
         }
 
@@ -151,22 +137,27 @@ public class Board
         renderer.material = gridMaterial;
     }
 
-    public static Dictionary<(int, int), Space> GenerateBoardSpaces(Rows, Columns) {
+    public Dictionary<(int, int), Space> GenerateBoardSpaces(int Rows, int Columns, int SpaceWidth, int SpaceLength) {
         Dictionary<(int, int), Space> spaces = new Dictionary<(int, int), Space>();
         for (int row = 0; row < Rows; row++)
         {
             for (int col = 0; col < Columns; col++)
             {
-                spaces[(row, col)] = 
+                spaces[(row, col)] =
                     new Space(
                         new Vector3(row * SpaceWidth, 0f, col * SpaceLength), 
                         new Vector3(SpaceWidth, 1f, SpaceLength)
-                    )
+                    );
             }   
         }
-        GenerateGridLines();
+        DrawGridLines(Rows, Columns);
         return spaces;
     }
+
+
+
+
+// -------------------------------------- TO BE IMPLEMENTED --------------------------------------
 
     // DRAW PATH for pathing
 
@@ -187,22 +178,22 @@ public class Board
         // DrawPath(path);
 
 
-    public static Dictionary<(int, int), PathNode> GenerateMap(List<(int, int)> blocked, int distance) {
-        var genMap = new Dictionary<(int, int), PathNode>();
-        for (int x = 0; x < 5; x++)
-        {
-            for (int y = 0; y < 5; y++)
-            {
-                var node = new PathNode(x * distance, y * distance);
-                if (blocked.Contains((x, y)))
-                {
-                    node.Type = SpaceEnum.Block;
-                }
-                genMap[(x * distance, y * distance)] = node;
-            }
-        }
-        return genMap;
-    }
+    // public static Dictionary<(int, int), PathNode> GenerateMap(List<(int, int)> blocked, int distance) {
+    //     var genMap = new Dictionary<(int, int), PathNode>();
+    //     for (int x = 0; x < 5; x++)
+    //     {
+    //         for (int y = 0; y < 5; y++)
+    //         {
+    //             var node = new PathNode(x * distance, y * distance);
+    //             if (blocked.Contains((x, y)))
+    //             {
+    //                 node.Type = blocked;
+    //             }
+    //             genMap[(x * distance, y * distance)] = node;
+    //         }
+    //     }
+    //     return genMap;
+    // }
 
 
     // private LineRenderer lineRenderer;

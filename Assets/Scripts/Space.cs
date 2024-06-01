@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
+using Scripts.Enums;
 
 public class Space
 {
@@ -7,25 +9,16 @@ public class Space
     public List<object> Content {get; set;} // everything that is on this location
     public GameObject Object {get;}
 
-    public Dictionary<string, int> Position { get; set; }
+    public Vector3 Position { get; set; }
     public int G { get; set; }
     public double H { get; set; }
     public double F { get; set; }
-    public PathNode Prev { get; set; }
-    public SpaceEnum Type { get; set; }
+    public Space Prev { get; set; }
+    public SpaceEnum SpaceMarking { get; set; }
     public int Cost { get; set; }
 
-    public enum SpaceEnum
-    {
-        Empty = 0,
-        Block = 1,
-        Player = 2,
-        Enemy = 3
-        // Add more mappings as needed
-    }
-
     // Constructor
-    public Space(Vector3 position, Vector3 scale, float weight = 1)
+    public Space(Vector3 position, Vector3 scale, int cost = 1)
     {
         Position = position;
         GameObject space = Resources.Load<GameObject>("Space");
@@ -36,15 +29,14 @@ public class Space
         G = 0;
         H = 0;
         F = 0;
-        Cost = 1;
+        Cost = cost;
         Prev = null;
-        Type = SpaceEnum.Empty;
-
+        SpaceMarking = SpaceEnum.Empty;
     }
 
     /// <summary> Places an object on the board.</summary>
     /// <param name="obj">The object to place on the board.</param>    
-    public void PlaceObject(Object obj) {
+    public void PlaceObject(object obj) {
         try
         {
             Content.Add(obj);

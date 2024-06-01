@@ -29,7 +29,6 @@ public class GameManager : MonoBehaviour
         Board = new Board(rows, columns, spaceWidth, spaceHeight);
         Board.SetParent(gameObject); // Set the board game object's parent to GameManager Game Object
 
-
         // Player chosen hero:
         // Load the hero prefab
         GameObject heroPrefab = Resources.Load<GameObject>("Triangel");
