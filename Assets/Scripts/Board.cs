@@ -53,7 +53,7 @@ public class Board
     {
         Entities.Add(entity);
         // How should we add units to the board??? Through map_data and or Space obj??
-        Map_Data[(entity.x, entity.y)] = entity;
+        // Map_Data[(entity.x, entity.y)] = entity;
     }
 
     public void SetParent(GameObject go) {
@@ -151,6 +151,22 @@ public class Board
         renderer.material = gridMaterial;
     }
 
+    public static Dictionary<(int, int), Space> GenerateBoardSpaces(Rows, Columns) {
+        Dictionary<(int, int), Space> spaces = new Dictionary<(int, int), Space>();
+        for (int row = 0; row < Rows; row++)
+        {
+            for (int col = 0; col < Columns; col++)
+            {
+                spaces[(row, col)] = 
+                    new Space(
+                        new Vector3(row * SpaceWidth, 0f, col * SpaceLength), 
+                        new Vector3(SpaceWidth, 1f, SpaceLength)
+                    )
+            }   
+        }
+        GenerateGridLines();
+        return spaces;
+    }
 
     // DRAW PATH for pathing
 
