@@ -12,14 +12,20 @@ using UnityEngine.UIElements;
 public class GameManager : MonoBehaviour
 {
     // public GameObject gameManager;
-
-    private Player Player_0;
-
+    public static int EntityIDCounter = 0;
     private Board Board;
-    // private bool DISP = false;
+    private Player Player_0;
+    private List<GameObject> Players;
 
     void Start()
     {
+
+        GameObject player = new GameObject("Player_0");
+        Players.Add(player);
+
+
+
+
         int rows = 5;
         int columns = 5;
         int spaceWidth = 10; // Looks like 10 equates to 1 unit in plane
@@ -32,13 +38,13 @@ public class GameManager : MonoBehaviour
         // Player chosen hero:
         // Load the hero prefab
         GameObject heroPrefab = Resources.Load<GameObject>("Triangel");
-        Hero playerHero = new Hero(5, 100, Vector3.zero, Direction.North, "Orion", heroPrefab);
-        
+        Hero playerHero = new Hero(EntityIDCounter++, 5, 100, Vector3.zero, Direction.North, "Orion", heroPrefab);
+
+
         // Instantiate player with chosen hero:
         Player_0 = new Player(0, "P1", playerHero);
-
-        // Add Player's Hero to board (Board Setup)
         Board.AddEntity(Player_0.Hero);
+        // When the player wants to reference their Hero on the board, they will know their Position & ID
     }
 
     void Update()
@@ -68,6 +74,8 @@ public class GameManager : MonoBehaviour
 
 
     }
+
+    
 
     public void ObjectInteract(string message, Vector3 targetPosition)
     {

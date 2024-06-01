@@ -8,16 +8,18 @@ using System.Runtime.ExceptionServices;
 
 public class Player
 {
-    public int PlayerID { get; }
+    public int ID { get; }
     public string Name { get; }
     public Hero Hero { get; }
 
     // Constructor to initialize event_id and event_name
     public Player(int id, string name, Hero hero)
     {
-        PlayerID = id;
+        ID = id;
         Name = name;        
         Hero = hero;
     }
+
+    
 
 }

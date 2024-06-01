@@ -2,15 +2,17 @@ using UnityEngine;
 
 public class Entity
 {
+    public int ID { get; set; }
     public float Movement { get; set; }
     public int Health { get; set; }
     public Vector3 Position { get; set; }
     public Direction Direction { get; set; }
-    private GameObject GamePiece;
+    public GameObject GamePiece;
 
 
-    public Entity(float movement, int health, Vector3 position, Direction direction, GameObject gamePiece)
+    public Entity(int id, float movement, int health, Vector3 position, Direction direction, GameObject gamePiece)
     {
+        ID = id;
         Movement = movement;
         Health = health;
         Position = position;
