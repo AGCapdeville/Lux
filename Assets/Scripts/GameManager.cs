@@ -15,16 +15,23 @@ public class GameManager : MonoBehaviour
     public static int EntityIDCounter = 0;
     private Board Board;
     private Player Player_0;
-    private List<GameObject> Players;
+    private List<Player> PlayerList;
+
+
+    void Awake()
+    {
+        // GameObject player = new GameObject("Player_0"); // Init player 0
+        GameObject heroPrefab = Resources.Load<GameObject>("Triangel");
+        
+        Hero playerHero = new Hero(EntityIDCounter++, 5, 100, Vector3.zero, Direction.North, "Orion", heroPrefab);
+        Player_0 = new Player(0, "P1", playerHero);
+
+        PlayerList = new List<Player>();  // Initialize the list here
+        PlayerList.Add(Player_0); // Add player 0 to list of players
+    }
 
     void Start()
     {
-
-        GameObject player = new GameObject("Player_0");
-        Players.Add(player);
-
-
-
 
         int rows = 5;
         int columns = 5;
@@ -35,14 +42,7 @@ public class GameManager : MonoBehaviour
         Board = new Board(rows, columns, spaceWidth, spaceHeight);
         Board.SetParent(gameObject); // Set the board game object's parent to GameManager Game Object
 
-        // Player chosen hero:
-        // Load the hero prefab
-        GameObject heroPrefab = Resources.Load<GameObject>("Triangel");
-        Hero playerHero = new Hero(EntityIDCounter++, 5, 100, Vector3.zero, Direction.North, "Orion", heroPrefab);
-
-
         // Instantiate player with chosen hero:
-        Player_0 = new Player(0, "P1", playerHero);
         Board.AddEntity(Player_0.Hero);
         // When the player wants to reference their Hero on the board, they will know their Position & ID
     }
