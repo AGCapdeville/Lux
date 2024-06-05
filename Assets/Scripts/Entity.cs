@@ -10,14 +10,17 @@ public class Entity
     public GameObject GamePiece;
 
 
-    public Entity(int id, float movement, int health, Vector3 position, Direction direction, GameObject gamePiece)
+    public Entity(int id, float movement, int health, Vector3 position, Direction direction, string gamePiece)
     {
         ID = id;
         Movement = movement;
         Health = health;
         Position = position;
         Direction = direction;
-        this.GamePiece = gamePiece; // prefab
+
+        GameObject gp = Resources.Load<GameObject>(gamePiece);
+        GamePiece = GameObject.Instantiate(gp, Vector3.zero, Quaternion.identity);
+        GamePiece.transform.position = position;
     }
     
     public void Move(Vector3 position) {

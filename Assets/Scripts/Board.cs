@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using Vector3 = UnityEngine.Vector3;
 
 public class Board
 {
@@ -17,6 +18,7 @@ public class Board
     public HashSet<Space> MovementGridSpaces {get; set;}
 
     public GameObject MovementTile {get;}
+    public GameObject Pointer {get; set;}
 
     private GameObject GameBoardObject {get; set;}
     private List<Entity> Entities;
@@ -51,6 +53,11 @@ public class Board
 
         MapData = GenerateBoardSpaces(NumberOfRows, NumberOfColumns, SpaceWidth, SpaceLength);
 
+    }
+
+    public void SpawnPointer(int id) {
+        Pointer = Resources.Load<GameObject>("Pointer");
+        GameObject dogo = GameObject.Instantiate(Pointer, new Vector3(0,2,0), Quaternion.identity);
     }
 
     public void AddEntity(Entity entity) 

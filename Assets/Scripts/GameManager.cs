@@ -12,26 +12,72 @@ using UnityEngine.UIElements;
 public class GameManager : MonoBehaviour
 {
     // public GameObject gameManager;
-    public static int EntityIDCounter = 0;
     private Board Board;
-    private Player Player_0;
-    private List<Player> PlayerList;
+    private Player Player;
+
+    private static int EntityIDCounter; // testing static access
+    private static GameManager _instance;
+
+    public static GameManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<GameManager>();
+            }
+            return _instance;
+        }
+    }
 
 
     void Awake()
     {
-        // GameObject player = new GameObject("Player_0"); // Init player 0
-        GameObject heroPrefab = Resources.Load<GameObject>("Triangel");
+        EntityIDCounter = 0;
         
-        Hero playerHero = new Hero(EntityIDCounter++, 5, 100, Vector3.zero, Direction.North, "Orion", heroPrefab);
-        Player_0 = new Player(0, "P1", playerHero);
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject); // Only allow one GameManager instance
+        }
+        else
+        {
+            _instance = this;
+        }
 
-        PlayerList = new List<Player>();  // Initialize the list here
-        PlayerList.Add(Player_0); // Add player 0 to list of players
+        // GameObject space = Resources.Load<GameObject>("Space");
+        // GameObject.Instantiate(space, Vector3.zero, Quaternion.identity);
+
+        // Hero playerHero = new Hero(
+        //     EntityIDCounter++,
+        //     5,
+        //     100,
+        //     Vector3.zero,
+        //     Direction.North,
+        //     "Orion",
+        //     "Triangel"
+        // );
+
+        // Player = new Player(0, "P1", playerHero);
     }
+
+    // void Awake()
+    // {
+    //     // GameObject player = new GameObject("Player_0"); // Init player 0
+    //     GameObject heroPrefab = Resources.Load<GameObject>("Triangel");     
+    //     Debug.Log(heroPrefab);
+    //     Hero playerHero = new Hero(EntityIDCounter++, 5, 100, Vector3.zero, Direction.North, "Orion", heroPrefab);
+    //     Player_0 = new Player(0, "P1", playerHero);
+
+    //     PlayerList = new List<Player>();  // Initialize the list here
+    //     PlayerList.Add(Player_0); // Add player 0 to list of players
+    // }
 
     void Start()
     {
+        GameObject space = Resources.Load<GameObject>("Triangle");
+        GameObject obj = GameObject.Instantiate(space, Vector3.zero, Quaternion.identity);
+
+
 
         int rows = 5;
         int columns = 5;
@@ -42,8 +88,12 @@ public class GameManager : MonoBehaviour
         Board = new Board(rows, columns, spaceWidth, spaceHeight);
         Board.SetParent(gameObject); // Set the board game object's parent to GameManager Game Object
 
+
+
+        Board.SpawnPointer(1);
+
         // Instantiate player with chosen hero:
-        Board.AddEntity(Player_0.Hero);
+        // Board.AddEntity(Player.Hero);
         // When the player wants to reference their Hero on the board, they will know their Position & ID
     }
 
