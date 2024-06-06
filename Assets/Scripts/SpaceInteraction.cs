@@ -21,7 +21,9 @@ public class SpaceInteraction : MonoBehaviour
         {
             // Spawn object A at the position of object B
             spawnedObject = Instantiate(objectToSpawn, transform.position, Quaternion.identity);
-            audioManager.PlaySound("Bing");
+            
+            if (!audioManager.sfxSource.isPlaying)
+                audioManager.PlaySound("Bing");
         }
     }
 
