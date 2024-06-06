@@ -6,7 +6,13 @@ public class SpaceInteraction : MonoBehaviour
 {
     private GameObject spawnedObject; // Reference to the spawned object A
     public GameObject objectToSpawn; // Reference to the spawned object A
+
+    private AudioManager audioManager;
     
+    private void Start()
+    {
+        audioManager = FindObjectOfType<AudioManager>();
+    }
 
     void OnMouseEnter()
     {
@@ -15,6 +21,7 @@ public class SpaceInteraction : MonoBehaviour
         {
             // Spawn object A at the position of object B
             spawnedObject = Instantiate(objectToSpawn, transform.position, Quaternion.identity);
+            audioManager.PlaySound("Bing");
         }
     }
 
