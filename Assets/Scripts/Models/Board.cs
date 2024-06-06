@@ -6,19 +6,15 @@ using Vector3 = UnityEngine.Vector3;
 
 public class Board
 {
-    // Properties
-    public List<List<Space>> Grid {get; set;}
-
     public int SpaceWidth {get; set;}
     public int SpaceLength {get; set;}
     public int NumberOfRows {get; set;}
     public int NumberOfColumns {get; set;}
 
-    public List<GameObject> MovementTiles {get; set;}
-    public HashSet<Space> MovementGridSpaces {get; set;}
+    public List<GameObject> MovementTiles {get; set;} // The displayed movement for heros...
+    public HashSet<Space> MovementGridSpaces {get; set;} // Hero movement spaces
 
-    public GameObject MovementTile {get;}
-    public GameObject Pointer {get; set;}
+    public GameObject MovementTile {get;} // The Prefab for the movement tile
 
     private GameObject GameBoardObject {get; set;}
     private List<Entity> Entities;
@@ -31,11 +27,6 @@ public class Board
     private LineRenderer lineRenderer;
     private GameObject lineObj;
 
-    // ENUMS
-    // public SpaceEnum blocked = SpaceEnum.Block; // not used yet...
-
-
-    // Constructor
     public Board(int numberOfRows, int numberOfColumns, int spaceWidth, int spaceLength)
     {
         SpaceWidth = spaceWidth;
@@ -46,20 +37,28 @@ public class Board
         MovementTile = Resources.Load<GameObject>("MovementTile");
         GameBoardObject = new GameObject("Board");
 
-        Entities = new List<Entity>();
-
-        // Empty blocked list
-        // List<(int, int)> Blocked_Locations = new List<(int, int)>();
-
         MapData = GenerateBoardSpaces(NumberOfRows, NumberOfColumns, SpaceWidth, SpaceLength);
-
     }
 
-    public void SpawnPointer(int id) {
-        Pointer = Resources.Load<GameObject>("Pointer");
-        GameObject dogo = GameObject.Instantiate(Pointer, new Vector3(0,2,0), Quaternion.identity);
+    /// <summary>Creates the Board</summary>
+    public Dictionary<(int, int), Space> GenerateBoardSpaces(int Rows, int Columns, int SpaceWidth, int SpaceLength) {
+        Dictionary<(int, int), Space> spaces = new Dictionary<(int, int), Space>();
+        for (int row = 0; row < Rows; row++)
+        {
+            for (int col = 0; col < Columns; col++)
+            {
+                spaces[(row, col)] =
+                    new Space(
+                        new Vector3(row * SpaceWidth, 0f, col * SpaceLength), 
+                        new Vector3(SpaceWidth, 1f, SpaceLength)
+                    );
+            }   
+        }
+        DrawGridLines(Rows, Columns);
+        return spaces;
     }
 
+    /// <summary>Add Entity to Board</summary>
     public void AddEntity(Entity entity) 
     {
         Entities.Add(entity);
@@ -67,9 +66,10 @@ public class Board
         // Map_Data[(entity.x, entity.y)] = entity;
     }
 
-    public void SetParent(GameObject go) {
-        GameBoardObject.transform.parent = go.transform;
-    }
+    // /// <summary>Add Board as child to GameObject</summary>
+    // public void SetParent(GameObject go) {
+    //     GameBoardObject.transform.parent = go.transform;
+    // }
 
     /// <summary>Draws grid lines onto the board.</summary>
     public void DrawGridLines(int Rows, int Columns)
@@ -144,22 +144,6 @@ public class Board
         renderer.material = gridMaterial;
     }
 
-    public Dictionary<(int, int), Space> GenerateBoardSpaces(int Rows, int Columns, int SpaceWidth, int SpaceLength) {
-        Dictionary<(int, int), Space> spaces = new Dictionary<(int, int), Space>();
-        for (int row = 0; row < Rows; row++)
-        {
-            for (int col = 0; col < Columns; col++)
-            {
-                spaces[(row, col)] =
-                    new Space(
-                        new Vector3(row * SpaceWidth, 0f, col * SpaceLength), 
-                        new Vector3(SpaceWidth, 1f, SpaceLength)
-                    );
-            }   
-        }
-        DrawGridLines(Rows, Columns);
-        return spaces;
-    }
 
 
 
