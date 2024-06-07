@@ -34,6 +34,7 @@ public class Space
                         );
         SpaceGameObject.transform.position = position;
         SpaceGameObject.transform.localScale = scale;
+        SpaceGameObject.AddComponent<SpaceBehavior>();
         
         G = 0;
         H = 0;
