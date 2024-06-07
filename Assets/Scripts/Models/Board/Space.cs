@@ -7,7 +7,11 @@ public class Space
 {
     // Properties
     public List<object> Content {get; set;} // everything that is on this location
-    public GameObject Object {get;}
+
+    public GameObject SpaceGameObject {get; set;}
+    private AudioManager audioManager;
+
+
 
     public Vector3 Position { get; set; }
     public int G { get; set; }
@@ -21,10 +25,15 @@ public class Space
     public Space(Vector3 position, Vector3 scale, int cost = 1)
     {
         Position = position;
-        GameObject space = Resources.Load<GameObject>("Space");
-        Object = GameObject.Instantiate(space, Vector3.zero, Quaternion.identity);
-        Object.transform.position = position;
-        Object.transform.localScale = scale;
+        
+        // Handles all the Start(), Update(), etc logic...
+        SpaceGameObject = GameObject.Instantiate(
+                            Resources.Load<GameObject>("Space"),
+                            Vector3.zero,
+                            Quaternion.identity
+                        );
+        SpaceGameObject.transform.position = position;
+        SpaceGameObject.transform.localScale = scale;
         
         G = 0;
         H = 0;
@@ -37,6 +46,10 @@ public class Space
     /// <summary> Places an object on the board.</summary>
     /// <param name="obj">The object to place on the board.</param>    
     public void PlaceObject(object obj) {
+        // TODO: (should still do this...)
+        // This should spawn the object onto the space as well.. 
+        // Not just store it into memory etc
+
         try
         {
             Content.Add(obj);
