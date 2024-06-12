@@ -90,7 +90,8 @@ public class GameManager : MonoBehaviour
     }
 
     public void GameBoardHover((int, int) position) {
-        Console.WriteLine("GM:" + position.ToSafeString());
+        // Test to make sure that it was recieveing the Event
+        Debug.Log("GM:" + position.ToSafeString());
     }
 
 }
