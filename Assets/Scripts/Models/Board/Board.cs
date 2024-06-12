@@ -29,15 +29,18 @@ public class Board
 
     public Board(int numberOfRows, int numberOfColumns, int spaceWidth, int spaceLength)
     {
+        // Make board:
         SpaceWidth = spaceWidth;
         SpaceLength = spaceLength;
         NumberOfRows = numberOfRows;
         NumberOfColumns = numberOfColumns;
 
-        MovementTile = Resources.Load<GameObject>("MovementTile");
         GameBoardObject = new GameObject("Board");
 
         MapData = GenerateBoardSpaces(NumberOfRows, NumberOfColumns, SpaceWidth, SpaceLength);
+        
+        MovementTile = Resources.Load<GameObject>("MovementTile");
+        Entities = new List<Entity>();
     }
 
     /// <summary>Creates the Board</summary>
@@ -49,6 +52,7 @@ public class Board
             {
                 spaces[(row, col)] =
                     new Space(
+                        GameBoardObject,
                         new Vector3(row * SpaceWidth, 0f, col * SpaceLength), 
                         new Vector3(SpaceWidth, 1f, SpaceLength)
                     );
@@ -59,11 +63,15 @@ public class Board
     }
 
     /// <summary>Add Entity to Board</summary>
-    public void AddEntity(Entity entity) 
+    public void AddEntity(Entity e) 
     {
-        Entities.Add(entity);
+        // List of known Entities
+        Entities.Add(e); 
+        
         // How should we add units to the board??? Through map_data and or Space obj??
         // Map_Data[(entity.x, entity.y)] = entity;
+
+        MapData[((int)e.Position.x, (int)e.Position.z)].entity = e;
     }
 
     // /// <summary>Add Board as child to GameObject</summary>
@@ -143,7 +151,6 @@ public class Board
         // Assign the material to the renderer
         renderer.material = gridMaterial;
     }
-
 
 
 

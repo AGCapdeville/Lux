@@ -6,13 +6,9 @@ using Scripts.Enums;
 public class Space
 {
     // Properties
-    public List<object> Content {get; set;} // everything that is on this location
-
     public GameObject SpaceGameObject {get; set;}
-    private AudioManager audioManager;
-
-
-
+    public SpaceBehavior SpaceBehaviorScript {get; set;}
+    
     public Vector3 Position { get; set; }
     public int G { get; set; }
     public double H { get; set; }
@@ -21,44 +17,32 @@ public class Space
     public SpaceEnum SpaceMarking { get; set; }
     public int Cost { get; set; }
 
+    public Entity entity { get; set; }
+
     // Constructor
-    public Space(Vector3 position, Vector3 scale, int cost = 1)
+    public Space(GameObject board, Vector3 position, Vector3 scale, int cost = 1)
     {
-        Position = position;
-        
-        // Handles all the Start(), Update(), etc logic...
-        SpaceGameObject = GameObject.Instantiate(
-                            Resources.Load<GameObject>("Space"),
-                            Vector3.zero,
-                            Quaternion.identity
-                        );
-        SpaceGameObject.transform.position = position;
-        SpaceGameObject.transform.localScale = scale;
-        SpaceGameObject.AddComponent<SpaceBehavior>();
-        
         G = 0;
         H = 0;
         F = 0;
         Cost = cost;
         Prev = null;
         SpaceMarking = SpaceEnum.Empty;
-    }
+        Position = position;
 
-    /// <summary> Places an object on the board.</summary>
-    /// <param name="obj">The object to place on the board.</param>    
-    public void PlaceObject(object obj) {
-        // TODO: (should still do this...)
-        // This should spawn the object onto the space as well.. 
-        // Not just store it into memory etc
+        // Create Unity GameObject for space on board
+        SpaceGameObject = GameObject.Instantiate(
+                            Resources.Load<GameObject>("Space"),
+                            position,
+                            Quaternion.identity
+                        );
+        SpaceGameObject.transform.localScale = scale;
 
-        try
-        {
-            Content.Add(obj);
-        }
-        catch (Exception e) 
-        {
-            Debug.Log(e.ToString());
-        }
+        // Adding Monobehavior Script & Keeping ref to script added
+        SpaceBehaviorScript = SpaceGameObject.AddComponent<SpaceBehavior>(); 
+
+        // Group all spaces under the board
+        SpaceGameObject.transform.parent = board.transform;
     }
 
 }

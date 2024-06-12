@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     {
         EntityIDCounter = 0;
         
+        // GAME MANAGER singelton logic ------------------------------------
         if (_instance != null && _instance != this)
         {
             Destroy(gameObject); // Only allow one GameManager instance
@@ -40,35 +41,38 @@ public class GameManager : MonoBehaviour
         {
             _instance = this;
         }
-
-        // GameObject space = Resources.Load<GameObject>("Space");
-        // GameObject.Instantiate(space, Vector3.zero, Quaternion.identity);
-
-        // Hero playerHero = new Hero(
-        //     EntityIDCounter++,
-        //     5,
-        //     100,
-        //     Vector3.zero,
-        //     Direction.North,
-        //     "Orion",
-        //     "Triangel"
-        // );
-
-        // Player = new Player(0, "P1", playerHero);
+        // GAME MANAGER singelton logic ------------------------------------
     }
 
 
     void Start()
     {
-        GameObject space = Resources.Load<GameObject>("Triangle");
-        GameObject obj = GameObject.Instantiate(space, Vector3.zero, Quaternion.identity);
-
+        // Game Board Setup START ------------------------------------ START
         int rows = 5;
         int columns = 5;
         int spaceWidth = 10; // Looks like 10 equates to 1 unit in plane
         int spaceHeight = 10;
 
         Board = new Board(rows, columns, spaceWidth, spaceHeight);
+        // Game Board Setup END ------------------------------------ END
+
+        // Create the Hero Unity Game Object
+        Hero playerHero = new Hero(
+            EntityIDCounter++,
+            5,
+            100,
+            Vector3.zero,
+            Direction.North,
+            "Orion",
+            "Triangle"
+        );
+
+        // Initialize Player Object, & attach Hero UnityGame Object
+        Player = new Player(0, "P1", playerHero);
+
+        // Link Players Hero to the Game Board  ------------------- START
+        Board.AddEntity(playerHero);
+
     }
 
     public void ObjectInteract(string message, Vector3 targetPosition)
@@ -83,6 +87,10 @@ public class GameManager : MonoBehaviour
         //     Player.HideMovementRange(Board);
         //     Player.Move(new Vector3(targetPosition.x, 0f, targetPosition.z), Board);
         // }
+    }
+
+    public void GameBoardHover((int, int) position) {
+        Console.WriteLine("GM:" + position.ToSafeString());
     }
 
 }
