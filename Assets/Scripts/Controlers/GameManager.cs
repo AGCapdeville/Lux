@@ -89,9 +89,16 @@ public class GameManager : MonoBehaviour
         // }
     }
 
-    public void GameBoardHover((int, int) position) {
+    public void GameBoardHover(Vector3 position) {
         // Test to make sure that it was recieveing the Event
         Debug.Log("GM:" + position.ToSafeString());
+
+        // Well, is their a hero on this location?
+        
+        if (Board.isHero(position)) {
+            Debug.Log("GM: IS HERO");
+        }
+
     }
 
 }

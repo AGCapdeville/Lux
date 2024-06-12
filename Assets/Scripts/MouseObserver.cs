@@ -27,8 +27,8 @@ public class MouseObserver : MonoBehaviour
     private void HandleSpaceHoverEnter(GameObject spaceObject)
     {
         // Need to reach out to the Game Manager, to figure out whats here:
-        (int, int) position = ((int)spaceObject.transform.position.x, (int)spaceObject.transform.position.z);
-        GM.GameBoardHover(position);
+        // (int, int) position = ((int)spaceObject.transform.position.x, (int)spaceObject.transform.position.z);
+        GM.GameBoardHover(spaceObject.transform.position);
     }
 
     private void HandleSpaceHoverExit(GameObject spaceObject)

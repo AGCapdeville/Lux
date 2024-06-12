@@ -152,6 +152,15 @@ public class Board
         renderer.material = gridMaterial;
     }
 
+    public bool isHero(Vector3 position) {
+        foreach (Entity e in Entities)
+        {
+            if (e.Position == position && e.Type == "hero") {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 

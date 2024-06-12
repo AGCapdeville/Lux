@@ -8,14 +8,17 @@ public class Entity
     public Vector3 Position { get; set; }
     public Direction Direction { get; set; }
 
+    public string Type { get; set; }
 
-    public Entity(int id, float movement, int health, Vector3 position, Direction direction)
+
+    public Entity(int id, float movement, int health, Vector3 position, Direction direction, string type)
     {
         ID = id;
         Movement = movement;
         Health = health;
         Position = position;
         Direction = direction;
+        Type = type;
     }
 
     public void TakeDamage(int damage)
