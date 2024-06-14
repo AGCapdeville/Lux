@@ -7,7 +7,6 @@ public class Entity
     public int Health { get; set; }
     public Vector3 Position { get; set; }
     public Direction Direction { get; set; }
-
     public string Type { get; set; }
 
 

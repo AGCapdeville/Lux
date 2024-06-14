@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour
         Player = new Player(0, "P1", playerHero);
 
         // Link Players Hero to the Game Board  ------------------- START
+        // Board.AddHero(playerHero);
         Board.AddEntity(playerHero);
 
     }
@@ -92,12 +93,18 @@ public class GameManager : MonoBehaviour
     public void GameBoardHover(Vector3 position) {
         // Test to make sure that it was recieveing the Event
         Debug.Log("GM:" + position.ToSafeString());
-
-        // Well, is their a hero on this location?
         
-        if (Board.isHero(position)) {
-            Debug.Log("GM: IS HERO");
-        }
+        Entity h = Board.GetEntity(position, "hero");
+        Debug.Log(h);
+
+        // Hero fetcedHero = Board.GetHero(position); // fetches hero if exits, else null
+        // if (fetcedHero != null) {
+            // (WIP: assume its the players turn)
+            // Hero is at hovered location, so display movement grid. 
+            // fetcedHero.Board.GetMovementRange(fetcedHero);
+        // }
+
+
 
     }
 
