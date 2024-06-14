@@ -33,6 +33,7 @@ public class MouseObserver : MonoBehaviour
 
     private void HandleSpaceHoverExit(GameObject spaceObject)
     {
+        GM.GameBoardHoverExit(spaceObject.transform.position);
         // Additional logic for when hovering over a space object ends
     }
 

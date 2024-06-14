@@ -14,8 +14,6 @@ public class Board
     public List<GameObject> MovementTiles {get; set;} // The displayed movement for heros...
     public HashSet<Space> MovementGridSpaces {get; set;} // Hero movement spaces
 
-    public GameObject MovementTile {get;} // The Prefab for the movement tile
-
     private GameObject GameBoardObject {get; set;}
     private List<Entity> _Entities {get; set;}
     private List<Hero> _Heroes {get; set;}
@@ -41,8 +39,6 @@ public class Board
 
         MapData = GenerateBoardSpaces(NumberOfRows, NumberOfColumns, SpaceWidth, SpaceLength);
         
-        MovementTile = Resources.Load<GameObject>("MovementTile");
-
         _Heroes = new List<Hero>();
         _Entities = new List<Entity>();
     }
@@ -167,8 +163,21 @@ public class Board
         return null;
     }
 
-    public void DisplayEntityGrid(Hero hero) {
-        
+    public void DisplayHeroGrid(Hero hero) {
+
+        if (hero.MovementRange == null) {
+            hero.MovementRange = GetMovementRange(hero); // Fetch HashSet<Spaces> to create the Tiles...
+        }
+        hero.MovementTiles = DisplayMovementRange(hero); // Store MovementTiles to be destroyed later...
+    }
+
+    public void HideHeroGrid(Hero hero) {
+
+        foreach (GameObject tile in hero.MovementTiles)
+        {
+            GameObject.Destroy(tile);
+        } 
+        hero.MovementTiles = new List<GameObject>();
     }
 
 
@@ -241,44 +250,44 @@ public class Board
 
     // // Takes in the current state of the game board, and retuns what spaces (tiles) 
     // //   sprites should be rendered for move range of the player.
-    // public void DisplayMovementRange(Board board) {
-    //     // UpdateMovementRange(board);
-    //     MovementTiles = new List<GameObject>();
-    //     // Light up board with MovementGridSpaces, and create planes in those spaces...
-    //     foreach (Space space in MovementGridSpaces)
-    //     {
-    //         GameObject movementTile = GameObject.Instantiate(board.MovementTile, Vector3.zero, Quaternion.identity);
-    //         movementTile.transform.position = new Vector3(
-    //             space.Object.transform.position.x,
-    //             space.Object.transform.position.y + 1,
-    //             space.Object.transform.position.z
-    //         );
+    public List<GameObject> DisplayMovementRange(Hero hero) {
 
-    //         MovementTiles.Add(movementTile);
-    //         // DestroyAfterDelay(movementTile, 1f);
-    //         // movementTile.transform.SetParent(space.transform); // Set the parent to make it a child of this GameObject
-    //     }
-    // }
+        GameObject tilePrefab = Resources.Load<GameObject>("MovementTile");
+        MovementTiles = new List<GameObject>();
+        
+        // Light up board with MovementGridSpaces, and create planes in those spaces...
+        foreach (Space space in hero.MovementRange)
+        {
+            GameObject movementTile = GameObject.Instantiate(tilePrefab, Vector3.zero, Quaternion.identity);
+            movementTile.transform.position = new Vector3(
+                space.Position.x,
+                space.Position.y + 1,
+                space.Position.z
+            );
 
-    // public void HideMovementRange(Board board) {
-    //     // UpdateMovementRange(board);
-    //     // Light up board with MovementGridSpaces, and create planes in those spaces...
-    //     foreach (GameObject tile in MovementTiles)
-    //     {
-    //         GameObject.Destroy(tile);
-    //     }
-    //     MovementTiles = new List<GameObject>();
-    // }
+            MovementTiles.Add(movementTile);
+            // DestroyAfterDelay(movementTile, 1f);
+            movementTile.transform.position = space.Position;
+            // movementTile.transform.SetParent(space.transform); // Set the parent to make it a child of this GameObject
+        }
+        return MovementTiles;
+    }
+
+    public void HideMovementRange() {
+        // UpdateMovementRange(board);
+        // Light up board with MovementGridSpaces, and create planes in those spaces...
+        foreach (GameObject tile in MovementTiles)
+        {
+            GameObject.Destroy(tile);
+        } 
+        MovementTiles = new List<GameObject>();
+    }
 
     // Gets the spaces which the player can potentally move to and returns them.
     public HashSet<Space> GetMovementRange(Hero hero) {
 
         // Find all positions for movement range -------------------------
-        HashSet<Vector3> rangeSet = new HashSet<Vector3>
-        {
-            //Starting Postion of the player
-            hero.HeroGameObject.transform.position
-        };
+        HashSet<Vector3> rangeSet = new HashSet<Vector3>{hero.Position};
 
         for(int i = 0; i < hero.Movement; i++){
             HashSet<Vector3> tempSet =  new HashSet<Vector3>();

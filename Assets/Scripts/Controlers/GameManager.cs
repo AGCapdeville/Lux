@@ -92,19 +92,26 @@ public class GameManager : MonoBehaviour
 
     public void GameBoardHover(Vector3 position) {
         // Test to make sure that it was recieveing the Event
-        Debug.Log("GM:" + position.ToSafeString());
-        
-        Entity h = Board.GetEntity(position, "hero");
-        Debug.Log(h);
+        Debug.Log("Entered:" + position.ToSafeString());
 
-        // Hero fetcedHero = Board.GetHero(position); // fetches hero if exits, else null
-        // if (fetcedHero != null) {
-            // (WIP: assume its the players turn)
-            // Hero is at hovered location, so display movement grid. 
-            // fetcedHero.Board.GetMovementRange(fetcedHero);
-        // }
+        Hero h = (Hero)Board.GetEntity(position, "hero");
+        if (h != null) {
+            // Hovering over hero:
+            // Gen Range and Display Range
+            Debug.Log(h.Yell());
+            Board.DisplayHeroGrid(h);
+        }
 
+    }
 
+    public void GameBoardHoverExit(Vector3 position) {
+        // Test to make sure that it was recieveing the Event
+        Debug.Log("Exited:" + position.ToSafeString());
+
+        Hero h = (Hero)Board.GetEntity(position, "hero");
+        if (h != null) {
+            Board.HideHeroGrid(h);
+        }
 
     }
 

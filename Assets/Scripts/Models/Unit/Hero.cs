@@ -7,6 +7,8 @@ public class Hero : Entity
     public GameObject HeroGameObject { get; set; }
     public GameObject HeroPrefab { get; set; }
     public HashSet<Space> MovementRange { get; set; }
+    public List<GameObject> MovementTiles { get; set; }
+
 
     public Hero(int id, float movement, int health, Vector3 position, Direction direction, string heroName, string prefabName)
         : base(id, movement, health, position, direction, "hero")
@@ -16,5 +18,9 @@ public class Hero : Entity
         GameObject HeroPrefab = Resources.Load<GameObject>(prefabName);
         GameObject HeroGameObject = GameObject.Instantiate(HeroPrefab, Vector3.zero, Quaternion.identity);
 
+    }
+
+    public string Yell() {
+        return "Aaaaaaa!";
     }
 }
