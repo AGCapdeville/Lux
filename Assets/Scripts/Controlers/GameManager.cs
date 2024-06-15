@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
         // Create the Hero Unity Game Object
         Hero playerHero = new Hero(
             EntityIDCounter++,
-            5,
+            2,
             100,
             Vector3.zero,
             Direction.North,

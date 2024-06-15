@@ -16,9 +16,7 @@ public class Board
 
     private GameObject GameBoardObject {get; set;}
     private List<Entity> _Entities {get; set;}
-    private List<Hero> _Heroes {get; set;}
-    private List<Enemy> _Enemies  {get; set;}
-
+    
     // FOR MAP DATA
     public Dictionary<Vector3, Space> MapData {get; set;}
     private List<(int, int)> Blocked_Locations;
@@ -39,7 +37,6 @@ public class Board
 
         MapData = GenerateBoardSpaces(NumberOfRows, NumberOfColumns, SpaceWidth, SpaceLength);
         
-        _Heroes = new List<Hero>();
         _Entities = new List<Entity>();
     }
 
@@ -50,7 +47,7 @@ public class Board
         {
             for (int col = 0; col < Columns; col++)
             {
-                spaces[new Vector3(row, 0f, col)] =
+                spaces[new Vector3(row * SpaceWidth, 0f, col * SpaceLength)] =
                     new Space(
                         GameBoardObject,
                         new Vector3(row * SpaceWidth, 0f, col * SpaceLength),
@@ -60,13 +57,6 @@ public class Board
         }
         DrawGridLines(Rows, Columns);
         return spaces;
-    }
-
-    /// <summary>Add Entity to Board</summary>
-    public void AddHero(Hero h) 
-    {
-        _Heroes.Add(h); 
-        MapData[h.Position].entity = h;
     }
 
     public void AddEntity(Entity e) 
@@ -153,7 +143,8 @@ public class Board
         renderer.material = gridMaterial;
     }
 
-    public Entity GetEntity(Vector3 position, string type) {
+    public Entity GetEntity(Vector3 position, string type) 
+    {
         foreach (Entity e in _Entities)
         {
             if (e.Position == position && e.Type == type) {
@@ -163,18 +154,17 @@ public class Board
         return null;
     }
 
-    public void DisplayHeroGrid(Hero hero) {
-
+    public void DisplayHeroGrid(Hero hero) 
+    {
         if (hero.MovementRange == null) {
             hero.MovementRange = GetMovementRange(hero); // Fetch HashSet<Spaces> to create the Tiles...
         }
         hero.MovementTiles = DisplayMovementRange(hero); // Store MovementTiles to be destroyed later...
     }
 
-    public void HideHeroGrid(Hero hero) {
-
-        foreach (GameObject tile in hero.MovementTiles)
-        {
+    public void HideHeroGrid(Hero hero) 
+    {
+        foreach (GameObject tile in hero.MovementTiles) {
             GameObject.Destroy(tile);
         } 
         hero.MovementTiles = new List<GameObject>();
@@ -285,7 +275,6 @@ public class Board
 
     // Gets the spaces which the player can potentally move to and returns them.
     public HashSet<Space> GetMovementRange(Hero hero) {
-
         // Find all positions for movement range -------------------------
         HashSet<Vector3> rangeSet = new HashSet<Vector3>{hero.Position};
 
@@ -313,38 +302,21 @@ public class Board
         HashSet<Space> MovementSpaces = new HashSet<Space>(); 
         foreach (Vector3 position in rangeSet) {
             MovementSpaces.Add(MapData[position]);
+            // Debug.Log("p:" + position.x);
         }
         
         return MovementSpaces;
     }
 
-    // Deprecated
-    // private bool IsValidSpace(List<List<Space>> grid, Vector3 vectorToCheck ){
-
-    //     List<Vector3> spaces = new List<Vector3>();
-
-    //     foreach(List<Space> row in grid){
-    //         foreach(Space space in row){
-    //             spaces.Add(space.Object.transform.position);
-    //         }
-    //     }
-        
-    //     return spaces.Contains(vectorToCheck);
-    // }
-
-    private bool IsValidSpace(Dictionary<Vector3, Space> map, Vector3 position) {
-        foreach (var key in map.Keys) {
+    private bool IsValidSpace(Dictionary<Vector3, Space> map, Vector3 position) 
+    {
+        foreach (Vector3 key in map.Keys) {
             if (key == position) {
-                // Checks to make sure the position passed, exists on the board (x, z)
                 return true;
             }
-        }
+        }    
         return false;
     }
-
-    
-
-
 
 
 
