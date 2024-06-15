@@ -9,13 +9,14 @@ using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
-    // public GameObject gameManager;
     private Board Board;
-    private Player Player;
+    private Player Player01;
+
+    public Transform heroTransform; // The hero's transform
+    private GameObject _gameCamera;
 
     private static int EntityIDCounter; // testing static access
     private static GameManager _instance;
-
     public static GameManager Instance
     {
         get
@@ -27,6 +28,8 @@ public class GameManager : MonoBehaviour
             return _instance;
         }
     }
+
+
 
     void Awake()
     {
@@ -56,7 +59,7 @@ public class GameManager : MonoBehaviour
         Board = new Board(rows, columns, spaceWidth, spaceHeight);
         // Game Board Setup END ------------------------------------ END
 
-        // Create the Hero Unity Game Object
+        // Create Hero for Player & Add Hero to Board -------------- START
         Hero playerHero = new Hero(
             EntityIDCounter++,
             2,
@@ -66,14 +69,18 @@ public class GameManager : MonoBehaviour
             "Orion",
             "Triangle"
         );
-
-        // Initialize Player Object, & attach Hero UnityGame Object
-        Player = new Player(0, "P1", playerHero);
-
-        // Link Players Hero to the Game Board  ------------------- START
-        // Board.AddHero(playerHero);
+        Player01 = new Player(0, "P1", playerHero);
         Board.AddEntity(playerHero);
+        // Create Hero for Player & Add Hero to Board -------------- END
 
+        // CAMERA ------------------------------------------------- START
+        _gameCamera = Instantiate(Resources.Load<GameObject>("MainCamera"));
+        _gameCamera.transform.position = new Vector3(rows / 2 * spaceWidth, 20, -(columns / 2 * spaceWidth));
+        CameraController cameraController = _gameCamera.GetComponent<CameraController>();
+        cameraController.Initialize(heroTransform, new Vector3(rows / 2 * spaceWidth, 5, columns / 2 * spaceHeight), 0.125f);
+        // Rename the instantiated object
+        _gameCamera.name = "MainCamera";
+        // CAMERA ------------------------------------------------- END
     }
 
     public void ObjectInteract(string message, Vector3 targetPosition)
