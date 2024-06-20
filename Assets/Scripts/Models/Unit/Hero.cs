@@ -16,8 +16,7 @@ public class Hero : Entity
         HeroName = heroName;
         // player...
         GameObject HeroPrefab = Resources.Load<GameObject>(prefabName);
-        GameObject HeroGameObject = GameObject.Instantiate(HeroPrefab, Vector3.zero, Quaternion.identity);
-
+        HeroGameObject = GameObject.Instantiate(HeroPrefab, Vector3.zero, Quaternion.identity);
     }
 
     public string Yell() {

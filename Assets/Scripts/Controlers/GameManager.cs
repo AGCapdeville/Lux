@@ -13,7 +13,8 @@ public class GameManager : MonoBehaviour
     private Player Player01;
 
     public Transform heroTransform; // The hero's transform
-    private GameObject _gameCamera;
+    // private GameObject _gameCamera;
+    public int HeroMovement = 2;
 
     private static int EntityIDCounter; // testing static access
     private static GameManager _instance;
@@ -28,7 +29,6 @@ public class GameManager : MonoBehaviour
             return _instance;
         }
     }
-
 
 
     void Awake()
@@ -50,6 +50,10 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        // Lock the cursor and make it invisible
+        // UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        // UnityEngine.Cursor.visible = false;
+
         // Game Board Setup START ------------------------------------ START
         int rows = 5;
         int columns = 5;
@@ -62,7 +66,7 @@ public class GameManager : MonoBehaviour
         // Create Hero for Player & Add Hero to Board -------------- START
         Hero playerHero = new Hero(
             EntityIDCounter++,
-            2,
+            HeroMovement,
             100,
             Vector3.zero,
             Direction.North,
@@ -74,12 +78,10 @@ public class GameManager : MonoBehaviour
         // Create Hero for Player & Add Hero to Board -------------- END
 
         // CAMERA ------------------------------------------------- START
-        _gameCamera = Instantiate(Resources.Load<GameObject>("MainCamera"));
-        _gameCamera.transform.position = new Vector3(rows / 2 * spaceWidth, 20, -(columns / 2 * spaceWidth));
-        CameraController cameraController = _gameCamera.GetComponent<CameraController>();
-        cameraController.Initialize(heroTransform, new Vector3(rows / 2 * spaceWidth, 5, columns / 2 * spaceHeight), 0.125f);
-        // Rename the instantiated object
-        _gameCamera.name = "MainCamera";
+        // _gameCamera = Instantiate(Resources.Load<GameObject>("MainCamera"));
+        // _gameCamera.transform.position = new Vector3(rows / 2 * spaceWidth, 20, -(columns / 2 * spaceWidth));
+        // CameraController cameraController = _gameCamera.GetComponent<CameraController>();
+        // cameraController.Spawn(new Vector3(rows / 2 * spaceWidth, 5, columns / 2 * spaceHeight), 0.125f);
         // CAMERA ------------------------------------------------- END
     }
 

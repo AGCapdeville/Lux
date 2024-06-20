@@ -7,27 +7,39 @@ public class CameraController : MonoBehaviour
     private Vector3 offset = new Vector3(0, 5, -10); // Offset from the target point
     private float smoothSpeed = 0.125f; // Speed of the smooth movement
 
+    private GameObject follow;
+
     // Method to initialize the CameraController
-    public void Initialize(Transform target, Vector3 offset, float smoothSpeed)
+    public void Spawn(Vector3 offset, float smoothSpeed)
     {
-        this.target = target;
+        // this.target = target;
         this.offset = offset;
         this.smoothSpeed = smoothSpeed;
+        this.name = "MainCamera";
+
+        follow = new GameObject("CameraFollow");
+        follow.transform.position = offset;
     }
 
-    void LateUpdate()
-    {
+    void Start() {
+        initCamera();
+    }
+
+    private void initCamera() {
         if (target != null)
         {
-            // Desired position of the camera
-            Vector3 desiredPosition = target.position + offset;
-
-            // Smoothly interpolate between the current position and the desired position
-            Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-            transform.position = smoothedPosition;
-
-            // Make the camera look at the target point
-            transform.LookAt(target);
+            spawnCamera();
         }
     }
+
+    public void spawnCamera() {
+        Vector3 desiredPosition = follow.transform.position + offset;
+
+        // Smoothly interpolate between the current position and the desired position
+        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+        transform.position = smoothedPosition;
+
+        transform.LookAt(follow.transform);
+    }
+
 }
