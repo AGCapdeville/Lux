@@ -20,4 +20,6 @@ public class Player
         Hero = hero;
     }
 
+    // public void MoveTo(Vector3 targetPosition)
+
 }

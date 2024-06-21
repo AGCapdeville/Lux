@@ -15,6 +15,7 @@ public class MouseObserver : MonoBehaviour
         // Subscribe to all of the GameObject Spaces
         SpaceBehavior.OnSpaceHoverEnter += HandleSpaceHoverEnter;
         SpaceBehavior.OnSpaceHoverExit += HandleSpaceHoverExit;
+        SpaceBehavior.OnSpaceClick += HandleSpaceClick;
     }
 
     void OnDisable()
@@ -22,6 +23,8 @@ public class MouseObserver : MonoBehaviour
         // Un-Subscribe to all of the GameObject Spaces
         SpaceBehavior.OnSpaceHoverEnter -= HandleSpaceHoverEnter;
         SpaceBehavior.OnSpaceHoverExit -= HandleSpaceHoverExit;
+        SpaceBehavior.OnSpaceClick -= HandleSpaceClick;
+
     }
 
     private void HandleSpaceHoverEnter(GameObject spaceObject)
@@ -35,6 +38,12 @@ public class MouseObserver : MonoBehaviour
     {
         GM.GameBoardHoverExit(spaceObject.transform.position);
         // Additional logic for when hovering over a space object ends
+    }
+
+    private void HandleSpaceClick(GameObject spaceObject)
+    {
+        GM.GameBoardClick(spaceObject.transform.position);
+        //Will process the gameboard click based on whihc space was clicked
     }
 
 }

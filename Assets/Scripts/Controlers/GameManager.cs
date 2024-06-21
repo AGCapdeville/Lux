@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
 {
     private Board Board;
     private Player Player01;
+    private bool player_clicked;
+    private bool grid_visible;
 
     public Transform heroTransform; // The hero's transform
     // private GameObject _gameCamera;
@@ -34,6 +36,9 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         EntityIDCounter = 0;
+
+        player_clicked = false;
+        grid_visible = false;
         
         // GAME MANAGER singelton logic ------------------------------------
         if (_instance != null && _instance != this)
@@ -104,11 +109,13 @@ public class GameManager : MonoBehaviour
         Debug.Log("Entered:" + position.ToSafeString());
 
         Hero h = (Hero)Board.GetEntity(position, "hero");
-        if (h != null) {
+        if (h != null && !grid_visible && !player_clicked) {
             // Hovering over hero:
             // Gen Range and Display Range
             Debug.Log(h.Yell());
             Board.DisplayHeroGrid(h);
+            grid_visible = true;
+
         }
 
     }
@@ -118,8 +125,25 @@ public class GameManager : MonoBehaviour
         Debug.Log("Exited:" + position.ToSafeString());
 
         Hero h = (Hero)Board.GetEntity(position, "hero");
-        if (h != null) {
+        if (h != null && grid_visible && !player_clicked) {
             Board.HideHeroGrid(h);
+            grid_visible = false;
+        }
+
+    }
+
+    public void GameBoardClick(Vector3 position) {
+
+        Debug.Log("Clicked:" + position.ToString());
+
+        Hero h = (Hero)Board.GetEntity(position, "hero");
+        if (h != null) {
+            
+            if (player_clicked)
+                player_clicked = false;
+            else
+                player_clicked = true;
+
         }
 
     }
