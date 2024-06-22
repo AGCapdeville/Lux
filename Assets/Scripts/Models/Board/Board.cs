@@ -65,6 +65,18 @@ public class Board
         MapData[e.Position].entity = e;
     }
 
+    public void UpdateEnity(Entity e, Vector3 newPos)
+    {
+        if (_Entities.Contains(e))
+        {
+            MapData[e.Position].entity = null;
+            MapData[newPos].entity = e;
+        }
+
+        Debug.Log(MapData[e.Position].entity);
+        Debug.Log(MapData[newPos].entity);
+    }
+
     // /// <summary>Add Board as child to GameObject</summary>
     // public void SetParent(GameObject go) {
     //     GameBoardObject.transform.parent = go.transform;

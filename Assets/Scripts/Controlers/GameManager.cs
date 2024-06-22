@@ -143,9 +143,18 @@ public class GameManager : MonoBehaviour
                 player_clicked = false;
             else
                 player_clicked = true;
-
         }
+        else if (player_clicked)
+        {   
 
+            Board.UpdateEnity((Entity)Player01.Hero, position);
+            Player01.MoveTo(position);
+            Player01.UpdateMovementRange(Board.GetMovementRange(Player01.Hero));
+
+            Board.HideHeroGrid(Player01.Hero);
+
+            player_clicked = false;
+        }
     }
 
 }
