@@ -94,7 +94,7 @@ public class GameManager : MonoBehaviour
     {
         // Instruct the player to move to the clicked location
         // player.MoveTo(targetPosition);
-        Debug.Log("Object Interaction:" + message);
+        // Debug.Log("Object Interaction:" + message);
 
         // TODO: Filter interations based on message or something.
         // if (message == "movement_tile") {
@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
 
     public void GameBoardHover(Vector3 position) {
         // Test to make sure that it was recieveing the Event
-        Debug.Log("Entered:" + position.ToSafeString());
+        // Debug.Log("Entered:" + position.ToSafeString());
 
         Hero h = (Hero)Board.GetEntity(position, "hero");
         if (h != null && !grid_visible && !player_clicked) {
