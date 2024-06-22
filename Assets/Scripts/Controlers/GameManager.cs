@@ -154,6 +154,7 @@ public class GameManager : MonoBehaviour
             Board.HideHeroGrid(Player01.Hero);
 
             player_clicked = false;
+            grid_visible = false;
         }
     }
 
