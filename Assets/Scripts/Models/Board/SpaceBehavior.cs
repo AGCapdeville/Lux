@@ -1,8 +1,10 @@
 // using System.Collections;
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Scripts.Enums;
 
 public class SpaceBehavior : MonoBehaviour
 {
@@ -14,51 +16,77 @@ public class SpaceBehavior : MonoBehaviour
     public delegate void HoverAction(GameObject spaceObject);
     public static event HoverAction OnSpaceHoverEnter;
     public static event HoverAction OnSpaceHoverExit;
-
     public delegate void ClickAction(GameObject spaceObject);
-
     public static event ClickAction OnSpaceClick;
+
+    public SpaceType type = SpaceType.Default;
+    private Renderer _renderer;
+    private Material _hoverTile;
+    private Material _movementTile;
+
 
     private void Start()
     {
         audioManager = FindObjectOfType<AudioManager>();
         gameManager = FindObjectOfType<GameManager>();
+
+        _renderer = GetComponent<Renderer>();
+        _hoverTile = Resources.Load<Material>("YellowTile");
+        _movementTile = Resources.Load<Material>("BlueTile");
+    }
+
+    public void SetType(SpaceType newType)
+    {
+        type = newType;
+        switch (type)
+        {
+            case SpaceType.Movement:
+                _renderer.material = _movementTile;
+                break;
+            case SpaceType.Default:
+                _renderer.materials = new Material[0];
+                break;
+        }
     }
 
     void OnMouseEnter()
     {
-        if (HighlightSpaceObject == null)
+        if (_renderer != null)
         {
-            OnSpaceHoverEnter?.Invoke(gameObject); // Trigger Hover Event
-            
-            HighlightSpaceObject = Instantiate(
-                Resources.Load<GameObject>("HighlightTerrain"),
-                transform.position,
-                Quaternion.identity
-            );
-            
-            if (!audioManager.sfxSource.isPlaying)
-                audioManager.PlaySound("Bing");
+            if (type != SpaceType.Movement)
+            {
+                _renderer.material = _hoverTile;
+                OnSpaceHoverEnter?.Invoke(gameObject); // Trigger Hover Event
+            }
         }
+        else
+        {
+            Debug.LogError("No Renderer component found on this GameObject.");
+        }
+
+        if (!audioManager.sfxSource.isPlaying)
+            audioManager.PlaySound("Bing");
     }
 
     void OnMouseExit()
     {
-        // Check if object A exists before attempting to destroy it
-        if (HighlightSpaceObject != null)
+        if (_renderer != null)
         {
-            // Trigger Hover Exit Event
-            OnSpaceHoverExit?.Invoke(gameObject);
-            // Destroy object A
-            Destroy(HighlightSpaceObject);
-            // Reset the reference
-            HighlightSpaceObject = null;
+            if (_renderer.material != null && type != SpaceType.Movement)
+            {
+                OnSpaceHoverExit?.Invoke(gameObject);
+                _renderer.materials = new Material[0];
+            }
+        }
+        else
+        {
+            Debug.LogError("No Renderer component found on this GameObject.");
         }
     }
 
     void OnMouseDown()
     {
+        Debug.Log("SpaceBehavior(L:81):" + type);
         OnSpaceClick?.Invoke(gameObject);
-        //Will Invoke based on which space was clicked
     }
 }

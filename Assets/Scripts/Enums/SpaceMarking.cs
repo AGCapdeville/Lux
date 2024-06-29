@@ -3,8 +3,16 @@ namespace Scripts.Enums
     public enum SpaceEnum
     {
         Empty,
-        Block,
+        Wall,
         Player,
         Enemy
+    }
+
+    public enum SpaceType
+    {
+        Default,
+        Hovered,
+        Movement,
+        Attack
     }
 }

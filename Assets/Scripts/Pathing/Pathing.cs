@@ -6,14 +6,14 @@ public class Pathing
     private Dictionary<(int, int), PathNode> MapData;
     public Dictionary<(int, int), PathNode> OpenList { get; private set; }
     public Dictionary<(int, int), PathNode> ClosedList { get; private set; }
-    private int Distance;
+    private int _Distance;
 
     public Pathing(Dictionary<(int, int), PathNode> mapData, int distance)
     {
         MapData = mapData;
         OpenList = new Dictionary<(int, int), PathNode>();
         ClosedList = new Dictionary<(int, int), PathNode>();
-        Distance = distance;
+        _Distance = distance;
     }
 
     public List<PathNode> FindPath(PathNode start, PathNode end)
@@ -43,10 +43,10 @@ public class Pathing
     {
         var cardinalDirections = new List<Dictionary<string, int>>
         {
-            new Dictionary<string, int> { { "x", 0 }, { "y", Distance } },
-            new Dictionary<string, int> { { "x", Distance }, { "y", 0 } },
-            new Dictionary<string, int> { { "x", 0 }, { "y", -Distance } },
-            new Dictionary<string, int> { { "x", -Distance }, { "y", 0 } }
+            new Dictionary<string, int> { { "x", 0 }, { "y", _Distance } },
+            new Dictionary<string, int> { { "x", _Distance }, { "y", 0 } },
+            new Dictionary<string, int> { { "x", 0 }, { "y", -_Distance } },
+            new Dictionary<string, int> { { "x", -_Distance }, { "y", 0 } }
         };
 
         foreach (var direction in cardinalDirections)

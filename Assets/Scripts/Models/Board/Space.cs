@@ -8,7 +8,6 @@ public class Space
     // Properties
     public GameObject SpaceGameObject {get; set;}
     public SpaceBehavior SpaceBehaviorScript {get; set;}
-    
     public Vector3 Position { get; set; }
     public int G { get; set; }
     public double H { get; set; }
@@ -16,7 +15,6 @@ public class Space
     public Space Prev { get; set; }
     public SpaceEnum SpaceMarking { get; set; }
     public int Cost { get; set; }
-
     public Entity entity { get; set; }
 
     // Constructor
@@ -30,19 +28,18 @@ public class Space
         SpaceMarking = SpaceEnum.Empty;
         Position = position;
 
-        // Create Unity GameObject for space on board
         SpaceGameObject = GameObject.Instantiate(
                             Resources.Load<GameObject>("Space"),
                             position,
                             Quaternion.identity
                         );
-        SpaceGameObject.transform.localScale = scale;
 
         // Adding Monobehavior Script & Keeping ref to script added
-        SpaceBehaviorScript = SpaceGameObject.AddComponent<SpaceBehavior>(); 
+        SpaceBehaviorScript = SpaceGameObject.AddComponent<SpaceBehavior>();
 
         // Group all spaces under the board
         SpaceGameObject.transform.parent = board.transform;
     }
+
 
 }

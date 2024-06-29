@@ -16,7 +16,7 @@ public class Player
     public Player(int id, string name, Hero hero)
     {
         ID = id;
-        Name = name;        
+        Name = name;
         Hero = hero;
     }
 

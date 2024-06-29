@@ -4,15 +4,15 @@ using Scripts.Enums;
 
 public class PathingSpaces
 {
-    private Dictionary<(int, int), Space> BoardSpaces;
+    private Dictionary<(int, int), Space> _BoardSpaces;
     public Dictionary<(int, int), Space> OpenList { get; private set; }
     public Dictionary<(int, int), Space> ClosedList { get; private set; }
-    private int Distance;
+    private int _Distance;
 
     public PathingSpaces(Dictionary<(int, int), Space> boardSpaces, int distance)
     {
-        BoardSpaces = boardSpaces;
-        Distance = distance;
+        _BoardSpaces = boardSpaces;
+        _Distance = distance;
         OpenList = new Dictionary<(int, int), Space>();
         ClosedList = new Dictionary<(int, int), Space>();
     }
@@ -21,7 +21,7 @@ public class PathingSpaces
     /// <param name="boardSpaces">The current board spaces</param>  
     public void ResetBoardSpaces(Dictionary<(int, int), Space> boardSpaces)
     {
-        BoardSpaces = boardSpaces;
+        _BoardSpaces = boardSpaces;
         OpenList = new Dictionary<(int, int), Space>();
         ClosedList = new Dictionary<(int, int), Space>();
     }
@@ -53,10 +53,10 @@ public class PathingSpaces
     {
         var cardinalDirections = new List<Dictionary<string, int>>
         {
-            new Dictionary<string, int> { { "x", 0 }, { "z", Distance } },
-            new Dictionary<string, int> { { "x", Distance }, { "z", 0 } },
-            new Dictionary<string, int> { { "x", 0 }, { "z", -Distance } },
-            new Dictionary<string, int> { { "x", -Distance }, { "z", 0 } }
+            new Dictionary<string, int> { { "x", 0 }, { "z", _Distance } },
+            new Dictionary<string, int> { { "x", _Distance }, { "z", 0 } },
+            new Dictionary<string, int> { { "x", 0 }, { "z", -_Distance } },
+            new Dictionary<string, int> { { "x", -_Distance }, { "z", 0 } }
         };
 
         foreach (var direction in cardinalDirections)
@@ -65,9 +65,9 @@ public class PathingSpaces
             int newZ = (int)current.Position.z + (int)direction["z"];
             var newLocation = (newX, newZ);
 
-            if (BoardSpaces.ContainsKey(newLocation) && !ClosedList.ContainsKey(newLocation))
+            if (_BoardSpaces.ContainsKey(newLocation) && !ClosedList.ContainsKey(newLocation))
             {
-                Space neighbor = BoardSpaces[newLocation];
+                Space neighbor = _BoardSpaces[newLocation];
 
                 if (neighbor.SpaceMarking != SpaceEnum.Block)
                 {

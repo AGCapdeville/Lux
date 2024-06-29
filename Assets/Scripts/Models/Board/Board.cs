@@ -3,27 +3,28 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using Vector3 = UnityEngine.Vector3;
+using Scripts.Enums;
 
 public class Board
 {
-    public int SpaceWidth {get; set;}
-    public int SpaceLength {get; set;}
-    public int NumberOfRows {get; set;}
-    public int NumberOfColumns {get; set;}
+    public int SpaceWidth { get; set; }
+    public int SpaceLength { get; set; }
+    public int NumberOfRows { get; set; }
+    public int NumberOfColumns { get; set; }
 
-    public List<GameObject> MovementTiles {get; set;} // The displayed movement for heros...
-    public HashSet<Space> MovementGridSpaces {get; set;} // Hero movement spaces
+    public List<GameObject> MovementTiles { get; set; } // The displayed movement for heros...
+    public HashSet<Space> MovementGridSpaces { get; set; } // Hero movement spaces
 
-    private GameObject GameBoardObject {get; set;}
-    private List<Entity> _Entities {get; set;}
-    
+    private GameObject _GameBoardObject { get; set; }
+    private List<Entity> _Entities { get; set; }
+
     // FOR MAP DATA
-    public Dictionary<Vector3, Space> MapData {get; set;}
-    private List<(int, int)> Blocked_Locations;
+    public Dictionary<Vector3, Space> MapData { get; set; }
+    private List<(int, int)> _Blocked_Locations;
 
     // FOR DRAWING line for pathing 
-    private LineRenderer lineRenderer;
-    private GameObject lineObj;
+    private LineRenderer _lineRenderer;
+    private GameObject _lineObj;
 
     public Board(int numberOfRows, int numberOfColumns, int spaceWidth, int spaceLength)
     {
@@ -33,15 +34,16 @@ public class Board
         NumberOfRows = numberOfRows;
         NumberOfColumns = numberOfColumns;
 
-        GameBoardObject = new GameObject("Board");
+        _GameBoardObject = new GameObject("Board");
 
         MapData = GenerateBoardSpaces(NumberOfRows, NumberOfColumns, SpaceWidth, SpaceLength);
-        
+
         _Entities = new List<Entity>();
     }
 
     /// <summary>Creates the Board</summary>
-    public Dictionary<Vector3, Space> GenerateBoardSpaces(int Rows, int Columns, int SpaceWidth, int SpaceLength) {
+    public Dictionary<Vector3, Space> GenerateBoardSpaces(int Rows, int Columns, int SpaceWidth, int SpaceLength)
+    {
         Dictionary<Vector3, Space> spaces = new Dictionary<Vector3, Space>();
         for (int row = 0; row < Rows; row++)
         {
@@ -49,17 +51,17 @@ public class Board
             {
                 spaces[new Vector3(row * SpaceWidth, 0f, col * SpaceLength)] =
                     new Space(
-                        GameBoardObject,
+                        _GameBoardObject,
                         new Vector3(row * SpaceWidth, 0f, col * SpaceLength),
                         new Vector3(SpaceWidth, 1f, SpaceLength)
                     );
-            }   
+            }
         }
         DrawGridLines(Rows, Columns);
         return spaces;
     }
 
-    public void AddEntity(Entity e) 
+    public void AddEntity(Entity e)
     {
         _Entities.Add(e);
         MapData[e.Position].entity = e;
@@ -76,11 +78,6 @@ public class Board
         Debug.Log(MapData[e.Position].entity);
         Debug.Log(MapData[newPos].entity);
     }
-
-    // /// <summary>Add Board as child to GameObject</summary>
-    // public void SetParent(GameObject go) {
-    //     GameBoardObject.transform.parent = go.transform;
-    // }
 
     /// <summary>Draws grid lines onto the board.</summary>
     public void DrawGridLines(int Rows, int Columns)
@@ -140,8 +137,8 @@ public class Board
         // Create a mesh renderer and filter to render the mesh
         // MeshRenderer renderer = gameObject.AddComponent<MeshRenderer>();
         // MeshFilter filter = gameObject.AddComponent<MeshFilter>();
-        MeshRenderer renderer = GameBoardObject.AddComponent<MeshRenderer>();
-        MeshFilter filter = GameBoardObject.AddComponent<MeshFilter>();
+        MeshRenderer renderer = _GameBoardObject.AddComponent<MeshRenderer>();
+        MeshFilter filter = _GameBoardObject.AddComponent<MeshFilter>();
 
         // Assign the mesh to the filter
         filter.mesh = mesh;
@@ -155,155 +152,140 @@ public class Board
         renderer.material = gridMaterial;
     }
 
-    public Entity GetEntity(Vector3 position, string type) 
+    public Entity GetEntity(Vector3 position, string type)
     {
         foreach (Entity e in _Entities)
         {
-            if (e.Position == position && e.Type == type) {
+            if (e.Position == position && e.Type == type)
+            {
                 return e;
             }
         }
         return null;
     }
 
-    public void DisplayHeroGrid(Hero hero) 
+    public void DisplayHeroGrid(Hero hero)
     {
-        if (hero.MovementRange == null) {
+        if (hero.MovementRange == null)
+        {
             hero.MovementRange = GetMovementRange(hero); // Fetch HashSet<Spaces> to create the Tiles...
         }
-        hero.MovementTiles = DisplayMovementRange(hero); // Store MovementTiles to be destroyed later...
+        DisplayMovementRange(hero); // Store MovementTiles to be destroyed later...
     }
 
-    public void HideHeroGrid(Hero hero) 
-    {
-        foreach (GameObject tile in hero.MovementTiles) {
-            GameObject.Destroy(tile);
-        } 
-        hero.MovementTiles = new List<GameObject>();
-    }
+    // public void HideHeroGrid(Hero hero) 
+    // {
+    //     foreach (GameObject tile in hero.MovementTiles) {
+    //         GameObject.Destroy(tile);
+    //     } 
+    //     hero.MovementTiles = new List<GameObject>();
+    // }
 
 
 
-// -------------------------------------- TO BE IMPLEMENTED --------------------------------------
+    // -------------------------------------- TO BE IMPLEMENTED --------------------------------------
 
     // DRAW PATH for pathing
 
-        // Then fetch character position [x,z]
-        // Node playerNode = new Node(0, 0);
-        // playerNode.Type = SpaceEnum.Player;
+    // Then fetch character position [x,z]
+    // Node playerNode = new Node(0, 0);
+    // playerNode.Type = SpaceEnum.Player;
 
-        // Then we need to get the cube we clicked on position [x,z]
-        // Node endNode = new Node((int)transform.position.x, (int)transform.position.z);
+    // Then we need to get the cube we clicked on position [x,z]
+    // Node endNode = new Node((int)transform.position.x, (int)transform.position.z);
 
-        // Calculate shortest path to clicked location
-        // Pathing playerPathing = new Pathing(Map_Data, Distance);
-        // playerPathing.ClosedList[(playerNode.Position["x"], playerNode.Position["y"])] = playerNode;
+    // Calculate shortest path to clicked location
+    // Pathing playerPathing = new Pathing(Map_Data, Distance);
+    // playerPathing.ClosedList[(playerNode.Position["x"], playerNode.Position["y"])] = playerNode;
 
-        // !!PATHING!!
-        // List<Node> path = playerPathing.FindPath(playerNode, endNode);
+    // !!PATHING!!
+    // List<Node> path = playerPathing.FindPath(playerNode, endNode);
 
-        // DrawPath(path);
-
-
-        // public static Dictionary<(int, int), PathNode> GenerateMap(List<(int, int)> blocked, int distance) {
-        //     var genMap = new Dictionary<(int, int), PathNode>();
-        //     for (int x = 0; x < 5; x++)
-        //     {
-        //         for (int y = 0; y < 5; y++)
-        //         {
-        //             var node = new PathNode(x * distance, y * distance);
-        //             if (blocked.Contains((x, y)))
-        //             {
-        //                 node.Type = blocked;
-        //             }
-        //             genMap[(x * distance, y * distance)] = node;
-        //         }
-        //     }
-        //     return genMap;
-        // }
+    // DrawPath(path);
 
 
-        // private LineRenderer lineRenderer;
+    // public static Dictionary<(int, int), PathNode> GenerateMap(List<(int, int)> blocked, int distance) {
+    //     var genMap = new Dictionary<(int, int), PathNode>();
+    //     for (int x = 0; x < 5; x++)
+    //     {
+    //         for (int y = 0; y < 5; y++)
+    //         {
+    //             var node = new PathNode(x * distance, y * distance);
+    //             if (blocked.Contains((x, y)))
+    //             {
+    //                 node.Type = blocked;
+    //             }
+    //             genMap[(x * distance, y * distance)] = node;
+    //         }
+    //     }
+    //     return genMap;
+    // }
 
-        // void DrawPath(List<Node> path)
-        // {
-        //     if (lineRenderer == null)
-        //     {
-        //         GameObject lineObj = new GameObject("PathLine");
-        //         lineRenderer = lineObj.AddComponent<LineRenderer>();
 
-        //         // Configure the LineRenderer
-        //         lineRenderer.startWidth = 0.2f;
-        //         lineRenderer.endWidth = 0.2f;
-        //         lineRenderer.material = new Material(Shader.Find("Sprites/Default")); // Use a default material
-        //         lineRenderer.positionCount = path.Count;
-        //         lineRenderer.useWorldSpace = true;
-        //     }
+    // private LineRenderer lineRenderer;
 
-        //     for (int i = 0; i < path.Count; i++)
-        //     {
-        //         Vector3 position = new Vector3(path[i].Position["x"], 0, path[i].Position["y"]);
-        //         lineRenderer.SetPosition(i, position);
-        //     }
-        // }
+    // void DrawPath(List<Node> path)
+    // {
+    //     if (lineRenderer == null)
+    //     {
+    //         GameObject lineObj = new GameObject("PathLine");
+    //         lineRenderer = lineObj.AddComponent<LineRenderer>();
+
+    //         // Configure the LineRenderer
+    //         lineRenderer.startWidth = 0.2f;
+    //         lineRenderer.endWidth = 0.2f;
+    //         lineRenderer.material = new Material(Shader.Find("Sprites/Default")); // Use a default material
+    //         lineRenderer.positionCount = path.Count;
+    //         lineRenderer.useWorldSpace = true;
+    //     }
+
+    //     for (int i = 0; i < path.Count; i++)
+    //     {
+    //         Vector3 position = new Vector3(path[i].Position["x"], 0, path[i].Position["y"]);
+    //         lineRenderer.SetPosition(i, position);
+    //     }
+    // }
 
     // -------------- Unit Movement ---------------------------------------------
 
-
-    // // Takes in the current state of the game board, and retuns what spaces (tiles) 
-    // //   sprites should be rendered for move range of the player.
-    public List<GameObject> DisplayMovementRange(Hero hero) {
-
-        GameObject tilePrefab = Resources.Load<GameObject>("MovementTile");
-        MovementTiles = new List<GameObject>();
-        
-        // Light up board with MovementGridSpaces, and create planes in those spaces...
+    public void DisplayMovementRange(Hero hero)
+    {
         foreach (Space space in hero.MovementRange)
         {
-            GameObject movementTile = GameObject.Instantiate(tilePrefab, Vector3.zero, Quaternion.identity);
-            movementTile.transform.position = new Vector3(
-                space.Position.x,
-                space.Position.y + 1,
-                space.Position.z
-            );
-
-            MovementTiles.Add(movementTile);
-            // DestroyAfterDelay(movementTile, 1f);
-            movementTile.transform.position = space.Position;
-            // movementTile.transform.SetParent(space.transform); // Set the parent to make it a child of this GameObject
+            space.SpaceBehaviorScript.SetType(SpaceType.Movement);
         }
-        return MovementTiles;
     }
 
-    public void HideMovementRange() {
-        // UpdateMovementRange(board);
-        // Light up board with MovementGridSpaces, and create planes in those spaces...
-        foreach (GameObject tile in MovementTiles)
+    public void HideMovementRange(Hero hero)
+    {
+        foreach (Space space in hero.MovementRange)
         {
-            GameObject.Destroy(tile);
-        } 
-        MovementTiles = new List<GameObject>();
+            space.SpaceBehaviorScript.SetType(SpaceType.Default);
+        }
     }
 
     // Gets the spaces which the player can potentally move to and returns them.
-    public HashSet<Space> GetMovementRange(Hero hero) {
+    public HashSet<Space> GetMovementRange(Hero hero)
+    {
         // Find all positions for movement range -------------------------
-        HashSet<Vector3> rangeSet = new HashSet<Vector3>{hero.Position};
+        HashSet<Vector3> rangeSet = new HashSet<Vector3> { hero.Position };
 
-        for(int i = 0; i < hero.Movement; i++){
-            HashSet<Vector3> tempSet =  new HashSet<Vector3>();
+        for (int i = 0; i < hero.Movement; i++)
+        {
+            HashSet<Vector3> tempSet = new HashSet<Vector3>();
 
-            foreach(Vector3 pos in rangeSet){
-                if(IsValidSpace(MapData, new Vector3(pos.x + SpaceWidth, pos.y, pos.z)))
+            foreach (Vector3 pos in rangeSet)
+            {
+                if (IsValidSpace(MapData, new Vector3(pos.x + SpaceWidth, pos.y, pos.z)))
                     tempSet.Add(new Vector3(pos.x + SpaceWidth, pos.y, pos.z));
-                
-                if(IsValidSpace(MapData, new Vector3(pos.x - SpaceWidth, pos.y, pos.z)))
-                    tempSet.Add(new Vector3(pos.x - SpaceWidth, pos.y, pos.z));
-                
-                if(IsValidSpace(MapData, new Vector3(pos.x, pos.y, pos.z  + SpaceLength)))
-                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z  + SpaceLength));
 
-                if(IsValidSpace(MapData, new Vector3(pos.x, pos.y, pos.z - SpaceLength)))
+                if (IsValidSpace(MapData, new Vector3(pos.x - SpaceWidth, pos.y, pos.z)))
+                    tempSet.Add(new Vector3(pos.x - SpaceWidth, pos.y, pos.z));
+
+                if (IsValidSpace(MapData, new Vector3(pos.x, pos.y, pos.z + SpaceLength)))
+                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z + SpaceLength));
+
+                if (IsValidSpace(MapData, new Vector3(pos.x, pos.y, pos.z - SpaceLength)))
                     tempSet.Add(new Vector3(pos.x, pos.y, pos.z - SpaceLength));
             }
 
@@ -311,25 +293,29 @@ public class Board
         }
 
         // Find all spaces from board that are from the range set ------
-        HashSet<Space> MovementSpaces = new HashSet<Space>(); 
-        foreach (Vector3 position in rangeSet) {
-            MovementSpaces.Add(MapData[position]);
+        HashSet<Space> MovementSpaces = new HashSet<Space>();
+        foreach (Vector3 position in rangeSet)
+        {
+            if (position != hero.Position)
+            {
+                MovementSpaces.Add(MapData[position]);
+            }
             // Debug.Log("p:" + position.x);
         }
-        
+
         return MovementSpaces;
     }
 
-    private bool IsValidSpace(Dictionary<Vector3, Space> map, Vector3 position) 
+    private bool IsValidSpace(Dictionary<Vector3, Space> map, Vector3 position)
     {
-        foreach (Vector3 key in map.Keys) {
-            if (key == position) {
+        foreach (Vector3 key in map.Keys)
+        {
+            if (key == position)
+            {
                 return true;
             }
-        }    
+        }
         return false;
     }
-
-
 
 }

@@ -9,16 +9,15 @@ using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
-    private Board Board;
-    private Player Player01;
-    private bool player_clicked;
-    private bool grid_visible;
+    private Board _Board;
+    private Player _Player01;
+    private bool _player_clicked;
+    private bool _grid_visible;
 
     public Transform heroTransform; // The hero's transform
-    // private GameObject _gameCamera;
     public int HeroMovement = 2;
 
-    private static int EntityIDCounter; // testing static access
+    private static int _EntityIDCounter; // testing static access
     private static GameManager _instance;
     public static GameManager Instance
     {
@@ -35,11 +34,11 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        EntityIDCounter = 0;
+        _EntityIDCounter = 0;
 
-        player_clicked = false;
-        grid_visible = false;
-        
+        _player_clicked = false;
+        _grid_visible = false;
+
         // GAME MANAGER singelton logic ------------------------------------
         if (_instance != null && _instance != this)
         {
@@ -65,12 +64,12 @@ public class GameManager : MonoBehaviour
         int spaceWidth = 10; // Looks like 10 equates to 1 unit in plane
         int spaceHeight = 10;
 
-        Board = new Board(rows, columns, spaceWidth, spaceHeight);
+        _Board = new Board(rows, columns, spaceWidth, spaceHeight);
         // Game Board Setup END ------------------------------------ END
 
         // Create Hero for Player & Add Hero to Board -------------- START
         Hero playerHero = new Hero(
-            EntityIDCounter++,
+            _EntityIDCounter++,
             HeroMovement,
             100,
             Vector3.zero,
@@ -78,8 +77,8 @@ public class GameManager : MonoBehaviour
             "Orion",
             "Triangle"
         );
-        Player01 = new Player(0, "P1", playerHero);
-        Board.AddEntity(playerHero);
+        _Player01 = new Player(0, "P1", playerHero);
+        _Board.AddEntity(playerHero);
         // Create Hero for Player & Add Hero to Board -------------- END
 
         // CAMERA ------------------------------------------------- START
@@ -104,57 +103,50 @@ public class GameManager : MonoBehaviour
         // }
     }
 
-    public void GameBoardHover(Vector3 position) {
-        // Test to make sure that it was recieveing the Event
-        // Debug.Log("Entered:" + position.ToSafeString());
-
-        Hero h = (Hero)Board.GetEntity(position, "hero");
-        if (h != null && !grid_visible && !player_clicked) {
-            // Hovering over hero:
-            // Gen Range and Display Range
-            Debug.Log(h.Yell());
-            Board.DisplayHeroGrid(h);
-            grid_visible = true;
-
+    public void GameBoardHover(Vector3 position)
+    {
+        Hero h = (Hero)_Board.GetEntity(position, "hero");
+        if (h != null && !_grid_visible && !_player_clicked)
+        {
+            _Board.DisplayHeroGrid(h);
+            _grid_visible = true;
         }
-
     }
 
-    public void GameBoardHoverExit(Vector3 position) {
-        // Test to make sure that it was recieveing the Event
-        Debug.Log("Exited:" + position.ToSafeString());
-
-        Hero h = (Hero)Board.GetEntity(position, "hero");
-        if (h != null && grid_visible && !player_clicked) {
-            Board.HideHeroGrid(h);
-            grid_visible = false;
+    public void GameBoardHoverExit(Vector3 position)
+    {
+        Hero h = (Hero)_Board.GetEntity(position, "hero");
+        if (h != null && _grid_visible && !_player_clicked)
+        {
+            _Board.HideMovementRange(h);
+            _grid_visible = false;
         }
-
     }
 
-    public void GameBoardClick(Vector3 position) {
+    public void GameBoardClick(Vector3 position)
+    {
 
-        Debug.Log("Clicked:" + position.ToString());
+        Debug.Log("GM(L:138): Clicked:" + position.ToString());
 
-        Hero h = (Hero)Board.GetEntity(position, "hero");
-        if (h != null) {
-            
-            if (player_clicked)
-                player_clicked = false;
+        Hero h = (Hero)_Board.GetEntity(position, "hero");
+        if (h != null)
+        {
+
+            if (_player_clicked)
+                _player_clicked = false;
             else
-                player_clicked = true;
+                _player_clicked = true;
         }
-        else if (player_clicked)
-        {   
+        else if (_player_clicked)
+        {
+            _Board.HideMovementRange(_Player01.Hero);
 
-            Board.UpdateEnity((Entity)Player01.Hero, position);
-            Player01.MoveTo(position);
-            Player01.UpdateMovementRange(Board.GetMovementRange(Player01.Hero));
+            _Board.UpdateEnity((Entity)_Player01.Hero, position);
+            _Player01.MoveTo(position);
+            _Player01.UpdateMovementRange(_Board.GetMovementRange(_Player01.Hero));
 
-            Board.HideHeroGrid(Player01.Hero);
-
-            player_clicked = false;
-            grid_visible = false;
+            _player_clicked = false;
+            _grid_visible = false;
         }
     }
 
