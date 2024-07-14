@@ -43,7 +43,7 @@ public class MouseObserver : MonoBehaviour
     private void HandleSpaceClick(GameObject spaceObject)
     {
         Debug.Log(spaceObject.name);
-        GM.GameBoardClick(spaceObject.transform.position);
+        GM.GameBoardClick(spaceObject);
         //Will process the gameboard click based on whihc space was clicked
     }
 

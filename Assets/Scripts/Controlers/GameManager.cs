@@ -123,12 +123,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void GameBoardClick(Vector3 position)
+    public void GameBoardClick(GameObject SpaceObject)
     {
 
-        Debug.Log("GM(L:138): Clicked:" + position.ToString());
+        Debug.Log("GM(L:138): Clicked:" + SpaceObject.transform.position.ToString());
 
-        Hero h = (Hero)_Board.GetEntity(position, "hero");
+        Hero h = (Hero)_Board.GetEntity(SpaceObject.transform.position, "hero");
         if (h != null)
         {
 
@@ -139,12 +139,15 @@ public class GameManager : MonoBehaviour
         }
         else if (_player_clicked)
         {
+
             _Board.HideMovementRange(_Player01.Hero);
-
-            _Board.UpdateEnity((Entity)_Player01.Hero, position);
-            _Player01.MoveTo(position);
-            _Player01.UpdateMovementRange(_Board.GetMovementRange(_Player01.Hero));
-
+            if (_Player01.CanMoveTo(SpaceObject))
+            {
+                _Board.UpdateEnity((Entity)_Player01.Hero, SpaceObject.transform.position);
+                _Player01.MoveTo(SpaceObject.transform.position);
+                _Player01.UpdateMovementRange(_Board.GetMovementRange(_Player01.Hero));
+            }
+            
             _player_clicked = false;
             _grid_visible = false;
         }
