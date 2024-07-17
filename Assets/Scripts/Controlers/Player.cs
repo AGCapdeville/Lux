@@ -24,17 +24,19 @@ public class Player
         Hero = hero;
     }
 
-    public bool CanMoveTo(GameObject tragetSpace)
-    {   
-        foreach (Space i in Hero.MovementRange)
-        {
-            if (i.SpaceGameObject.transform.position == tragetSpace.transform.position)
-            {
-                return true;
-            }
-        }
+    public bool SpaceIsInRange(Space targetSpace)
+    {
+        return Hero.MovementRange.Contains(targetSpace);
 
-        return false;
+        // foreach (Space i in Hero.MovementRange)
+        // {
+        //     if (i.SpaceGameObject.transform.position == tragetSpace.transform.position)
+        //     {
+        //         return true;
+        //     }
+        // }
+
+        // return false;
     }
 
     public void MoveTo(Vector3 targetPosition)

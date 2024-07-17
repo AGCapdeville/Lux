@@ -16,7 +16,7 @@ public class SpaceBehavior : MonoBehaviour
     public delegate void HoverAction(GameObject spaceObject);
     public static event HoverAction OnSpaceHoverEnter;
     public static event HoverAction OnSpaceHoverExit;
-    public delegate void ClickAction(GameObject spaceObject);
+    public delegate void ClickAction(GameObject spaceObject, SpaceType type);
     public static event ClickAction OnSpaceClick;
 
     public SpaceType type = SpaceType.Default;
@@ -87,6 +87,6 @@ public class SpaceBehavior : MonoBehaviour
     void OnMouseDown()
     {
         Debug.Log("SpaceBehavior(L:81):" + type);
-        OnSpaceClick?.Invoke(gameObject);
+        OnSpaceClick?.Invoke(gameObject, type);
     }
 }

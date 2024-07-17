@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Scripts.Enums;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -123,25 +124,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void GameBoardClick(GameObject SpaceObject)
+    public void GameBoardClick(GameObject SpaceObject, SpaceType type)
     {
-
-        Debug.Log("GM(L:138): Clicked:" + SpaceObject.transform.position.ToString());
-
         Hero h = (Hero)_Board.GetEntity(SpaceObject.transform.position, "hero");
         if (h != null)
         {
-
-            if (_player_clicked)
-                _player_clicked = false;
-            else
-                _player_clicked = true;
+            _player_clicked = !_player_clicked;
         }
         else if (_player_clicked)
         {
-
             _Board.HideMovementRange(_Player01.Hero);
-            if (_Player01.CanMoveTo(SpaceObject))
+            if (type == SpaceType.Movement) 
             {
                 _Board.UpdateEnity((Entity)_Player01.Hero, SpaceObject.transform.position);
                 _Player01.MoveTo(SpaceObject.transform.position);

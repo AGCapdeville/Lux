@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Scripts.Enums;
 using UnityEngine;
 
 public class MouseObserver : MonoBehaviour
@@ -40,10 +41,9 @@ public class MouseObserver : MonoBehaviour
         // Additional logic for when hovering over a space object ends
     }
 
-    private void HandleSpaceClick(GameObject spaceObject)
+    private void HandleSpaceClick(GameObject spaceObject, SpaceType type)
     {
-        Debug.Log(spaceObject.name);
-        GM.GameBoardClick(spaceObject);
+        GM.GameBoardClick(spaceObject, type);
         //Will process the gameboard click based on whihc space was clicked
     }
 
