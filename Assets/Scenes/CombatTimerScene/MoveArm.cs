@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class MoveArm : MonoBehaviour
 {
-    private int _min_range = -5;
-    private int _max_range = 5;
+    private int _min_range = -10;
+    private int _max_range = 10;
 
     private Vector3 _current_pos;
 
