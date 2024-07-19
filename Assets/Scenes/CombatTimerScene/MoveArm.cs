@@ -62,11 +62,8 @@ public class MoveArm : MonoBehaviour
                     headingRight = false;
                 }
             } else {
-                if (_current_pos.x > _min_range) {
-                    _current_pos.x -= 0.01f;
-                } else if (_current_pos.x <= _min_range) {
-                    headingRight = true;
-                }
+                _current_pos.x = _min_range;
+                headingRight = true;
             }
 
             Vector3 newPosition = new Vector3(_current_pos.x, _current_pos.y, _current_pos.z);
