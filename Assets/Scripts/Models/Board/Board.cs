@@ -4,6 +4,7 @@ using TMPro;
 using System.Collections.Generic;
 using Vector3 = UnityEngine.Vector3;
 using Scripts.Enums;
+using System.Numerics;
 
 public class Board
 {
@@ -194,6 +195,7 @@ public class Board
             var (vector, space) = FindBestPath(OpenList); 
             OpenList.Remove(vector);
             ClosedList[vector] = space;
+            currentPos = vector;
         }
 
         List<Space> path = new List<Space>{MapData[end]};
@@ -223,7 +225,7 @@ public class Board
         foreach (var direction in cardinalDirections)
         {
             float newX = current.x + direction["x"];
-            float newZ = current.y + direction["z"];
+            float newZ = current.z + direction["z"];
 
             Vector3 newLocation = new Vector3(newX, 0, newZ);
 
