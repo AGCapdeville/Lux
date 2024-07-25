@@ -181,6 +181,105 @@ public class Board
     //     hero.MovementTiles = new List<GameObject>();
     // }
 
+    public List<Space> FindPath(Vector3 start, Vector3 end)
+    {   
+
+        Dictionary<Vector3, Space> OpenList = new Dictionary<Vector3, Space>();
+        Dictionary<Vector3, Space> ClosedList  = new Dictionary<Vector3, Space>();
+
+        Vector3 currentPos = start;
+        while (currentPos != end)
+        {
+            FindOpenPaths(currentPos, end, OpenList, ClosedList);
+            var (vector, space) = FindBestPath(OpenList); 
+            OpenList.Remove(vector);
+            ClosedList[vector] = space;
+        }
+
+        List<Space> path = new List<Space>{MapData[end]};
+        Space cursor = MapData[end];
+
+        while (cursor.SpaceGameObject.transform.position != start)
+        {
+            cursor = ClosedList[cursor.SpaceGameObject.transform.position].Prev;
+            path.Add(cursor);
+        }
+
+        path.Reverse();
+        return path;
+    }
+
+
+    private void FindOpenPaths(Vector3 current, Vector3 end, Dictionary<Vector3, Space> Open, Dictionary<Vector3, Space> Closed)
+    {
+        var cardinalDirections = new List<Dictionary<string, int>>
+        {
+            new Dictionary<string, int> { { "x", 0 }, { "z", SpaceLength } },
+            new Dictionary<string, int> { { "x", SpaceWidth }, { "z", 0 } },
+            new Dictionary<string, int> { { "x", 0 }, { "z", -SpaceLength } },
+            new Dictionary<string, int> { { "x", -SpaceWidth }, { "z", 0 } }
+        }; 
+
+        foreach (var direction in cardinalDirections)
+        {
+            float newX = current.x + direction["x"];
+            float newZ = current.y + direction["z"];
+
+            Vector3 newLocation = new Vector3(newX, 0, newZ);
+
+            if (MapData.ContainsKey(newLocation) && !Closed.ContainsKey(newLocation))
+            {
+                Space neighbor = MapData[newLocation];
+
+                if (neighbor.SpaceMarking != SpaceEnum.Block)
+                {
+                    int G = neighbor.Cost + MapData[current].G;
+                    double H = Math.Sqrt(Math.Pow(MapData[end].Position.x - newX, 2) + Math.Pow(MapData[end].Position.z - newZ, 2));
+                    double F = G + H;
+
+                    if (Open.ContainsKey(newLocation))
+                    {
+                        if (F < Open[newLocation].F)
+                        {
+                            neighbor.G = G;
+                            neighbor.H = H;
+                            neighbor.F = F;
+                            neighbor.Prev = MapData[current];
+                            Open[newLocation] = neighbor;
+                        }
+                    }
+                    else 
+                    {
+                        neighbor.G = G;
+                        neighbor.H = H;
+                        neighbor.F = F;
+                        neighbor.Prev = MapData[current];
+                        Open[newLocation] = neighbor;
+                    }
+                }
+            }
+        }
+    }
+
+    private (Vector3, Space) FindBestPath(Dictionary<Vector3, Space> Open)
+    {
+        double smallestF = double.PositiveInfinity;
+        Vector3 smallestVector = new Vector3(0, 0, 0);
+        Space smallestSpace = null;
+
+        foreach (var item in Open)
+        {
+            if (item.Value.F < smallestF)
+            {
+                smallestF = item.Value.F;
+                smallestVector = item.Key;
+                smallestSpace = item.Value;
+            }
+        }
+
+        return (smallestVector, smallestSpace);
+
+    }
 
 
     // -------------------------------------- TO BE IMPLEMENTED --------------------------------------

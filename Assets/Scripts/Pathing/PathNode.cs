@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 
-public enum SpaceEnum
-{
-    Empty = 0,
-    Block = 1,
-    Player = 2,
-    Enemy = 3
-    // Add more mappings as needed
-}
+// public enum SpaceEnum
+// {
+//     Empty = 0,
+//     Block = 1,
+//     Player = 2,
+//     Enemy = 3
+//     // Add more mappings as needed
+// }
 
 public class PathNode
 {

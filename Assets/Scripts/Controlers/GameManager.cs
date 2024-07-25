@@ -135,7 +135,8 @@ public class GameManager : MonoBehaviour
         {
             _Board.HideMovementRange(_Player01.Hero);
             if (type == SpaceType.Movement) 
-            {
+            {   
+                Debug.Log(_Board.FindPath(_Player01.Hero.HeroGameObject.transform.position, SpaceObject.transform.position).ToString());
                 _Board.UpdateEnity((Entity)_Player01.Hero, SpaceObject.transform.position);
                 _Player01.MoveTo(SpaceObject.transform.position);
                 _Player01.UpdateMovementRange(_Board.GetMovementRange(_Player01.Hero));
