@@ -1,17 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MoveCube : MonoBehaviour
 {
     public float speed = 1.0f;  // Speed of the cube's movement
-    public float resetPosition = 5f;  // Position to reset to
-    public float limitPosition = -5f;  // Position limit
+    public Vector3 startPosition = new Vector3(10f, 0, -0.25f);
+
+    public Vector3 fadeInPoint = new Vector3(9f, 0, -0.25f);
+    public Vector3 endPosition = new Vector3(0f, 0, -0.25f);
+
 
 
     private Renderer objectRenderer;
-    private Color originalColor;
+
+    private Color red;
+    private Color invisible;
 
     private float alpha = 0.0f;
 
@@ -19,7 +25,9 @@ public class MoveCube : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(resetPosition, 0, -0.2f);    
+
+        Debug.Log(transform.position);
+        // transform.position = new Vector3(startPosition.x, 0f, startPosition.z);    
 
         objectRenderer = GetComponent<Renderer>();
         if (objectRenderer == null)
@@ -28,30 +36,37 @@ public class MoveCube : MonoBehaviour
             return;
         }
 
-        Color startColor = originalColor;
-        startColor.a = 0.0f; // Start fully transparent
-        objectRenderer.material.color = startColor;
 
+    }
+
+    private float calcDistance(Vector3 start, Vector3 end) 
+    {
+        return Vector3.Distance(transform.position, end) / Vector3.Distance(start, end);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Color startColor = originalColor; 
-        if (transform.position.x < limitPosition) {
-            transform.position = new Vector3(resetPosition, 0, -0.2f);
+        // float t = 0f;
 
-            alpha = 0.0f;
-            startColor.a = alpha; // Start fully transparent
-            objectRenderer.material.color = startColor;
+        // if (transform.position.x <= fadeInPoint.x) {
+        //     t = calcDistance(fadeInPoint, endPosition);
+        // } else {
+        //     t = calcDistance(startPosition, fadeInPoint);
+        //     // objectRenderer.material.color = Color.Lerp(Color.clear, Color.red, t);
+        // }
 
-        } else {
+        // t = calcDistance(fadeInPoint, endPosition);
 
-            alpha += 0.1f;
-            startColor.a = alpha; // Start fully transparent
-            objectRenderer.material.color = startColor;
 
-            transform.position -= new Vector3(speed * Time.deltaTime, 0, 0);
-        }
+        // if (transform.position.x < endPosition.x) {
+        //     transform.position = startPosition;    
+        // } else {
+        //     transform.position -= new Vector3(speed * Time.deltaTime, 0, 0);
+        // }
+
+        transform.position -= new Vector3(speed * Time.deltaTime, 0f, 0f);
+
+
     }
 }
