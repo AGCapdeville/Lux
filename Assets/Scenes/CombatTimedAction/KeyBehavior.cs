@@ -64,4 +64,17 @@ public class KeyBehavior : MonoBehaviour
         }
 
     }
+
+    private void OnLeft() {
+        if (transform.localPosition.x > 0.95 && transform.localPosition.x < 1.05) {
+            Debug.Log("Critical!");
+        } else if (transform.localPosition.x > 1 && transform.localPosition.x < 1.26) {
+            Debug.Log("Hit Right Side!");
+        } else if (transform.localPosition.x < 1 && transform.localPosition.x > 0.74) {
+            Debug.Log("Hit Left Side!");
+        } else {
+            Debug.Log("MISS");
+        }
+        Debug.Log("UP Arrow In KeyBehavior..");
+    }
 }
