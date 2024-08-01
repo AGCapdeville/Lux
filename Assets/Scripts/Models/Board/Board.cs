@@ -182,7 +182,7 @@ public class Board
     //     hero.MovementTiles = new List<GameObject>();
     // }
 
-    public List<Space> FindPath(Vector3 start, Vector3 end)
+    public Queue<Space> FindPath(Vector3 start, Vector3 end)
     {   
 
         Dictionary<Vector3, Space> OpenList = new Dictionary<Vector3, Space>();
@@ -208,7 +208,7 @@ public class Board
         }
 
         path.Reverse();
-        return path;
+        return new Queue<Space>(path);
     }
 
 

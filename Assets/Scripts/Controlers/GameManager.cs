@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using JetBrains.Annotations;
 using Scripts.Enums;
 using TMPro;
@@ -136,9 +137,16 @@ public class GameManager : MonoBehaviour
             _Board.HideMovementRange(_Player01.Hero);
             if (type == SpaceType.Movement) 
             {   
+                
+                Queue<Space> route = _Board.FindPath(_Player01.Hero.HeroGameObject.transform.position, SpaceObject.transform.position);
                 Debug.Log(_Board.FindPath(_Player01.Hero.HeroGameObject.transform.position, SpaceObject.transform.position).ToString());
+                
+                foreach(var i in _Board.FindPath(_Player01.Hero.HeroGameObject.transform.position, SpaceObject.transform.position))
+                {    
+                    Debug.Log(i.SpaceGameObject.transform.position);
+                }
                 _Board.UpdateEnity((Entity)_Player01.Hero, SpaceObject.transform.position);
-                _Player01.MoveTo(SpaceObject.transform.position);
+                _Player01.MoveTo(SpaceObject.transform.position, route);
                 _Player01.UpdateMovementRange(_Board.GetMovementRange(_Player01.Hero));
             }
             

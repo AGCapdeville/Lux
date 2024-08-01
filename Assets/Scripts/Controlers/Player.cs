@@ -39,11 +39,12 @@ public class Player
         // return false;
     }
 
-    public void MoveTo(Vector3 targetPosition)
+    public void MoveTo(Vector3 targetPosition, Queue<Space> path)
     {
 
         Hero.Position = targetPosition;
-        Hero.HeroGameObject.transform.position = targetPosition;
+        // Hero.HeroGameObject.transform.position = targetPosition;
+        Hero.HeroGameObject.GetComponent<player_logic>().route = path;  
     }
 
     public void UpdateMovementRange(HashSet<Space> newMoveRange)
