@@ -76,8 +76,8 @@ public class Board
             MapData[newPos].entity = e;
         }
 
-        Debug.Log(MapData[e.Position].entity);
-        Debug.Log(MapData[newPos].entity);
+        //Debug.Log(MapData[e.Position].entity);
+       // Debug.Log(MapData[newPos].entity);
     }
 
     /// <summary>Draws grid lines onto the board.</summary>

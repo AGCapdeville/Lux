@@ -34,7 +34,7 @@ public class player_logic : MonoBehaviour
             
         }
 
-        if (target != null && Vector3.Distance(transform.position, target.Position) > .05f) {
+        if (target != null && Vector3.Distance(transform.position, target.Position) != 0) {
             transform.position = Vector3.MoveTowards(transform.position, target.Position, speed * Time.deltaTime);
         }
         else {
