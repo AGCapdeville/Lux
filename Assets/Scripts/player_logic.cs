@@ -35,7 +35,11 @@ public class player_logic : MonoBehaviour
         }
 
         if (target != null && Vector3.Distance(transform.position, target.Position) != 0) {
-            transform.position = Vector3.MoveTowards(transform.position, target.Position, speed * Time.deltaTime);
+
+            Vector3 movementVector = Vector3.MoveTowards(transform.position, target.Position, speed * Time.deltaTime);    
+            transform.position = movementVector;
+            transform.forward = target.Position - transform.position;
+            
         }
         else {
             target = null;
