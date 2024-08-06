@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour
     private GameObject _follow;
     private Transform _target; // The point the camera will focus on
     private Vector3 _offset = new Vector3(0, 5, -10); // Offset from the target point
+    [SerializeField]
     private float _smoothSpeed = 0.125f; // Speed of the smooth movement
 
     // Method to initialize the CameraController

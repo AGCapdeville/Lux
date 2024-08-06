@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class RhythmInput : MonoBehaviour
+public class RhythmGame : MonoBehaviour
 {
-    private RhythmInput rhythmInput;
-
     void Start() 
     {
-        rhythmInput = new RhythmInput();
     }
 
     private void OnUp() {

@@ -85,6 +85,8 @@ public class IsometricCameraController : MonoBehaviour
         // Move the object
         Vector3 flatenDirection = new Vector3(transformedDirection.x, 0, transformedDirection.z);
         
+        Debug.Log(flatenDirection);
+
         if (_shiftPressed) {
             _shiftPressed = false;
             _virtualCamera.Follow.transform.Translate(flatenDirection * cameraMoveSpeed * 2 * Time.deltaTime, UnityEngine.Space.World);
