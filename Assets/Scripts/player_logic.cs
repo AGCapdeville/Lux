@@ -38,7 +38,17 @@ public class player_logic : MonoBehaviour
 
             Vector3 movementVector = Vector3.MoveTowards(transform.position, target.Position, speed * Time.deltaTime);    
             transform.position = movementVector;
-            transform.forward = target.Position - transform.position;
+            
+            Vector3 lookVector = target.Position - transform.position;
+
+            if ( lookVector != Vector3.zero || route.Count == 0 ) {
+            
+                transform.forward = target.Position - transform.position;
+
+            }
+
+
+            
             
         }
         else {
