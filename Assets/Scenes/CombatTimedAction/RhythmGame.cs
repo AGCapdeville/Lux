@@ -5,11 +5,28 @@ using UnityEngine.InputSystem;
 
 public class RhythmGame : MonoBehaviour
 {
-    void Start() 
+    private RhythmActions _RhythmActions;
+
+    void Awake() 
     {
+        _RhythmActions = new RhythmActions();
     }
 
-    private void OnUp() {
+    private void OnEnable()
+    {
+        _RhythmActions.Enable();
+        _RhythmActions.Arrows.Up.performed += OnUp;
+
+    }
+
+    private void OnDisable()
+    {
+        _RhythmActions.Disable();
+        _RhythmActions.Arrows.Up.performed -= OnUp;
+    }
+
+
+    private void OnUp(InputAction.CallbackContext context) {
         Debug.Log("UP Arrow In Rythm..");
     }
 

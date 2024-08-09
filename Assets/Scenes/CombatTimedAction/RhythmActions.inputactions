@@ -1,14 +1,14 @@
 {
-    "name": "InputActions",
+    "name": "RhythmActions",
     "maps": [
         {
-            "name": "Rhythm",
-            "id": "3375a8be-1d4c-4c32-b07c-79c48571427b",
+            "name": "Arrows",
+            "id": "9e1b3803-1028-476c-870b-1652dfb50f03",
             "actions": [
                 {
                     "name": "Up",
                     "type": "Button",
-                    "id": "76e8f480-d036-4a42-977b-b833cfbc9f06",
+                    "id": "7ff8a0ea-9ea6-4803-a8bc-392215d907f5",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -17,16 +17,7 @@
                 {
                     "name": "Down",
                     "type": "Button",
-                    "id": "80734c99-6116-4ada-beae-8d482875d9e1",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Right",
-                    "type": "Button",
-                    "id": "904e01ff-7cfe-4117-9772-6beb1f0fb00b",
+                    "id": "2e42c614-ae09-4604-962b-3cb65f926a7e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -35,7 +26,16 @@
                 {
                     "name": "Left",
                     "type": "Button",
-                    "id": "04b86704-d26d-4c23-8dea-d661ae623be1",
+                    "id": "f9562d0f-e899-478b-8f14-f982f46f9564",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Right",
+                    "type": "Button",
+                    "id": "579a4af2-794c-44af-8953-c297d2d5f8f6",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -45,7 +45,7 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "d15a7769-0845-42d2-963d-92607765a900",
+                    "id": "c7a5b384-c92a-49a3-a999-93e5d1214f4f",
                     "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
@@ -56,7 +56,7 @@
                 },
                 {
                     "name": "",
-                    "id": "f5c6e695-e259-4788-b636-a870899f079e",
+                    "id": "ca71424c-58db-4bd9-a878-0ca1d7754de0",
                     "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
@@ -67,23 +67,23 @@
                 },
                 {
                     "name": "",
-                    "id": "e6708b61-491e-4c7a-8897-bd2264ed2050",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Right",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "103ae6dc-3c9e-4129-9fb0-3f09519659e4",
+                    "id": "5aa3baab-4d94-4852-bc7f-da279e832e35",
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "55098c48-2d28-48fe-ae5a-db435e34424a",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
