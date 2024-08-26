@@ -24,10 +24,11 @@ public class IsoCamera : MonoBehaviour
     private float _ZOOM;
 
     private PlayerInputActions _inputActions;
-
+    
     private void Awake()
     {
-        _inputActions = new PlayerInputActions();
+        _inputActions = InputManager.Instance.InputActions;
+        // _inputActions = new PlayerInputActions();
     }
 
     private void OnEnable()
@@ -35,17 +36,13 @@ public class IsoCamera : MonoBehaviour
         _inputActions.Enable();
         _inputActions.Camera.RotateLeft.performed += RotateCameraLeft;
         _inputActions.Camera.RotateRight.performed += RotateCameraRight;
-
     }
-
-
 
     private void OnDisable()
     {
         _inputActions.Disable();
         _inputActions.Camera.RotateLeft.performed -= RotateCameraLeft;
         _inputActions.Camera.RotateRight.performed -= RotateCameraRight;
-
     }
 
     void Start()
