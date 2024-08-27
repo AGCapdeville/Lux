@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/CombatTimedAction.unity
-    guid: 2a0b1bb3e34324e1ab80bdf379f96d25
+    path: Assets/Scenes/Title Screen.unity
+    guid: 24e6816eb91a8d542a40db24a0162e05
+  - enabled: 1
+    path: Assets/Scenes/Combat.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
