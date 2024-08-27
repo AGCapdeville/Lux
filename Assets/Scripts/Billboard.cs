@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Billboard : MonoBehaviour
 {
-    public Camera mainCamera;
+    private Camera _mainCamera;
 
     public Vector3 Forward; // The direction the character is facing
     public Vector3 normalizedCamera; // The normalized direction towards the camera
@@ -14,14 +14,27 @@ public class Billboard : MonoBehaviour
     void Start() {
         // Assume the character is initially facing along the positive X axis
         Forward = new Vector3(1f, 0f, 0f);
+        // _mainCamera = Camera.main;
+
+        // if (_mainCamera == null)
+        // {
+        //     Debug.LogError("Main Camera not found!");
+        // }
+
+        _mainCamera = FindObjectOfType<Camera>();
+
+        if (_mainCamera == null)
+        {
+            Debug.LogError("No camera found in the scene!");
+        }
     }
 
     void Update()
     {
-        if (mainCamera != null)
+        if (_mainCamera != null)
         {
             // Calculate the direction vector from the character to the camera
-            Vector3 direction = mainCamera.transform.position - transform.position;
+            Vector3 direction = _mainCamera.transform.position - transform.position;
 
             // Flatten both vectors to the XZ plane
             Vector3 flattenedForward = new Vector3(Forward.x, 0f, Forward.z).normalized;

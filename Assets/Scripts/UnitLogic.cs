@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class player_logic : MonoBehaviour
+public class UnitLogic : MonoBehaviour
 {   
 
     public bool moving;

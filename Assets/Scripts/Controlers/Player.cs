@@ -44,7 +44,7 @@ public class Player
 
         Hero.Position = targetPosition;
         // Hero.HeroGameObject.transform.position = targetPosition;
-        Hero.HeroGameObject.GetComponent<player_logic>().route = path;  
+        Hero.HeroGameObject.GetComponent<UnitLogic>().route = path;  
     }
 
     public void UpdateMovementRange(HashSet<Space> newMoveRange)
