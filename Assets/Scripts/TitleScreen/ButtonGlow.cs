@@ -81,7 +81,7 @@ public class ButtonGlow : MonoBehaviour
     private void EnterGame(InputAction.CallbackContext context)
     {
         Debug.Log("Enter Game!");
-        _sceneDirector.LoadScene("CombatScene", SceneDirector.GameState.CombatScreen);
+        _sceneDirector.LoadScene("Combat", SceneDirector.GameState.CombatScreen);
 
 
         // Make Button Flash, as though it was clicked
