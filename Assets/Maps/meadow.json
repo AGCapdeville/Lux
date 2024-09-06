@@ -1,0 +1,516 @@
+{
+  "0,0,7": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "1,0,7": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "stone-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "2,0,7": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "stone-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "3,0,7": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "stone-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "4,0,7": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "stone-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "5,0,7": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "stone-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "6,0,7": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "stone-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "7,0,7": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "stone-wall",
+    "1,0,0": "stone-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "0,0,6": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "1,0,6": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "2,0,6": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "3,0,6": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "4,0,6": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "5,0,6": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "6,0,6": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "7,0,6": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "stone-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "0,0,5": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "1,0,5": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "2,0,5": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "3,0,5": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "4,0,5": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "5,0,5": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "6,0,5": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "7,0,5": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "stone-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "0,0,4": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "1,0,4": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "2,0,4": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "3,0,4": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "4,0,4": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "5,0,4": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "6,0,4": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "7,0,4": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "stone-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "0,0,3": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "1,0,3": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "2,0,3": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "3,0,3": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "4,0,3": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "5,0,3": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "6,0,3": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "7,0,3": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "stone-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "0,0,2": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "1,0,2": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "2,0,2": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "3,0,2": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "4,0,2": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "5,0,2": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "6,0,2": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "7,0,2": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "stone-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "0,0,1": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "1,0,1": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "2,0,1": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "3,0,1": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "4,0,1": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "5,0,1": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "6,0,1": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "7,0,1": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "stone-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "0,0,0": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "1,0,0": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "2,0,0": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "3,0,0": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "4,0,0": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "5,0,0": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "6,0,0": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "7,0,0": {
+    "obj": null,
+    "cell": "grass",
+    "0,0,1": "no-wall",
+    "1,0,0": "no-wall",
+    "0,0,-1": "no-wall",
+    "-1,0,0": "no-wall"
+  },
+  "rows": "8",
+  "cols": "8"
+}

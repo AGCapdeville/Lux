@@ -58,7 +58,7 @@ public class Billboard : MonoBehaviour
                 result = dotRC > 0 ? "Left Back" : "Right Back";
             }
 
-            Debug.Log("Camera is on the: " + result);
+            // Debug.Log("Camera is on the: " + result);
 
             // Optionally: make the sprite face the camera (as you had before)
             transform.rotation = Quaternion.LookRotation(-flattenedDirection);

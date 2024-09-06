@@ -9,8 +9,8 @@ public class ButtonGlow : MonoBehaviour
 
     // Start is called before the first frame update
     private Image myImage;
-    private float start = 0f;
-    private float end = 0f;
+    // private float start = 0f;
+    // private float end = 0f;
 
     private bool isFading = true;
     private PlayerInputActions _inputActions;

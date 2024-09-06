@@ -61,13 +61,14 @@ public class GameManager : MonoBehaviour
         // UnityEngine.Cursor.visible = false;
 
         // Game Board Setup START ------------------------------------ START
-        int rows = 5;
-        int columns = 5;
-        int spaceWidth = 10; // Looks like 10 equates to 1 unit in plane
-        int spaceHeight = 10;
 
-        _Board = new Board(rows, columns, spaceWidth, spaceHeight);
+
+        // _Board = new Board(rows, columns, spaceWidth, spaceHeight);
         // Game Board Setup END ------------------------------------ END
+
+        // WIP : REDO BOARD
+
+        _Board = new Board();
 
         // Create Hero for Player & Add Hero to Board -------------- START
         Hero playerHero = new Hero(
@@ -80,8 +81,11 @@ public class GameManager : MonoBehaviour
             "Triangle"
         );
         _Player01 = new Player(0, "P1", playerHero);
-        _Board.AddEntity(playerHero);
+        // _Board.AddEntity(playerHero);
         // Create Hero for Player & Add Hero to Board -------------- END
+
+
+
 
         // CAMERA ------------------------------------------------- START
         // _gameCamera = Instantiate(Resources.Load<GameObject>("MainCamera"));

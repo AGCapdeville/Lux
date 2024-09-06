@@ -1,17 +1,15 @@
 using System;
+using System.IO;
+using System.Text.Json;
 using UnityEngine;
-using TMPro;
 using System.Collections.Generic;
 using Vector3 = UnityEngine.Vector3;
 using Scripts.Enums;
-using System.Numerics;
 
 public class Board
 {
-    public int SpaceWidth { get; set; }
-    public int SpaceLength { get; set; }
-    public int NumberOfRows { get; set; }
-    public int NumberOfColumns { get; set; }
+    public int SpaceWidth = 10;
+    public int SpaceLength = 10;
 
     public List<GameObject> MovementTiles { get; set; } // The displayed movement for heros...
     public HashSet<Space> MovementGridSpaces { get; set; } // Hero movement spaces
@@ -21,29 +19,39 @@ public class Board
 
     // FOR MAP DATA
     public Dictionary<Vector3, Space> MapData { get; set; }
-    private List<(int, int)> _Blocked_Locations;
+    // private List<(int, int)> _Blocked_Locations;
 
     // FOR DRAWING line for pathing 
-    private LineRenderer _lineRenderer;
-    private GameObject _lineObj;
+    // private LineRenderer _lineRenderer;
+    // private GameObject _lineObj;
 
-    public Board(int numberOfRows, int numberOfColumns, int spaceWidth, int spaceLength)
+    public Board()
     {
-        // Make board:
-        SpaceWidth = spaceWidth;
-        SpaceLength = spaceLength;
-        NumberOfRows = numberOfRows;
-        NumberOfColumns = numberOfColumns;
+        // FETCH JSON MAP DATA:
 
+        string path = Path.Combine(Application.dataPath, "Maps/meadow.json");
+
+        if (File.Exists(path))
+        {
+            Debug.Log($"Loaded, meadow.json at {path}");
+
+            string json = File.ReadAllText(path);
+            MapJSONData mapJSONData = JsonUtility.FromJson<MapJSONData>(json);
+
+            MapData = GenerateBoardSpaces(mapJSONData.rows, mapJSONData.cols);
+
+        }
+        else
+        {
+            Debug.LogError($"Could not find meadow.json at {path}");
+        }
+        
         _GameBoardObject = new GameObject("Board");
-
-        MapData = GenerateBoardSpaces(NumberOfRows, NumberOfColumns, SpaceWidth, SpaceLength);
-
         _Entities = new List<Entity>();
     }
 
-    /// <summary>Creates the Board</summary>
-    public Dictionary<Vector3, Space> GenerateBoardSpaces(int Rows, int Columns, int SpaceWidth, int SpaceLength)
+    // <summary>Creates the Board</summary>
+    public Dictionary<Vector3, Space> GenerateBoardSpaces(int Rows, int Columns)
     {
         Dictionary<Vector3, Space> spaces = new Dictionary<Vector3, Space>();
         for (int row = 0; row < Rows; row++)
@@ -75,12 +83,9 @@ public class Board
             MapData[e.Position].entity = null;
             MapData[newPos].entity = e;
         }
-
-        //Debug.Log(MapData[e.Position].entity);
-       // Debug.Log(MapData[newPos].entity);
     }
 
-    /// <summary>Draws grid lines onto the board.</summary>
+    // <summary>Draws grid lines onto the board.</summary>
     public void DrawGridLines(int Rows, int Columns)
     {
         // Create a new mesh
@@ -136,8 +141,6 @@ public class Board
         mesh.SetIndices(allLineIndices, MeshTopology.Lines, 0);
 
         // Create a mesh renderer and filter to render the mesh
-        // MeshRenderer renderer = gameObject.AddComponent<MeshRenderer>();
-        // MeshFilter filter = gameObject.AddComponent<MeshFilter>();
         MeshRenderer renderer = _GameBoardObject.AddComponent<MeshRenderer>();
         MeshFilter filter = _GameBoardObject.AddComponent<MeshFilter>();
 
@@ -174,14 +177,6 @@ public class Board
         DisplayMovementRange(hero); // Store MovementTiles to be destroyed later...
     }
 
-    // public void HideHeroGrid(Hero hero) 
-    // {
-    //     foreach (GameObject tile in hero.MovementTiles) {
-    //         GameObject.Destroy(tile);
-    //     } 
-    //     hero.MovementTiles = new List<GameObject>();
-    // }
-
     public Queue<Space> FindPath(Vector3 start, Vector3 end)
     {   
 
@@ -210,7 +205,6 @@ public class Board
         path.Reverse();
         return new Queue<Space>(path);
     }
-
 
     private void FindOpenPaths(Vector3 current, Vector3 end, Dictionary<Vector3, Space> Open, Dictionary<Vector3, Space> Closed)
     {
@@ -283,72 +277,6 @@ public class Board
 
     }
 
-
-    // -------------------------------------- TO BE IMPLEMENTED --------------------------------------
-
-    // DRAW PATH for pathing
-
-    // Then fetch character position [x,z]
-    // Node playerNode = new Node(0, 0);
-    // playerNode.Type = SpaceEnum.Player;
-
-    // Then we need to get the cube we clicked on position [x,z]
-    // Node endNode = new Node((int)transform.position.x, (int)transform.position.z);
-
-    // Calculate shortest path to clicked location
-    // Pathing playerPathing = new Pathing(Map_Data, Distance);
-    // playerPathing.ClosedList[(playerNode.Position["x"], playerNode.Position["y"])] = playerNode;
-
-    // !!PATHING!!
-    // List<Node> path = playerPathing.FindPath(playerNode, endNode);
-
-    // DrawPath(path);
-
-
-    // public static Dictionary<(int, int), PathNode> GenerateMap(List<(int, int)> blocked, int distance) {
-    //     var genMap = new Dictionary<(int, int), PathNode>();
-    //     for (int x = 0; x < 5; x++)
-    //     {
-    //         for (int y = 0; y < 5; y++)
-    //         {
-    //             var node = new PathNode(x * distance, y * distance);
-    //             if (blocked.Contains((x, y)))
-    //             {
-    //                 node.Type = blocked;
-    //             }
-    //             genMap[(x * distance, y * distance)] = node;
-    //         }
-    //     }
-    //     return genMap;
-    // }
-
-
-    // private LineRenderer lineRenderer;
-
-    // void DrawPath(List<Node> path)
-    // {
-    //     if (lineRenderer == null)
-    //     {
-    //         GameObject lineObj = new GameObject("PathLine");
-    //         lineRenderer = lineObj.AddComponent<LineRenderer>();
-
-    //         // Configure the LineRenderer
-    //         lineRenderer.startWidth = 0.2f;
-    //         lineRenderer.endWidth = 0.2f;
-    //         lineRenderer.material = new Material(Shader.Find("Sprites/Default")); // Use a default material
-    //         lineRenderer.positionCount = path.Count;
-    //         lineRenderer.useWorldSpace = true;
-    //     }
-
-    //     for (int i = 0; i < path.Count; i++)
-    //     {
-    //         Vector3 position = new Vector3(path[i].Position["x"], 0, path[i].Position["y"]);
-    //         lineRenderer.SetPosition(i, position);
-    //     }
-    // }
-
-    // -------------- Unit Movement ---------------------------------------------
-
     public void DisplayMovementRange(Hero hero)
     {
         foreach (Space space in hero.MovementRange)
@@ -420,3 +348,39 @@ public class Board
     }
 
 }
+
+
+
+
+// ------------------- OLD STUFF ----------------------------
+    
+    // -------------------------------------- TO BE IMPLEMENTED --------------------------------------
+
+    // !!PATHING!!
+    // List<Node> path = playerPathing.FindPath(playerNode, endNode);
+    // DrawPath(path);
+    // private LineRenderer lineRenderer;
+
+    // void DrawPath(List<Node> path)
+    // {
+    //     if (lineRenderer == null)
+    //     {
+    //         GameObject lineObj = new GameObject("PathLine");
+    //         lineRenderer = lineObj.AddComponent<LineRenderer>();
+
+    //         // Configure the LineRenderer
+    //         lineRenderer.startWidth = 0.2f;
+    //         lineRenderer.endWidth = 0.2f;
+    //         lineRenderer.material = new Material(Shader.Find("Sprites/Default")); // Use a default material
+    //         lineRenderer.positionCount = path.Count;
+    //         lineRenderer.useWorldSpace = true;
+    //     }
+
+    //     for (int i = 0; i < path.Count; i++)
+    //     {
+    //         Vector3 position = new Vector3(path[i].Position["x"], 0, path[i].Position["y"]);
+    //         lineRenderer.SetPosition(i, position);
+    //     }
+    // }
+
+    // -------------- Unit Movement ---------------------------------------------

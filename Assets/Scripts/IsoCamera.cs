@@ -20,7 +20,7 @@ public class IsoCamera : MonoBehaviour
     private float _rotationStartTime;
 
     public float cameraMoveSpeed = 20f; 
-    private bool _shiftPressed = false;
+    // private bool _shiftPressed = false;
     private float _ZOOM;
 
     private PlayerInputActions _inputActions;
