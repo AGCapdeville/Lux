@@ -28,6 +28,8 @@ public class Board
     public Board()
     {
         // FETCH JSON MAP DATA:
+        _GameBoardObject = new GameObject("Board");
+        _Entities = new List<Entity>();
 
         string path = Path.Combine(Application.dataPath, "Maps/meadow.json");
 
@@ -46,8 +48,6 @@ public class Board
             Debug.LogError($"Could not find meadow.json at {path}");
         }
         
-        _GameBoardObject = new GameObject("Board");
-        _Entities = new List<Entity>();
     }
 
     // <summary>Creates the Board</summary>

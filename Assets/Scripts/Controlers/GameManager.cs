@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
             "Triangle"
         );
         _Player01 = new Player(0, "P1", playerHero);
-        // _Board.AddEntity(playerHero);
+        _Board.AddEntity(playerHero);
         // Create Hero for Player & Add Hero to Board -------------- END
 
 
