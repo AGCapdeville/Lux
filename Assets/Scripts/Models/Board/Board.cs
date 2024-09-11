@@ -1,10 +1,10 @@
 using System;
 using System.IO;
-using System.Text.Json;
 using UnityEngine;
 using System.Collections.Generic;
 using Vector3 = UnityEngine.Vector3;
 using Scripts.Enums;
+using Newtonsoft.Json;
 
 public class Board
 {
@@ -37,10 +37,18 @@ public class Board
         {
             Debug.Log($"Loaded, meadow.json at {path}");
 
-            string json = File.ReadAllText(path);
-            MapJSONData mapJSONData = JsonUtility.FromJson<MapJSONData>(json);
 
-            MapData = GenerateBoardSpaces(mapJSONData.rows, mapJSONData.cols);
+            string json = File.ReadAllText(path);
+
+            // object obj = JsonConvert.DeserializeObject<Dictionary>(json);
+            JSONMapData jsonMapData = JsonConvert.DeserializeObject<JSONMapData>(json);
+
+            // Debug.Log(jsonMapData.map["0,0,0"].north);
+
+            // MapJSONData mapJSONData = JsonUtility.FromJson<MapJSONData>(json);
+
+
+            MapData = GenerateBoardSpaces(jsonMapData);
 
         }
         else
@@ -51,22 +59,32 @@ public class Board
     }
 
     // <summary>Creates the Board</summary>
-    public Dictionary<Vector3, Space> GenerateBoardSpaces(int Rows, int Columns)
+    public Dictionary<Vector3, Space> GenerateBoardSpaces(JSONMapData jsonMapData)
     {
+
         Dictionary<Vector3, Space> spaces = new Dictionary<Vector3, Space>();
-        for (int row = 0; row < Rows; row++)
+        for (int row = 0; row < int.Parse(jsonMapData.rows); row++)
         {
-            for (int col = 0; col < Columns; col++)
+            for (int col = 0; col < int.Parse(jsonMapData.cols); col++)
             {
+                Dictionary<string, string> walls = new Dictionary<string, string>();
+                JSONTileData tile = jsonMapData.map[row + ",0," + col];
+
+                walls["north"] = tile.north;
+                walls["east"] = tile.east;
+                walls["south"] = tile.south;
+                walls["west"] = tile.west;
+
                 spaces[new Vector3(row * SpaceWidth, 0f, col * SpaceLength)] =
                     new Space(
                         _GameBoardObject,
                         new Vector3(row * SpaceWidth, 0f, col * SpaceLength),
-                        new Vector3(SpaceWidth, 1f, SpaceLength)
+                        walls,
+                        tile.terrain
                     );
             }
         }
-        DrawGridLines(Rows, Columns);
+        DrawGridLines(int.Parse(jsonMapData.cols), int.Parse(jsonMapData.cols));
         return spaces;
     }
 

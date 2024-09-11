@@ -15,8 +15,8 @@ public enum SpaceEnum
 public class Space
 {
     // Properties
-    public GameObject SpaceGameObject {get; set;}
-    public SpaceBehavior SpaceBehaviorScript {get; set;}
+    public GameObject SpaceGameObject { get; set; }
+    public SpaceBehavior SpaceBehaviorScript { get; set; }
     public Vector3 Position { get; set; }
     public int G { get; set; }
     public double H { get; set; }
@@ -26,8 +26,12 @@ public class Space
     public int Cost { get; set; }
     public Entity entity { get; set; }
 
+    public Dictionary<string, string> Walls { get; set; }
+
+    public string Terrain { get; set; }
+
     // Constructor
-    public Space(GameObject board, Vector3 position, Vector3 scale, int cost = 1)
+    public Space(GameObject board, Vector3 position, Dictionary<string, string> walls, string terrain, int cost = 1)
     {
         G = 0;
         H = 0;
@@ -36,7 +40,10 @@ public class Space
         Prev = null;
         SpaceMarking = SpaceEnum.Empty;
         Position = position;
+        Walls = walls;
+        Terrain = terrain;
 
+        // update to use terrain for spaces:
         SpaceGameObject = GameObject.Instantiate(
                             Resources.Load<GameObject>("Space"),
                             position,
@@ -48,6 +55,8 @@ public class Space
 
         // Group all spaces under the board
         SpaceGameObject.transform.parent = board.transform;
+
+        // render walls!
     }
 
 
