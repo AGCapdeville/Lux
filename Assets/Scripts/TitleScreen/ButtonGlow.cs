@@ -76,6 +76,7 @@ public class ButtonGlow : MonoBehaviour
     // Doesn't seem to work TODO: FIX
     public void ClickEvent() {
         Debug.Log("Enter Game Through Click!");
+        _sceneDirector.LoadScene("Combat", SceneDirector.GameState.CombatScreen);
     }
 
     private void EnterGame(InputAction.CallbackContext context)
