@@ -39,7 +39,7 @@ public class Board
         _GameBoardWallContainer = new GameObject("Walls");
         _Entities = new List<Entity>();
 
-        string path = Path.Combine(Application.dataPath, "Maps/meadow.json");
+        string path = Path.Combine(Application.dataPath, "Maps/test.json");
 
         if (File.Exists(path))
         {
@@ -111,9 +111,9 @@ public class Board
     {
 
         Dictionary<Vector3, Space> spaces = new Dictionary<Vector3, Space>();
-        for (int row = 0; row < int.Parse(jsonMapData.rows); row++)
+        for (int row = 0; row < int.Parse(jsonMapData.cols); row++)
         {
-            for (int col = 0; col < int.Parse(jsonMapData.cols); col++)
+            for (int col = 0; col < int.Parse(jsonMapData.rows); col++)
             {
                 Dictionary<string, string> walls = new Dictionary<string, string>();
                 JSONTileData tile = jsonMapData.map[row + ",0," + col];
@@ -132,7 +132,7 @@ public class Board
                     );
             }
         }
-        DrawGridLines(int.Parse(jsonMapData.cols), int.Parse(jsonMapData.cols));
+        DrawGridLines(int.Parse(jsonMapData.cols), int.Parse(jsonMapData.rows));
         return spaces;
     }
 
