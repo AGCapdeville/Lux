@@ -6,8 +6,11 @@ using Vector3 = UnityEngine.Vector3;
 using Scripts.Enums;
 using Newtonsoft.Json;
 
+
 public class Board
 {
+    public GameObject WallObject { get; set; }
+
     public int SpaceWidth = 10;
     public int SpaceLength = 10;
 
@@ -15,10 +18,14 @@ public class Board
     public HashSet<Space> MovementGridSpaces { get; set; } // Hero movement spaces
 
     private GameObject _GameBoardObject { get; set; }
+    private GameObject _GameBoardWallContainer { get; set; }
     private List<Entity> _Entities { get; set; }
 
     // FOR MAP DATA
     public Dictionary<Vector3, Space> MapData { get; set; }
+
+    public Dictionary<Vector3, string> WallData { get; set; }
+
     // private List<(int, int)> _Blocked_Locations;
 
     // FOR DRAWING line for pathing 
@@ -29,33 +36,74 @@ public class Board
     {
         // FETCH JSON MAP DATA:
         _GameBoardObject = new GameObject("Board");
+        _GameBoardWallContainer = new GameObject("Walls");
         _Entities = new List<Entity>();
 
         string path = Path.Combine(Application.dataPath, "Maps/meadow.json");
 
         if (File.Exists(path))
         {
-            Debug.Log($"Loaded, meadow.json at {path}");
-
-
+            // Debug.Log($"Loaded, meadow.json at {path}");
             string json = File.ReadAllText(path);
-
-            // object obj = JsonConvert.DeserializeObject<Dictionary>(json);
             JSONMapData jsonMapData = JsonConvert.DeserializeObject<JSONMapData>(json);
 
-            // Debug.Log(jsonMapData.map["0,0,0"].north);
-
-            // MapJSONData mapJSONData = JsonUtility.FromJson<MapJSONData>(json);
-
-
             MapData = GenerateBoardSpaces(jsonMapData);
-
+            WallData = FindWalls(MapData);
+            SpawnWalls(WallData);
         }
         else
         {
             Debug.LogError($"Could not find meadow.json at {path}");
         }
         
+    }
+
+    private Dictionary<Vector3, string> FindWalls(Dictionary<Vector3, Space> mapData)
+    {
+        Dictionary<Vector3, string> found_walls = new Dictionary<Vector3, string>();
+
+        foreach (KeyValuePair<Vector3, Space> entry in mapData)
+        {
+            Vector3 position = entry.Key;   // Key (Vector3)
+            Space spaceData = entry.Value;  // Value (Space)
+
+            Console.WriteLine($"Position: {position}, Space Data: {spaceData}");
+
+            if (spaceData.Walls["north"] == "stone-wall") {
+                found_walls[new Vector3(position.x, position.y, position.z + 5)] = "stone-wall";
+            }
+            if (spaceData.Walls["east"] == "stone-wall") {
+                found_walls[new Vector3(position.x + 5, position.y, position.z)] = "stone-wall";
+            }
+            if (spaceData.Walls["south"] == "stone-wall") {
+                found_walls[new Vector3(position.x, position.y, position.z - 5)] = "stone-wall";
+            }
+            if (spaceData.Walls["west"] == "stone-wall") {
+                found_walls[new Vector3(position.x - 5, position.y, position.z)] = "stone-wall";
+            }
+        }
+
+        return found_walls;
+    }
+
+    private void SpawnWalls(Dictionary<Vector3, string> wallData) {
+        foreach (KeyValuePair<Vector3, string> wall in wallData) {
+            if (Math.Abs(wall.Key.x) / 5 % 2 != 0) {
+                GameObject SpawnedWall = GameObject.Instantiate (
+                    Resources.Load<GameObject>("Wall"),
+                    new Vector3(wall.Key.x, wall.Key.y, wall.Key.z),
+                    Quaternion.Euler(0, 90, 0) // rotate to align with the z-axis
+                );
+                SpawnedWall.transform.parent = _GameBoardWallContainer.transform;
+            } else {
+                GameObject SpawnedWall = GameObject.Instantiate (
+                    Resources.Load<GameObject>("Wall"),
+                    new Vector3(wall.Key.x, wall.Key.y, wall.Key.z),
+                    Quaternion.identity // rotate to align with the z-axis
+                );
+                SpawnedWall.transform.parent = _GameBoardWallContainer.transform;
+            }
+        }
     }
 
     // <summary>Creates the Board</summary>
@@ -196,7 +244,7 @@ public class Board
     }
 
     public Queue<Space> FindPath(Vector3 start, Vector3 end)
-    {   
+    {
 
         Dictionary<Vector3, Space> OpenList = new Dictionary<Vector3, Space>();
         Dictionary<Vector3, Space> ClosedList  = new Dictionary<Vector3, Space>();
@@ -323,17 +371,27 @@ public class Board
 
             foreach (Vector3 pos in rangeSet)
             {
-                if (IsValidSpace(MapData, new Vector3(pos.x + SpaceWidth, pos.y, pos.z)))
-                    tempSet.Add(new Vector3(pos.x + SpaceWidth, pos.y, pos.z));
-
-                if (IsValidSpace(MapData, new Vector3(pos.x - SpaceWidth, pos.y, pos.z)))
-                    tempSet.Add(new Vector3(pos.x - SpaceWidth, pos.y, pos.z));
-
-                if (IsValidSpace(MapData, new Vector3(pos.x, pos.y, pos.z + SpaceLength)))
-                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z + SpaceLength));
-
-                if (IsValidSpace(MapData, new Vector3(pos.x, pos.y, pos.z - SpaceLength)))
-                    tempSet.Add(new Vector3(pos.x, pos.y, pos.z - SpaceLength));
+                Vector3 map_pos = new Vector3(pos.x, pos.y, pos.z);
+                if (MapData[map_pos].Walls["north"] == "no-wall") {
+                    if (IsValidSpace(MapData, new Vector3(pos.x, pos.y, pos.z + SpaceLength))) {
+                        tempSet.Add(new Vector3(pos.x, pos.y, pos.z + SpaceLength));
+                    }
+                }
+                if (MapData[map_pos].Walls["east"] == "no-wall") {
+                    if (IsValidSpace(MapData, new Vector3(pos.x + SpaceWidth, pos.y, pos.z))){
+                        tempSet.Add(new Vector3(pos.x + SpaceWidth, pos.y, pos.z));
+                    }
+                }
+                if (MapData[map_pos].Walls["south"] == "no-wall") {
+                    if (IsValidSpace(MapData, new Vector3(pos.x, pos.y, pos.z - SpaceLength))) {
+                        tempSet.Add(new Vector3(pos.x, pos.y, pos.z - SpaceLength));
+                    }
+                }
+                if (MapData[map_pos].Walls["west"] == "no-wall") {
+                    if (IsValidSpace(MapData, new Vector3(pos.x - SpaceWidth, pos.y, pos.z))){
+                        tempSet.Add(new Vector3(pos.x - SpaceWidth, pos.y, pos.z));
+                    }
+                }
             }
 
             rangeSet.UnionWith(tempSet);
@@ -357,9 +415,10 @@ public class Board
     {
         foreach (Vector3 key in map.Keys)
         {
-            if (key == position)
+            if (key == position) // does position being checked exist in map?
             {
-                return true;
+                // Need to check to see if a wall exists in this direction?
+                return true; // tile exists so return can travel to.
             }
         }
         return false;
