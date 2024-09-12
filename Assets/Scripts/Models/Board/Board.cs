@@ -276,10 +276,10 @@ public class Board
     {
         var cardinalDirections = new List<Dictionary<string, int>>
         {
-            new Dictionary<string, int> { { "x", 0 }, { "z", SpaceLength } },
-            new Dictionary<string, int> { { "x", SpaceWidth }, { "z", 0 } },
-            new Dictionary<string, int> { { "x", 0 }, { "z", -SpaceLength } },
-            new Dictionary<string, int> { { "x", -SpaceWidth }, { "z", 0 } }
+            new Dictionary<string, int> { { "x", 0 }, { "z", SpaceLength }, {"wall_x", 0}, {"wall_z", SpaceLength/2} },
+            new Dictionary<string, int> { { "x", SpaceWidth }, { "z", 0 }, {"wall_x", SpaceLength/2}, {"wall_z", 0} },
+            new Dictionary<string, int> { { "x", 0 }, { "z", -SpaceLength }, {"wall_x", 0}, {"wall_z", -SpaceLength/2} },
+            new Dictionary<string, int> { { "x", -SpaceWidth }, { "z", 0 }, {"wall_x", -SpaceLength/2}, {"wall_z", 0} }
         }; 
 
         foreach (var direction in cardinalDirections)
@@ -287,9 +287,13 @@ public class Board
             float newX = current.x + direction["x"];
             float newZ = current.z + direction["z"];
 
-            Vector3 newLocation = new Vector3(newX, 0, newZ);
+            float wallX = current.x + direction["wall_x"];
+            float wallZ = current.z + direction["wall_z"];
 
-            if (MapData.ContainsKey(newLocation) && !Closed.ContainsKey(newLocation))
+            Vector3 newLocation = new Vector3(newX, 0, newZ);
+            Vector3 wallLocation = new Vector3(wallX, 0, wallZ);
+
+            if (MapData.ContainsKey(newLocation) && !Closed.ContainsKey(newLocation) && !WallData.ContainsKey(wallLocation))
             {
                 Space neighbor = MapData[newLocation];
 
