@@ -39,7 +39,7 @@ public class Board
         _GameBoardWallContainer = new GameObject("Walls");
         _Entities = new List<Entity>();
 
-        string path = Path.Combine(Application.dataPath, "Maps/test.json");
+        string path = Path.Combine(Application.dataPath, "Maps/meadow.json");
 
         if (File.Exists(path))
         {
@@ -111,7 +111,7 @@ public class Board
     {
 
         Dictionary<Vector3, Space> spaces = new Dictionary<Vector3, Space>();
-        for (int row = 0; row < int.Parse(jsonMapData.cols); row++)
+        for (int row = 0; row < int.Parse(jsonMapData.cols); row++) // ROWS & COLS MESSED UP TODO: FIX THIS < ----------------------
         {
             for (int col = 0; col < int.Parse(jsonMapData.rows); col++)
             {
