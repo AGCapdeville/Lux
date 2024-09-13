@@ -14,6 +14,7 @@ public class Space
 {
     // Properties
     public GameObject SpaceGameObject { get; set; }
+    public GameObject TerrainGameObject { get; set; }
     public SpaceBehavior SpaceBehaviorScript { get; set; }
     public Vector3 Position { get; set; }
     public int G { get; set; }
@@ -45,6 +46,7 @@ public class Space
         
         Terrain = terrain;
 
+
         // update to use terrain for spaces:
         SpaceGameObject = GameObject.Instantiate(
                             Resources.Load<GameObject>("Prefabs/Space"),
@@ -57,6 +59,16 @@ public class Space
 
         // Group all spaces under the board
         SpaceGameObject.transform.parent = board.transform;
+
+        // update to use terrain for spaces:
+        TerrainGameObject = GameObject.Instantiate(
+                            Resources.Load<GameObject>("Prefabs/Terrain"),
+                            position,
+                            Quaternion.identity
+                        );
+
+        TerrainGameObject.transform.parent = board.transform;
+
     }
 
 
