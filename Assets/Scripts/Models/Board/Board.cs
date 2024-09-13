@@ -43,7 +43,6 @@ public class Board
 
         if (File.Exists(path))
         {
-            // Debug.Log($"Loaded, meadow.json at {path}");
             string json = File.ReadAllText(path);
             JSONMapData jsonMapData = JsonConvert.DeserializeObject<JSONMapData>(json);
 
@@ -111,9 +110,9 @@ public class Board
     {
 
         Dictionary<Vector3, Space> spaces = new Dictionary<Vector3, Space>();
-        for (int row = 0; row < int.Parse(jsonMapData.cols); row++) // ROWS & COLS MESSED UP TODO: FIX THIS < ----------------------
+        for (int row = 0; row < int.Parse(jsonMapData.rows); row++)
         {
-            for (int col = 0; col < int.Parse(jsonMapData.rows); col++)
+            for (int col = 0; col < int.Parse(jsonMapData.cols); col++)
             {
                 Dictionary<string, string> walls = new Dictionary<string, string>();
                 JSONTileData tile = jsonMapData.map[row + ",0," + col];
@@ -132,7 +131,7 @@ public class Board
                     );
             }
         }
-        DrawGridLines(int.Parse(jsonMapData.cols), int.Parse(jsonMapData.rows));
+        DrawGridLines(int.Parse(jsonMapData.rows), int.Parse(jsonMapData.cols));
         return spaces;
     }
 
