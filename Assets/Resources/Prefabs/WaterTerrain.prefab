@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5892463271960109232}
   m_Layer: 0
-  m_Name: Terrain
+  m_Name: WaterTerrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,8 +61,8 @@ Transform:
   m_GameObject: {fileID: 6096784508134361195}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2, z: 0}
-  m_LocalScale: {x: 10, y: 3, z: 10}
+  m_LocalPosition: {x: 0, y: -2.3, z: 0}
+  m_LocalScale: {x: 10, y: 2.7, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5892463271960109232}
@@ -95,7 +95,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1dca761b0b1ab477d89908dbddd748b7, type: 2}
+  - {fileID: 2100000, guid: ccded8acdfa7f48f7b3d14a5dbfb234b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 7494155410153074518}
   - component: {fileID: 5725789574045153037}
   m_Layer: 0
-  m_Name: SubTerrain
+  m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

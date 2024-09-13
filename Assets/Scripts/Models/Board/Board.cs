@@ -39,7 +39,7 @@ public class Board
         _GameBoardWallContainer = new GameObject("Walls");
         _Units = new List<Unit>();
 
-        string path = Path.Combine(Application.dataPath, "Maps/meadow.json");
+        string path = Path.Combine(Application.dataPath, "Maps/ruin.json");
 
         if (File.Exists(path))
         {

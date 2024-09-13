@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     private bool _grid_visible;
 
     public Transform heroTransform; // The hero's transform
-    public int HeroMovement = 2;
+    public int HeroMovement = 10;
 
     private static int _UnitIDCounter; // testing static access
     private static GameManager _instance;

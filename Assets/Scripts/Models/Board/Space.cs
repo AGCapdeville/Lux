@@ -60,13 +60,22 @@ public class Space
         // Group all spaces under the board
         SpaceGameObject.transform.parent = board.transform;
 
-        // update to use terrain for spaces:
-        TerrainGameObject = GameObject.Instantiate(
-                            Resources.Load<GameObject>("Prefabs/Terrain"),
-                            position,
-                            Quaternion.identity
-                        );
-
+        if (terrain == "river") {
+            TerrainGameObject = GameObject.Instantiate(
+                                Resources.Load<GameObject>("Prefabs/WaterTerrain"),
+                                position,
+                                Quaternion.identity
+                            );
+        } else {
+            TerrainGameObject = GameObject.Instantiate(
+                                Resources.Load<GameObject>("Prefabs/Terrain"),
+                                position,
+                                Quaternion.identity
+                            );
+            Transform terrainObjectTransform = TerrainGameObject.transform.Find("TerrainObject");
+            terrainObjectTransform.GetComponent<Renderer>().material = Resources.Load<Material>("Materials/" + terrain);
+        }
+        // Add Terrain to Board
         TerrainGameObject.transform.parent = board.transform;
 
     }
