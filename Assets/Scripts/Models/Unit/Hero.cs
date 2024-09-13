@@ -13,7 +13,7 @@ public class Hero : Unit
         : base(id, movement, health, position, direction, "hero")
     {
         HeroName = heroName;
-        GameObject HeroPrefab = Resources.Load<GameObject>(prefabName);
+        GameObject HeroPrefab = Resources.Load<GameObject>("Prefabs/" + prefabName);
         HeroGameObject = GameObject.Instantiate(HeroPrefab, Vector3.zero, Quaternion.identity);
     }
 }

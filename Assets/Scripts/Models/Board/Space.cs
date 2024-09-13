@@ -47,7 +47,7 @@ public class Space
 
         // update to use terrain for spaces:
         SpaceGameObject = GameObject.Instantiate(
-                            Resources.Load<GameObject>("Space"),
+                            Resources.Load<GameObject>("Prefabs/Space"),
                             position,
                             Quaternion.identity
                         );

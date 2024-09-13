@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
             Vector3.zero,
             Direction.North,
             "Orion",
-            "Triangle"
+            "Triangle" // Prototype Prefab
         );
         _Player01 = new Player(0, "P1", playerHero);
         _Board.AddUnit(playerHero, playerHero.Position);
@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
 
 
         // CAMERA ------------------------------------------------- START
-        // _gameCamera = Instantiate(Resources.Load<GameObject>("MainCamera"));
+        // _gameCamera = Instantiate(Resources.Load<GameObject>("Prefabs/MainCamera"));
         // _gameCamera.transform.position = new Vector3(rows / 2 * spaceWidth, 20, -(columns / 2 * spaceWidth));
         // CameraController cameraController = _gameCamera.GetComponent<CameraController>();
         // cameraController.Spawn(new Vector3(rows / 2 * spaceWidth, 5, columns / 2 * spaceHeight), 0.125f);

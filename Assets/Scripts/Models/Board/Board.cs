@@ -89,14 +89,14 @@ public class Board
         foreach (KeyValuePair<Vector3, string> wall in wallData) {
             if (Math.Abs(wall.Key.x) / 5 % 2 != 0) {
                 GameObject SpawnedWall = GameObject.Instantiate (
-                    Resources.Load<GameObject>("Wall"),
+                    Resources.Load<GameObject>("Prefabs/Wall"),
                     new Vector3(wall.Key.x, wall.Key.y, wall.Key.z),
                     Quaternion.Euler(0, 90, 0) // rotate to align with the z-axis
                 );
                 SpawnedWall.transform.parent = _GameBoardWallContainer.transform;
             } else {
                 GameObject SpawnedWall = GameObject.Instantiate (
-                    Resources.Load<GameObject>("Wall"),
+                    Resources.Load<GameObject>("Prefabs/Wall"),
                     new Vector3(wall.Key.x, wall.Key.y, wall.Key.z),
                     Quaternion.identity // rotate to align with the z-axis
                 );

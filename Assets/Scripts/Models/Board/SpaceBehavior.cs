@@ -31,8 +31,8 @@ public class SpaceBehavior : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
 
         _renderer = GetComponent<Renderer>();
-        _hoverTile = Resources.Load<Material>("YellowTile");
-        _movementTile = Resources.Load<Material>("BlueTile");
+        _hoverTile = Resources.Load<Material>("Materials/YellowTile");
+        _movementTile = Resources.Load<Material>("Materials/BlueTile");
     }
 
     public void SetType(SpaceType newType)
