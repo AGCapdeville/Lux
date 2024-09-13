@@ -29,9 +29,7 @@ public class UnitLogic : MonoBehaviour
     {   
         if (route.Count > 0 ) {   
             moving = true;
-            
             target ??= route.Dequeue();
-            
         }
 
         if (target != null && Vector3.Distance(transform.position, target.Position) != 0) {
@@ -42,14 +40,9 @@ public class UnitLogic : MonoBehaviour
             Vector3 lookVector = target.Position - transform.position;
 
             if ( lookVector != Vector3.zero || route.Count == 0 ) {
-            
                 transform.forward = target.Position - transform.position;
-
             }
 
-
-            
-            
         }
         else {
             target = null;

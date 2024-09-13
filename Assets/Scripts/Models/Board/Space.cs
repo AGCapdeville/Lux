@@ -3,13 +3,11 @@ using UnityEngine;
 using System.Collections.Generic;
 using Scripts.Enums;
 
-public enum SpaceEnum
+public enum SpaceState
 {
     Empty = 0,
-    Block = 1,
-    Player = 2,
-    Enemy = 3
-    // Add more mappings as needed
+    Occupied = 1,
+    Block = 2
 }
 
 public class Space
@@ -22,9 +20,9 @@ public class Space
     public double H { get; set; }
     public double F { get; set; }
     public Space Prev { get; set; }
-    public SpaceEnum SpaceMarking { get; set; }
+    public SpaceState State { get; set; }
     public int Cost { get; set; }
-    public Entity entity { get; set; }
+    public Unit unit { get; set; }
 
     public Dictionary<string, string> Walls { get; set; }
 
@@ -38,9 +36,13 @@ public class Space
         F = 0;
         Cost = cost;
         Prev = null;
-        SpaceMarking = SpaceEnum.Empty;
+
         Position = position;
+        
+        State = SpaceState.Empty;
+        
         Walls = walls;
+        
         Terrain = terrain;
 
         // update to use terrain for spaces:
@@ -55,8 +57,6 @@ public class Space
 
         // Group all spaces under the board
         SpaceGameObject.transform.parent = board.transform;
-
-        // render walls!
     }
 
 

@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     public Transform heroTransform; // The hero's transform
     public int HeroMovement = 2;
 
-    private static int _EntityIDCounter; // testing static access
+    private static int _UnitIDCounter; // testing static access
     private static GameManager _instance;
     public static GameManager Instance
     {
@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        _EntityIDCounter = 0;
+        _UnitIDCounter = 0;
 
         _player_clicked = false;
         _grid_visible = false;
@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
 
         // Create Hero for Player & Add Hero to Board -------------- START
         Hero playerHero = new Hero(
-            _EntityIDCounter++,
+            _UnitIDCounter++,
             HeroMovement,
             100,
             Vector3.zero,
@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
             "Triangle"
         );
         _Player01 = new Player(0, "P1", playerHero);
-        _Board.AddEntity(playerHero);
+        _Board.AddUnit(playerHero, playerHero.Position);
         // Create Hero for Player & Add Hero to Board -------------- END
 
 
@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour
 
     public void GameBoardHover(Vector3 position)
     {
-        Hero h = (Hero)_Board.GetEntity(position, "hero");
+        Hero h = (Hero)_Board.GetUnit(position, "hero");
         if (h != null && !_grid_visible && !_player_clicked)
         {
             _Board.DisplayHeroGrid(h);
@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour
 
     public void GameBoardHoverExit(Vector3 position)
     {
-        Hero h = (Hero)_Board.GetEntity(position, "hero");
+        Hero h = (Hero)_Board.GetUnit(position, "hero");
         if (h != null && _grid_visible && !_player_clicked)
         {
             _Board.HideMovementRange(h);
@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour
 
     public void GameBoardClick(GameObject SpaceObject, SpaceType type)
     {
-        Hero h = (Hero)_Board.GetEntity(SpaceObject.transform.position, "hero");
+        Hero h = (Hero)_Board.GetUnit(SpaceObject.transform.position, "hero");
         if (h != null)
         {
             _player_clicked = !_player_clicked;
@@ -149,7 +149,7 @@ public class GameManager : MonoBehaviour
                 {    
                     Debug.Log(i.SpaceGameObject.transform.position);
                 }
-                _Board.UpdateEnity((Entity)_Player01.Hero, SpaceObject.transform.position);
+                _Board.UpdateUnit((Unit)_Player01.Hero, SpaceObject.transform.position);
                 _Player01.MoveTo(SpaceObject.transform.position, route);
                 _Player01.UpdateMovementRange(_Board.GetMovementRange(_Player01.Hero));
             }

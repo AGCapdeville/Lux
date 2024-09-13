@@ -27,23 +27,11 @@ public class Player
     public bool SpaceIsInRange(Space targetSpace)
     {
         return Hero.MovementRange.Contains(targetSpace);
-
-        // foreach (Space i in Hero.MovementRange)
-        // {
-        //     if (i.SpaceGameObject.transform.position == tragetSpace.transform.position)
-        //     {
-        //         return true;
-        //     }
-        // }
-
-        // return false;
     }
 
     public void MoveTo(Vector3 targetPosition, Queue<Space> path)
     {
-
         Hero.Position = targetPosition;
-        // Hero.HeroGameObject.transform.position = targetPosition;
         Hero.HeroGameObject.GetComponent<UnitLogic>().route = path;  
     }
 

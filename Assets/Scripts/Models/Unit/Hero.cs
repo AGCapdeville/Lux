@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hero : Entity
+public class Hero : Unit
 {
     public string HeroName { get; set; }
     public GameObject HeroGameObject { get; set; }

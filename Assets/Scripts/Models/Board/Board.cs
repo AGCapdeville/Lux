@@ -19,7 +19,7 @@ public class Board
 
     private GameObject _GameBoardObject { get; set; }
     private GameObject _GameBoardWallContainer { get; set; }
-    private List<Entity> _Entities { get; set; }
+    private List<Unit> _Units { get; set; }
 
     // FOR MAP DATA
     public Dictionary<Vector3, Space> MapData { get; set; }
@@ -37,7 +37,7 @@ public class Board
         // FETCH JSON MAP DATA:
         _GameBoardObject = new GameObject("Board");
         _GameBoardWallContainer = new GameObject("Walls");
-        _Entities = new List<Entity>();
+        _Units = new List<Unit>();
 
         string path = Path.Combine(Application.dataPath, "Maps/meadow.json");
 
@@ -135,18 +135,18 @@ public class Board
         return spaces;
     }
 
-    public void AddEntity(Entity e)
+    public void AddUnit(Unit newUnit, Vector3 location)
     {
-        _Entities.Add(e);
-        MapData[e.Position].entity = e;
+        _Units.Add(newUnit);
+        MapData[location].unit = newUnit;
     }
 
-    public void UpdateEnity(Entity e, Vector3 newPos)
+    public void UpdateUnit(Unit unit, Vector3 newLocation)
     {
-        if (_Entities.Contains(e))
+        if (_Units.Contains(unit))
         {
-            MapData[e.Position].entity = null;
-            MapData[newPos].entity = e;
+            MapData[unit.Position].unit = null;
+            MapData[newLocation].unit = unit;
         }
     }
 
@@ -221,13 +221,13 @@ public class Board
         renderer.material = gridMaterial;
     }
 
-    public Entity GetEntity(Vector3 position, string type)
+    public Unit GetUnit(Vector3 position, string type)
     {
-        foreach (Entity e in _Entities)
+        foreach (Unit unit in _Units)
         {
-            if (e.Position == position && e.Type == type)
+            if (unit.Position == position && unit.Type == type)
             {
-                return e;
+                return unit;
             }
         }
         return null;
@@ -296,7 +296,7 @@ public class Board
             {
                 Space neighbor = MapData[newLocation];
 
-                if (neighbor.SpaceMarking != SpaceEnum.Block)
+                if (neighbor.State != SpaceState.Block)
                 {
                     int G = neighbor.Cost + MapData[current].G;
                     double H = Math.Sqrt(Math.Pow(MapData[end].Position.x - newX, 2) + Math.Pow(MapData[end].Position.z - newZ, 2));

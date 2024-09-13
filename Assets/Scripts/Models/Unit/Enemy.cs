@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Enemy : Entity
+public class Enemy : Unit
 {
     public string EnemyType { get; set; }
 

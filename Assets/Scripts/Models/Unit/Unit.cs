@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Entity
+public class Unit
 {
     public int ID { get; set; }
     public float Movement { get; set; }
@@ -10,7 +10,7 @@ public class Entity
     public string Type { get; set; }
 
 
-    public Entity(int id, float movement, int health, Vector3 position, Direction direction, string type)
+    public Unit(int id, float movement, int health, Vector3 position, Direction direction, string type)
     {
         ID = id;
         Movement = movement;
