@@ -86,7 +86,7 @@ public class SpaceBehavior : MonoBehaviour
 
     void OnMouseDown()
     {
-        Debug.Log("SpaceBehavior(L:81):" + type);
+        // Debug.Log("SpaceBehavior(L:81):" + type);
         OnSpaceClick?.Invoke(gameObject, type);
     }
 }

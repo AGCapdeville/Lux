@@ -11,8 +11,8 @@ using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
-    private Board _Board;
-    private Player _Player01;
+    private Board _board;
+    private Player _player;
     private bool _player_clicked;
     private bool _grid_visible;
 
@@ -63,12 +63,10 @@ public class GameManager : MonoBehaviour
         // Game Board Setup START ------------------------------------ START
 
 
-        // _Board = new Board(rows, columns, spaceWidth, spaceHeight);
+        // _board = new Board(rows, columns, spaceWidth, spaceHeight);
         // Game Board Setup END ------------------------------------ END
 
-        // WIP : REDO BOARD
-
-        _Board = new Board();
+        _board = new Board();
 
         // Create Hero for Player & Add Hero to Board -------------- START
         Hero playerHero = new Hero(
@@ -80,8 +78,9 @@ public class GameManager : MonoBehaviour
             "Orion",
             "Triangle" // Prototype Prefab
         );
-        _Player01 = new Player(0, "P1", playerHero);
-        _Board.AddUnit(playerHero, playerHero.Position);
+        _player = new Player(0, "P1");
+        _player.AddHeroToParty(playerHero);
+        _board.AddUnit(playerHero, playerHero.Position);
         // Create Hero for Player & Add Hero to Board -------------- END
 
 
@@ -111,47 +110,52 @@ public class GameManager : MonoBehaviour
 
     public void GameBoardHover(Vector3 position)
     {
-        Hero h = (Hero)_Board.GetUnit(position, "hero");
+        Hero h = (Hero)_board.GetUnit(position);
         if (h != null && !_grid_visible && !_player_clicked)
         {
-            _Board.DisplayHeroGrid(h);
+            _board.DisplayHeroGrid(h);
             _grid_visible = true;
         }
     }
 
     public void GameBoardHoverExit(Vector3 position)
     {
-        Hero h = (Hero)_Board.GetUnit(position, "hero");
+        Hero h = (Hero)_board.GetUnit(position);
         if (h != null && _grid_visible && !_player_clicked)
         {
-            _Board.HideMovementRange(h);
+            _board.HideMovementRange(h);
             _grid_visible = false;
         }
     }
 
+    // Need to refine to movement tiles only later.. although it may already do that
     public void GameBoardClick(GameObject SpaceObject, SpaceType type)
     {
-        Hero h = (Hero)_Board.GetUnit(SpaceObject.transform.position, "hero");
-        if (h != null)
+        Hero h = (Hero)_board.GetUnit(SpaceObject.transform.position);
+
+        if (h != null) // clicked unit on board to select them
         {
+            // store hero into gamemanager as selected hero
+            _player.SelectedHero = h.HeroName;
             _player_clicked = !_player_clicked;
         }
-        else if (_player_clicked)
+        else if (_player_clicked) // resolve clicking on movment tile
         {
-            _Board.HideMovementRange(_Player01.Hero);
+            _board.HideMovementRange(_player.Party[_player.SelectedHero]);
             if (type == SpaceType.Movement) 
             {   
                 
-                Queue<Space> route = _Board.FindPath(_Player01.Hero.HeroGameObject.transform.position, SpaceObject.transform.position);
-                Debug.Log(_Board.FindPath(_Player01.Hero.HeroGameObject.transform.position, SpaceObject.transform.position).ToString());
+                Queue<Space> route = _board.FindPath(
+                    _player.Party[_player.SelectedHero].HeroGameObject.transform.position,
+                     SpaceObject.transform.position
+                );
                 
-                foreach(var i in _Board.FindPath(_Player01.Hero.HeroGameObject.transform.position, SpaceObject.transform.position))
-                {    
-                    Debug.Log(i.SpaceGameObject.transform.position);
-                }
-                _Board.UpdateUnit((Unit)_Player01.Hero, SpaceObject.transform.position);
-                _Player01.MoveTo(SpaceObject.transform.position, route);
-                _Player01.UpdateMovementRange(_Board.GetMovementRange(_Player01.Hero));
+                // Update MapData of Board to have Unit on respective space
+                _board.UpdateUnit(_player.Party[_player.SelectedHero], SpaceObject.transform.position);
+                
+                _player.MoveTo(SpaceObject.transform.position, route, _player.Party[_player.SelectedHero]);
+                
+                _player.UpdateMovementRange(_board.GetMovementRange(_player.Party[_player.SelectedHero]), _player.Party[_player.SelectedHero]);
             }
             
             _player_clicked = false;

@@ -150,6 +150,7 @@ public class Board
         }
     }
 
+
     // <summary>Draws grid lines onto the board.</summary>
     public void DrawGridLines(int Rows, int Columns)
     {
@@ -221,11 +222,11 @@ public class Board
         renderer.material = gridMaterial;
     }
 
-    public Unit GetUnit(Vector3 position, string type)
+    public Unit GetUnit(Vector3 position)
     {
         foreach (Unit unit in _Units)
         {
-            if (unit.Position == position && unit.Type == type)
+            if (unit.Position == position)
             {
                 return unit;
             }

@@ -1,43 +1,40 @@
-
 using UnityEngine;
 using System.Collections.Generic;
-
 using Vector3 = UnityEngine.Vector3;
-using Quaternion = UnityEngine.Quaternion;
-using System.Runtime.ExceptionServices;
-using UnityEngine.Rendering;
-using Unity.VisualScripting;
-using System;
-using UnityEngine.AI;
 
 public class Player
 {
     public int ID { get; }
     public string Name { get; }
-    public Hero Hero { set; get; }
+    public Dictionary<string, Hero> Party { get; }
+    public string SelectedHero { set; get; }
 
     // Constructor to initialize event_id and event_name
-    public Player(int id, string name, Hero hero)
+    public Player(int id, string name)
     {
         ID = id;
         Name = name;
-        Hero = hero;
+        Party = new Dictionary<string, Hero>();
     }
 
-    public bool SpaceIsInRange(Space targetSpace)
-    {
-        return Hero.MovementRange.Contains(targetSpace);
+    public void AddHeroToParty(Hero hero) {
+        Party.Add(hero.HeroName, hero);
     }
 
-    public void MoveTo(Vector3 targetPosition, Queue<Space> path)
+    public bool SpaceIsInRange(Hero hero, Space targetSpace)
     {
-        Hero.Position = targetPosition;
-        Hero.HeroGameObject.GetComponent<UnitLogic>().route = path;  
+        return Party[hero.HeroName].MovementRange.Contains(targetSpace);
     }
 
-    public void UpdateMovementRange(HashSet<Space> newMoveRange)
+    public void MoveTo(Vector3 targetPosition, Queue<Space> path, Hero hero)
     {
-        Hero.MovementRange = newMoveRange;
+        Party[hero.HeroName].Position = targetPosition;
+        Party[hero.HeroName].HeroGameObject.GetComponent<UnitLogic>().route = path;  
+    }
+
+    public void UpdateMovementRange(HashSet<Space> newMoveRange, Hero hero)
+    {
+        Party[hero.HeroName].MovementRange = newMoveRange;
     }
 
 }
