@@ -28,7 +28,7 @@ public class SpaceBehavior : MonoBehaviour
     private void Start()
     {
         audioManager = FindObjectOfType<AudioManager>();
-        gameManager = FindObjectOfType<GameManager>();
+        //gameManager = FindObjectOfType<GameManager>();
 
         _renderer = GetComponent<Renderer>();
         _hoverTile = Resources.Load<Material>("Materials/YellowTile");
