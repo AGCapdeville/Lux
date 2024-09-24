@@ -6,10 +6,12 @@ using UnityEngine;
 public class MouseObserver : MonoBehaviour
 {
     private GameManager GM;
+    private InputManager IM;
 
     void Start() 
     {
-        GM = GameManager.Instance;
+        GM = GameManager._instance;
+        IM = InputManager.Instance;
     }
     void OnEnable()
     {
@@ -32,18 +34,18 @@ public class MouseObserver : MonoBehaviour
     {
         // Need to reach out to the Game Manager, to figure out whats here:
         // (int, int) position = ((int)spaceObject.transform.position.x, (int)spaceObject.transform.position.z);
-        GM.GameBoardHover(spaceObject.transform.position);
+        IM.GameBoardHover(spaceObject.transform.position);
     }
 
     private void HandleSpaceHoverExit(GameObject spaceObject)
     {
-        GM.GameBoardHoverExit(spaceObject.transform.position);
+        IM.GameBoardHoverExit(spaceObject.transform.position);
         // Additional logic for when hovering over a space object ends
     }
 
     private void HandleSpaceClick(GameObject spaceObject, SpaceType type)
     {
-        GM.GameBoardClick(spaceObject, type);
+        IM.GameBoardClick(spaceObject, type);
         //Will process the gameboard click based on whihc space was clicked
     }
 

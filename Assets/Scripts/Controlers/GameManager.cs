@@ -2,165 +2,87 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using JetBrains.Annotations;
 using Scripts.Enums;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-public class GameManager : MonoBehaviour
+public class  GameManager : MonoBehaviour
 {
-    private Board _board;
-    private Player _player;
-    private bool _player_clicked;
-    private bool _grid_visible;
-
-    public Transform heroTransform; // The hero's transform
-    public int HeroMovement = 10;
-
+    public Board _Board { get; private set; }
+    public Player _Player { get; private set; }
     private static int _UnitIDCounter; // testing static access
-    private static GameManager _instance;
-    public static GameManager Instance
+    public static  GameManager _instance { get; private set; }
+
+    public GameState _current { get; private set; }
+    private GameState _previous; 
+
+    public  bool player_clicked;
+    public  bool hero_grid_visible;
+
+    [SerializeField] private string _MapPath; 
+
+    delegate void sceneLoad();
+
+    public void Awake()
     {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<GameManager>();
-            }
-            return _instance;
-        }
-    }
-
-
-    void Awake()
-    {
-        _UnitIDCounter = 0;
-
-        _player_clicked = false;
-        _grid_visible = false;
-
-        // GAME MANAGER singelton logic ------------------------------------
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject); // Only allow one GameManager instance
-        }
-        else
+        if(_instance == null)
         {
             _instance = this;
-        }
-        // GAME MANAGER singelton logic ------------------------------------
-    }
-
-
-    void Start()
-    {
-        // Lock the cursor and make it invisible
-        // UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-        // UnityEngine.Cursor.visible = false;
-
-        // Game Board Setup START ------------------------------------ START
-
-
-        // _board = new Board(rows, columns, spaceWidth, spaceHeight);
-        // Game Board Setup END ------------------------------------ END
-
-        _board = new Board();
-
-        // Create Hero for Player & Add Hero to Board -------------- START
-        Hero playerHero = new Hero(
-            _UnitIDCounter++,
-            HeroMovement,
-            100,
-            Vector3.zero,
-            Direction.North,
-            "Orion",
-            "Triangle" // Prototype Prefab
-        );
-        _player = new Player(0, "P1");
-        _player.AddHeroToParty(playerHero);
-        _board.AddUnit(playerHero, playerHero.Position);
-        // Create Hero for Player & Add Hero to Board -------------- END
-
-
-
-
-        // CAMERA ------------------------------------------------- START
-        // _gameCamera = Instantiate(Resources.Load<GameObject>("Prefabs/MainCamera"));
-        // _gameCamera.transform.position = new Vector3(rows / 2 * spaceWidth, 20, -(columns / 2 * spaceWidth));
-        // CameraController cameraController = _gameCamera.GetComponent<CameraController>();
-        // cameraController.Spawn(new Vector3(rows / 2 * spaceWidth, 5, columns / 2 * spaceHeight), 0.125f);
-        // CAMERA ------------------------------------------------- END
-    }
-
-    public void ObjectInteract(string message, Vector3 targetPosition)
-    {
-        // Instruct the player to move to the clicked location
-        // player.MoveTo(targetPosition);
-        // Debug.Log("Object Interaction:" + message);
-
-        // TODO: Filter interations based on message or something.
-        // if (message == "movement_tile") {
-        //     DISP = false;
-        //     Player.HideMovementRange(Board);
-        //     Player.Move(new Vector3(targetPosition.x, 0f, targetPosition.z), Board);
-        // }
-    }
-
-    public void GameBoardHover(Vector3 position)
-    {
-        Hero h = (Hero)_board.GetUnit(position);
-        if (h != null && !_grid_visible && !_player_clicked)
+            DontDestroyOnLoad(gameObject);
+        } else
         {
-            _board.DisplayHeroGrid(h);
-            _grid_visible = true;
+            Destroy(gameObject);
         }
+
+        _UnitIDCounter = 0;
+        player_clicked = false;
+        hero_grid_visible = false;
+        SceneManager.sceneLoaded += loadLevel;
+        
+
     }
 
-    public void GameBoardHoverExit(Vector3 position)
-    {
-        Hero h = (Hero)_board.GetUnit(position);
-        if (h != null && _grid_visible && !_player_clicked)
+    public void loadLevel(Scene scene, LoadSceneMode mode)
+    {   
+        Debug.Log(scene);
+        Debug.Log(mode);
+        if (_current == GameState.CombatScreen)
         {
-            _board.HideMovementRange(h);
-            _grid_visible = false;
-        }
-    }
+            //Do we want to desytory the board object when we are done with it?
+            //Or do we want to just reinitalize all it's value and reconstruct the board?
+            _Board = new Board();
 
-    // Need to refine to movement tiles only later.. although it may already do that
-    public void GameBoardClick(GameObject SpaceObject, SpaceType type)
-    {
-        Hero h = (Hero)_board.GetUnit(SpaceObject.transform.position);
+            //Will there ever be more than one player? 
+            _Player = new Player(0, "Player 1"); 
 
-        if (h != null) // clicked unit on board to select them
-        {
-            // store hero into gamemanager as selected hero
-            _player.SelectedHero = h.HeroName;
-            _player_clicked = !_player_clicked;
-        }
-        else if (_player_clicked) // resolve clicking on movment tile
-        {
-            _board.HideMovementRange(_player.Party[_player.SelectedHero]);
-            if (type == SpaceType.Movement) 
-            {   
-                
-                Queue<Space> route = _board.FindPath(
-                    _player.Party[_player.SelectedHero].HeroGameObject.transform.position,
-                     SpaceObject.transform.position
+            //This will need to be removed eventually, somewhere else there should be a list of
+            //all potental heros that is passed to the game manager to initialize
+            Hero playerHero = new Hero(
+                _UnitIDCounter++,
+                10,
+                100,
+                Vector3.zero,
+                Direction.North,
+                "Orion",
+                "Triangle"
                 );
-                
-                // Update MapData of Board to have Unit on respective space
-                _board.UpdateUnit(_player.Party[_player.SelectedHero], SpaceObject.transform.position);
-                
-                _player.MoveTo(SpaceObject.transform.position, route, _player.Party[_player.SelectedHero]);
-                
-                _player.UpdateMovementRange(_board.GetMovementRange(_player.Party[_player.SelectedHero]), _player.Party[_player.SelectedHero]);
-            }
+
+            _Player.AddHeroToParty(playerHero);
             
-            _player_clicked = false;
-            _grid_visible = false;
+            //This should proably use the player to add to the board, instead of using the hero object
+            _Board.AddUnit(playerHero, playerHero.Position);
         }
+    }
+
+    public void changeState(GameState gameState)
+    {   
+        _previous = _current;
+        _current = gameState;
     }
 
 }
