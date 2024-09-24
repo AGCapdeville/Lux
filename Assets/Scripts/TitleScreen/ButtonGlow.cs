@@ -5,12 +5,7 @@ using UnityEditor.SearchService;
 
 public class ButtonGlow : MonoBehaviour
 {
-    // public Button myButton; // Reference to the Button component
-
-    // Start is called before the first frame update
     private Image myImage;
-    // private float start = 0f;
-    // private float end = 0f;
 
     private bool isFading = true;
     private PlayerInputActions _inputActions;
@@ -27,32 +22,21 @@ public class ButtonGlow : MonoBehaviour
         Debug.Log(gameObject.GetComponent<Image>());
         myImage = GetComponent<Image>();
         Debug.Log(myImage.color);
-        // myImage.color = Color.red;
     }
 
 
     private void OnEnable()
     {
         _inputActions.Enable();
-        // _inputActions.Camera.RotateLeft.performed += RotateCameraLeft;
         _inputActions.UI.Select.performed += EnterGame;
     }
 
     private void OnDisable()
     {
         _inputActions.Disable();
-        // _inputActions.Camera.RotateLeft.performed -= RotateCameraLeft;
         _inputActions.UI.Select.performed -= EnterGame;
     }
 
-
-
-
-    // private float calcDistance(float start, float end) 
-    // {
-    //     return Float.Distance(transform.localPosition, end) / Vector3.Distance(start, end);
-    // }
-    // Update is called once per frame
     void Update()
     {
         if (isFading) {
@@ -68,8 +52,6 @@ public class ButtonGlow : MonoBehaviour
         if (myImage.color.a > 0.9f) {
             isFading = true;
         }
-        // Color.Lerp(Color.red, Color.clear, calcDistance(startFadeIn, endFadeIn));
-
     }
 
 
@@ -83,16 +65,6 @@ public class ButtonGlow : MonoBehaviour
     {
         Debug.Log("Enter Game!");
         _sceneDirector.LoadScene("Combat", SceneDirector.GameState.CombatScreen);
-
-
-        // Make Button Flash, as though it was clicked
-        // Fade Animation for transition to next screen.. Maybe handle that in the Scene Director
-
-        // _targetOffset = Quaternion.Euler(0, -90f, 0) * _initialOffset;
-        // float zoomFactor = _ZOOM / Mathf.Abs(_targetOffset.y);
-        // _targetOffset = new Vector3(_targetOffset.x * zoomFactor, _ZOOM, _targetOffset.z * zoomFactor);
-
-        // StartRotation();
     }
 
 }
