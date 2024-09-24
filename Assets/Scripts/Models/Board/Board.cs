@@ -9,8 +9,6 @@ using Newtonsoft.Json;
 
 public class Board
 {
-    public GameObject WallObject { get; set; }
-
     public int SpaceWidth = 10;
     public int SpaceLength = 10;
 
@@ -46,15 +44,31 @@ public class Board
             string json = File.ReadAllText(path);
             JSONMapData jsonMapData = JsonConvert.DeserializeObject<JSONMapData>(json);
 
-            MapData = GenerateBoardSpaces(jsonMapData);
+            MapData = LoadGameBoardFromJSON(jsonMapData);
             WallData = FindWalls(MapData);
             SpawnWalls(WallData);
+
+            // temp solution for gameobjects:
+            addStoneColumn(new Vector3(10,0,10));
+
         }
         else
         {
             Debug.LogError($"Could not find meadow.json at {path}");
         }
         
+    }
+
+    private void addStoneColumn(Vector3 location) {
+
+        GameObject SpawnedStoneColumn = GameObject.Instantiate (
+            Resources.Load<GameObject>("Prefabs/StoneColumn"),
+            new Vector3(location.x, location.y, location.z),
+            Quaternion.identity
+        );
+
+        MapData[location].BoardGameObject = SpawnedStoneColumn;
+        MapData[location].State = SpaceState.Block;
     }
 
     private Dictionary<Vector3, string> FindWalls(Dictionary<Vector3, Space> mapData)
@@ -106,7 +120,7 @@ public class Board
     }
 
     // <summary>Creates the Board</summary>
-    public Dictionary<Vector3, Space> GenerateBoardSpaces(JSONMapData jsonMapData)
+    public Dictionary<Vector3, Space> LoadGameBoardFromJSON(JSONMapData jsonMapData)
     {
 
         Dictionary<Vector3, Space> spaces = new Dictionary<Vector3, Space>();
@@ -149,7 +163,6 @@ public class Board
             MapData[newLocation].unit = unit;
         }
     }
-
 
     // <summary>Draws grid lines onto the board.</summary>
     public void DrawGridLines(int Rows, int Columns)

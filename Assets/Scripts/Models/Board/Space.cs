@@ -15,6 +15,8 @@ public class Space
     // Properties
     public GameObject SpaceGameObject { get; set; }
     public GameObject TerrainGameObject { get; set; }
+
+    public GameObject BoardGameObject { get; set; }
     public SpaceBehavior SpaceBehaviorScript { get; set; }
     public Vector3 Position { get; set; }
     public int G { get; set; }
