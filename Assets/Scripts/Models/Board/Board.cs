@@ -434,8 +434,10 @@ public class Board
         {
             if (key == position) // does position being checked exist in map?
             {
-                // Need to check to see if a wall exists in this direction?
-                return true; // tile exists so return can travel to.
+                if (MapData[position].State != SpaceState.Block) {
+                    // Need to check to see if a wall exists in this direction?
+                    return true; // tile exists so return can travel to.
+                }
             }
         }
         return false;
