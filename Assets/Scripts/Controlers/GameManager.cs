@@ -69,13 +69,29 @@ public class  GameManager : MonoBehaviour
                 Vector3.zero,
                 Direction.North,
                 "Orion",
-                "Triangle"
+                "Hero"
                 );
 
             _Player.AddHeroToParty(playerHero);
             
             //This should proably use the player to add to the board, instead of using the hero object
             _Board.AddUnit(playerHero, playerHero.Position);
+
+
+            Enemy enemy = new Enemy(
+                _UnitIDCounter++,
+                10,
+                100,
+                new Vector3(30,0,20),
+                Direction.North,
+                "Nightmare",
+                "Nightmare"
+            );
+
+            Debug.Log(enemy.Position);
+
+            _Board.AddUnit(enemy, enemy.Position);
+
         }
     }
 

@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Hero : Unit
 {
@@ -14,6 +14,6 @@ public class Hero : Unit
     {
         HeroName = heroName;
         GameObject HeroPrefab = Resources.Load<GameObject>("Prefabs/" + prefabName);
-        HeroGameObject = GameObject.Instantiate(HeroPrefab, Vector3.zero, Quaternion.identity);
+        HeroGameObject = GameObject.Instantiate(HeroPrefab, position, Quaternion.identity);
     }
 }
