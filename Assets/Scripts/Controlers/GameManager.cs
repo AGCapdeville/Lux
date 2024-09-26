@@ -78,17 +78,27 @@ public class  GameManager : MonoBehaviour
             _Board.AddUnit(playerHero, playerHero.Position);
 
 
+            // Hero ally = new Hero(
+            //     _UnitIDCounter++,
+            //     10,
+            //     100,
+            //     new Vector3(40, 0, 40),
+            //     Direction.North,
+            //     "Ally",
+            //     "Hero"
+            // );
+            // _Board.AddUnit(ally, ally.Position);
+
+
             Enemy enemy = new Enemy(
                 _UnitIDCounter++,
                 10,
                 100,
-                new Vector3(30,0,20),
+                new Vector3(30,0,30),
                 Direction.North,
                 "Nightmare",
                 "Nightmare"
             );
-
-            Debug.Log(enemy.Position);
 
             _Board.AddUnit(enemy, enemy.Position);
 

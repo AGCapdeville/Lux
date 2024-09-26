@@ -153,6 +153,7 @@ public class Board
     {
         _Units.Add(newUnit);
         MapData[location].unit = newUnit;
+        MapData[location].State = SpaceState.Occupied;
     }
 
     public void UpdateUnit(Unit unit, Vector3 newLocation)
@@ -160,7 +161,9 @@ public class Board
         if (_Units.Contains(unit))
         {
             MapData[unit.Position].unit = null;
+            MapData[unit.Position].State = SpaceState.Empty;
             MapData[newLocation].unit = unit;
+            MapData[newLocation].State = SpaceState.Occupied;
         }
     }
 
@@ -310,15 +313,50 @@ public class Board
             {
                 Space neighbor = MapData[newLocation];
 
-                if (neighbor.State != SpaceState.Block)
-                {
-                    int G = neighbor.Cost + MapData[current].G;
-                    double H = Math.Sqrt(Math.Pow(MapData[end].Position.x - newX, 2) + Math.Pow(MapData[end].Position.z - newZ, 2));
-                    double F = G + H;
+                if (neighbor.State != SpaceState.Block) {
+                    if (neighbor.State == SpaceState.Occupied) {
+                        if (neighbor.unit.Type == "hero") {
+                            int G = neighbor.Cost + MapData[current].G;
+                            double H = Math.Sqrt(Math.Pow(MapData[end].Position.x - newX, 2) + Math.Pow(MapData[end].Position.z - newZ, 2));
+                            double F = G + H;
 
-                    if (Open.ContainsKey(newLocation))
-                    {
-                        if (F < Open[newLocation].F)
+                            if (Open.ContainsKey(newLocation))
+                            {
+                                if (F < Open[newLocation].F)
+                                {
+                                    neighbor.G = G;
+                                    neighbor.H = H;
+                                    neighbor.F = F;
+                                    neighbor.Prev = MapData[current];
+                                    Open[newLocation] = neighbor;
+                                }
+                            }
+                            else 
+                            {
+                                neighbor.G = G;
+                                neighbor.H = H;
+                                neighbor.F = F;
+                                neighbor.Prev = MapData[current];
+                                Open[newLocation] = neighbor;
+                            }
+                        }
+                    } else {
+                        int G = neighbor.Cost + MapData[current].G;
+                        double H = Math.Sqrt(Math.Pow(MapData[end].Position.x - newX, 2) + Math.Pow(MapData[end].Position.z - newZ, 2));
+                        double F = G + H;
+
+                        if (Open.ContainsKey(newLocation))
+                        {
+                            if (F < Open[newLocation].F)
+                            {
+                                neighbor.G = G;
+                                neighbor.H = H;
+                                neighbor.F = F;
+                                neighbor.Prev = MapData[current];
+                                Open[newLocation] = neighbor;
+                            }
+                        }
+                        else 
                         {
                             neighbor.G = G;
                             neighbor.H = H;
@@ -327,13 +365,33 @@ public class Board
                             Open[newLocation] = neighbor;
                         }
                     }
-                    else 
-                    {
-                        neighbor.G = G;
-                        neighbor.H = H;
-                        neighbor.F = F;
-                        neighbor.Prev = MapData[current];
-                        Open[newLocation] = neighbor;
+                } else if (neighbor.State == SpaceState.Occupied) {
+                    if (neighbor.unit.Type == "hero") {
+
+                        int G = neighbor.Cost + MapData[current].G;
+                        double H = Math.Sqrt(Math.Pow(MapData[end].Position.x - newX, 2) + Math.Pow(MapData[end].Position.z - newZ, 2));
+                        double F = G + H;
+
+                        if (Open.ContainsKey(newLocation))
+                        {
+                            if (F < Open[newLocation].F)
+                            {
+                                neighbor.G = G;
+                                neighbor.H = H;
+                                neighbor.F = F;
+                                neighbor.Prev = MapData[current];
+                                Open[newLocation] = neighbor;
+                            }
+                        }
+                        else 
+                        {
+                            neighbor.G = G;
+                            neighbor.H = H;
+                            neighbor.F = F;
+                            neighbor.Prev = MapData[current];
+                            Open[newLocation] = neighbor;
+                        }
+                    
                     }
                 }
             }
@@ -422,7 +480,6 @@ public class Board
             {
                 MovementSpaces.Add(MapData[position]);
             }
-            // Debug.Log("p:" + position.x);
         }
 
         return MovementSpaces;
@@ -432,11 +489,18 @@ public class Board
     {
         foreach (Vector3 key in map.Keys)
         {
-            if (key == position) // does position being checked exist in map?
+            if (key == position)
             {
-                if (MapData[position].State != SpaceState.Block) {
-                    // Need to check to see if a wall exists in this direction?
-                    return true; // tile exists so return can travel to.
+                if (MapData[position].State == SpaceState.Block) {
+                    return false;
+                } else if (MapData[position].State == SpaceState.Occupied) {
+                    if (MapData[position].unit.Type == "hero") {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return true;
                 }
             }
         }
