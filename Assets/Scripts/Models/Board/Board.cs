@@ -436,7 +436,16 @@ public class Board
 
     // Gets the spaces which the player can potentally move to and returns them.
     public HashSet<Space> GetMovementRange(Hero hero)
-    {
+    {   
+
+        var cardinalDirections = new List<Dictionary<string, int>>
+        {
+            new Dictionary<string, int> { { "x", 0 }, { "z", SpaceLength }, {"wall_x", 0}, {"wall_z", SpaceLength/2} },
+            new Dictionary<string, int> { { "x", SpaceWidth }, { "z", 0 }, {"wall_x", SpaceLength/2}, {"wall_z", 0} },
+            new Dictionary<string, int> { { "x", 0 }, { "z", -SpaceLength }, {"wall_x", 0}, {"wall_z", -SpaceLength/2} },
+            new Dictionary<string, int> { { "x", -SpaceWidth }, { "z", 0 }, {"wall_x", -SpaceLength/2}, {"wall_z", 0} }
+        }; 
+
         // Find all positions for movement range -------------------------
         HashSet<Vector3> rangeSet = new HashSet<Vector3> { hero.Position };
 
@@ -445,26 +454,20 @@ public class Board
             HashSet<Vector3> tempSet = new HashSet<Vector3>();
 
             foreach (Vector3 pos in rangeSet)
-            {
-                Vector3 map_pos = new Vector3(pos.x, pos.y, pos.z);
-                if (MapData[map_pos].Walls["north"] == "no-wall") {
-                    if (IsValidSpace(MapData, new Vector3(pos.x, pos.y, pos.z + SpaceLength))) {
-                        tempSet.Add(new Vector3(pos.x, pos.y, pos.z + SpaceLength));
-                    }
-                }
-                if (MapData[map_pos].Walls["east"] == "no-wall") {
-                    if (IsValidSpace(MapData, new Vector3(pos.x + SpaceWidth, pos.y, pos.z))){
-                        tempSet.Add(new Vector3(pos.x + SpaceWidth, pos.y, pos.z));
-                    }
-                }
-                if (MapData[map_pos].Walls["south"] == "no-wall") {
-                    if (IsValidSpace(MapData, new Vector3(pos.x, pos.y, pos.z - SpaceLength))) {
-                        tempSet.Add(new Vector3(pos.x, pos.y, pos.z - SpaceLength));
-                    }
-                }
-                if (MapData[map_pos].Walls["west"] == "no-wall") {
-                    if (IsValidSpace(MapData, new Vector3(pos.x - SpaceWidth, pos.y, pos.z))){
-                        tempSet.Add(new Vector3(pos.x - SpaceWidth, pos.y, pos.z));
+            {   
+                foreach (var direction in cardinalDirections) {
+                    
+                    float newX = pos.x + direction["x"];
+                    float newZ = pos.z + direction["z"];
+
+                    float wallX = pos.x + direction["wall_x"];
+                    float wallZ = pos.z + direction["wall_z"];
+                    
+                    Vector3 map_pos = new Vector3(newX, 0, newZ);
+                    Vector3 wallLocation = new Vector3(wallX, 0, wallZ);
+
+                    if (!WallData.ContainsKey(wallLocation) && IsValidSpace(MapData, map_pos)) {
+                        tempSet.Add(map_pos);
                     }
                 }
             }
@@ -508,8 +511,6 @@ public class Board
     }
 
 }
-
-
 
 
 // ------------------- OLD STUFF ----------------------------
