@@ -10,7 +10,7 @@ public class AudioManager : MonoBehaviour
     public Sound[] musicSounds, sfxSounds;
     public AudioSource musicSource, sfxSource;
 
-    public int MaxSFX = 4;
+    public int MaxSFX = 3;
     private int _CurrentSFX = 0;
 
 
