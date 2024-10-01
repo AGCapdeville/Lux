@@ -595,11 +595,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicSounds:
-  - name: Background
+  - name: Forest
     clip: {fileID: 8300000, guid: 2be5be9db0dd5dd4b96d4a54ca450d08, type: 3}
+  - name: PianoFade
+    clip: {fileID: 8300000, guid: 1e3546962790944d798be53889fb67a2, type: 3}
   sfxSounds:
   - name: Bing
     clip: {fileID: 8300000, guid: fb3e321ae59663b4c868b1630d996959, type: 3}
+  - name: Point
+    clip: {fileID: 8300000, guid: 072fbdb81bb6c412bb2961b0eb27b4a9, type: 3}
   musicSource: {fileID: 1091461025}
   sfxSource: {fileID: 1091461026}
 --- !u!4 &1091461024
@@ -799,7 +803,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0.488
       inSlope: 0
       outSlope: 0
       tangentMode: 0

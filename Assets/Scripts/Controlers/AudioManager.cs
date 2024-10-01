@@ -10,6 +10,10 @@ public class AudioManager : MonoBehaviour
     public Sound[] musicSounds, sfxSounds;
     public AudioSource musicSource, sfxSource;
 
+    public int MaxSFX = 4;
+    private int _CurrentSFX = 0;
+
+
     public void Awake()
     {
         if (Instance == null)
@@ -25,7 +29,7 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        PlayMusic("Background");
+        PlayMusic("PianoFade");
     }
 
     public void PlayMusic(string name)
@@ -45,6 +49,12 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySound(string name)
     {
+        if (_CurrentSFX >= MaxSFX)
+        {
+            Debug.Log("Max sound effects limit reached.");
+            return;
+        }
+        
         Sound s = Array.Find(sfxSounds, x => x.name == name);
 
         if (s == null)
@@ -53,8 +63,17 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            sfxSource.PlayOneShot(s.clip);
+            // sfxSource.PlayOneShot(s.clip, 0.1f);
+            sfxSource.PlayOneShot(s.clip, 0.1f);
+            _CurrentSFX++;
+            StartCoroutine(WaitForSoundToFinish(s.clip.length));
         }
+    }
+
+    private IEnumerator WaitForSoundToFinish(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        _CurrentSFX--;
     }
 
 }

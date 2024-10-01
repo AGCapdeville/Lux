@@ -64,8 +64,8 @@ public class SpaceBehavior : MonoBehaviour
             Debug.LogError("No Renderer component found on this GameObject.");
         }
 
-        if (!audioManager.sfxSource.isPlaying)
-            audioManager.PlaySound("Bing");
+        // if (!audioManager.sfxSource.isPlaying)
+        audioManager.PlaySound("Point"); 
     }
 
     void OnMouseExit()
