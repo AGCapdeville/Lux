@@ -47,21 +47,27 @@ public class InputManager : MonoBehaviour
 
     public void GameBoardHover(Vector3 position) 
     {
-        Hero h = (Hero)_GameManager._Board.GetUnit(position);
-        if (h != null && !_GameManager.hero_grid_visible && !_GameManager.player_clicked)
-        {
-            _GameManager._Board.DisplayHeroGrid(h);
-            _GameManager.hero_grid_visible = true;
+        Unit unit = _GameManager._Board.GetUnit(position);
+        if (unit != null && unit.Type == "hero") {
+            Hero h = (Hero)unit;
+            if (h != null && !_GameManager.hero_grid_visible && !_GameManager.player_clicked)
+            {
+                _GameManager._Board.DisplayHeroGrid(h);
+                _GameManager.hero_grid_visible = true;
+            }
         }
     }
 
     public void GameBoardHoverExit(Vector3 position)
     {
-        Hero h = (Hero)_GameManager._Board.GetUnit(position);
-        if (h != null && _GameManager.hero_grid_visible && !_GameManager.player_clicked)
-        {
-            _GameManager._Board.HideMovementRange(h);
-            _GameManager.hero_grid_visible = false;
+        Unit unit = _GameManager._Board.GetUnit(position);
+        if (unit != null && unit.Type == "hero") {
+            Hero h = (Hero)_GameManager._Board.GetUnit(position);
+            if (h != null && _GameManager.hero_grid_visible && !_GameManager.player_clicked)
+            {
+                _GameManager._Board.HideMovementRange(h);
+                _GameManager.hero_grid_visible = false;
+            }
         }
     }
 
@@ -79,7 +85,8 @@ public class InputManager : MonoBehaviour
         else if (_GameManager.player_clicked) // resolve clicking on movment tile
         {
             _GameManager._Board.HideMovementRange(_GameManager._Player.Party[_GameManager._Player.SelectedHero]);
-            if (type == SpaceType.Movement)
+
+            if (type == SpaceType.Movement && h == null)
             {   
                 
                 Queue<Space> route = _GameManager._Board.FindPath(
@@ -96,6 +103,9 @@ public class InputManager : MonoBehaviour
         
                 _GameManager._Player.SelectedHero = "";
             }
+
+            // new WIP
+            _GameManager._Player.SelectedHero = "";
             
             _GameManager.player_clicked = false;
             _GameManager.hero_grid_visible = false;
