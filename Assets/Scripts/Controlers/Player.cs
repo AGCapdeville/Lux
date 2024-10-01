@@ -15,6 +15,7 @@ public class Player
         ID = id;
         Name = name;
         Party = new Dictionary<string, Hero>();
+        SelectedHero = "";
     }
 
     public void AddHeroToParty(Hero hero) {

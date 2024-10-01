@@ -20,7 +20,6 @@ public class  GameManager : MonoBehaviour
 
     public GameState _current { get; private set; }
     private GameState _previous; 
-
     public  bool player_clicked;
     public  bool hero_grid_visible;
 
@@ -49,8 +48,8 @@ public class  GameManager : MonoBehaviour
 
     public void loadLevel(Scene scene, LoadSceneMode mode)
     {   
-        Debug.Log(scene);
-        Debug.Log(mode);
+        // Debug.Log(scene);
+        // Debug.Log(mode);
         if (_current == GameState.CombatScreen)
         {
             //Do we want to desytory the board object when we are done with it?
@@ -78,16 +77,17 @@ public class  GameManager : MonoBehaviour
             _Board.AddUnit(playerHero, playerHero.Position);
 
 
-            // Hero ally = new Hero(
-            //     _UnitIDCounter++,
-            //     10,
-            //     100,
-            //     new Vector3(40, 0, 40),
-            //     Direction.North,
-            //     "Ally",
-            //     "Hero"
-            // );
-            // _Board.AddUnit(ally, ally.Position);
+            Hero ally = new Hero(
+                _UnitIDCounter++,
+                10,
+                100,
+                new Vector3(40, 0, 40),
+                Direction.North,
+                "Ally",
+                "Hero"
+            );
+            _Player.AddHeroToParty(ally);
+            _Board.AddUnit(ally, ally.Position);
 
 
             Enemy enemy = new Enemy(

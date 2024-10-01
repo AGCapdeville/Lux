@@ -111,7 +111,7 @@ public class IsoCamera : MonoBehaviour
 
     private void RotateCameraLeft(InputAction.CallbackContext context)
     {
-        Debug.Log("Rotate Left");
+        // Debug.Log("Rotate Left");
 
         _targetOffset = Quaternion.Euler(0, -90f, 0) * _initialOffset;
         float zoomFactor = _ZOOM / Mathf.Abs(_targetOffset.y);
@@ -122,7 +122,7 @@ public class IsoCamera : MonoBehaviour
 
     private void RotateCameraRight(InputAction.CallbackContext context)
     {
-        Debug.Log("Rotate Right");
+        // Debug.Log("Rotate Right");
         _targetOffset = Quaternion.Euler(0, 90f, 0) * _initialOffset;
 
         float zoomFactor = _ZOOM / Mathf.Abs(_targetOffset.y);

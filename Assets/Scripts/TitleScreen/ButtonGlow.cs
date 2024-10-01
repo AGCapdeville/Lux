@@ -19,9 +19,9 @@ public class ButtonGlow : MonoBehaviour
 
     void Start()
     {
-        Debug.Log(gameObject.GetComponent<Image>());
+        // Debug.Log(gameObject.GetComponent<Image>());
         myImage = GetComponent<Image>();
-        Debug.Log(myImage.color);
+        // Debug.Log(myImage.color);
     }
 
 
@@ -57,13 +57,13 @@ public class ButtonGlow : MonoBehaviour
 
     // Doesn't seem to work TODO: FIX
     public void ClickEvent() {
-        Debug.Log("Enter Game Through Click!");
+        // Debug.Log("Enter Game Through Click!");
         _sceneDirector.LoadScene("Combat", GameState.CombatScreen);
     }
 
     private void EnterGame(InputAction.CallbackContext context)
     {
-        Debug.Log("Enter Game!");
+        // Debug.Log("Enter Game!");
         _sceneDirector.LoadScene("Combat", GameState.CombatScreen);
     }
 

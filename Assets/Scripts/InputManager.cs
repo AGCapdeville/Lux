@@ -15,7 +15,7 @@ public class InputManager : MonoBehaviour
 {
     public static InputManager Instance { get; private set; }
 
-    public static  GameManager _gmRewrite{ get; private set; }
+    public static  GameManager _GameManager{ get; private set; }
 
     public PlayerInputActions InputActions { get; private set; }
 
@@ -36,7 +36,7 @@ public class InputManager : MonoBehaviour
         InputActions = new PlayerInputActions();
         InputActions.Enable(); // Enable input actions
 
-        _gmRewrite = FindAnyObjectByType< GameManager>();
+        _GameManager = FindAnyObjectByType< GameManager>();
     }
 
     private void OnDestroy()
@@ -47,55 +47,58 @@ public class InputManager : MonoBehaviour
 
     public void GameBoardHover(Vector3 position) 
     {
-        Hero h = (Hero)_gmRewrite._Board.GetUnit(position);
-        if (h != null && !_gmRewrite.hero_grid_visible && !_gmRewrite.player_clicked)
+        Hero h = (Hero)_GameManager._Board.GetUnit(position);
+        if (h != null && !_GameManager.hero_grid_visible && !_GameManager.player_clicked)
         {
-            _gmRewrite._Board.DisplayHeroGrid(h);
-            _gmRewrite.hero_grid_visible = true;
+            _GameManager._Board.DisplayHeroGrid(h);
+            _GameManager.hero_grid_visible = true;
         }
     }
 
     public void GameBoardHoverExit(Vector3 position)
     {
-        Hero h = (Hero)_gmRewrite._Board.GetUnit(position);
-        if (h != null && _gmRewrite.hero_grid_visible && !_gmRewrite.player_clicked)
+        Hero h = (Hero)_GameManager._Board.GetUnit(position);
+        if (h != null && _GameManager.hero_grid_visible && !_GameManager.player_clicked)
         {
-            _gmRewrite._Board.HideMovementRange(h);
-            _gmRewrite.hero_grid_visible = false;
+            _GameManager._Board.HideMovementRange(h);
+            _GameManager.hero_grid_visible = false;
         }
     }
 
     public void GameBoardClick(GameObject SpaceObject, SpaceType type)
     {
-        Hero h = (Hero)_gmRewrite._Board.GetUnit(SpaceObject.transform.position);
+        Hero h = (Hero)_GameManager._Board.GetUnit(SpaceObject.transform.position);
 
-        if (h != null) // clicked unit on board to select them
+        if (h != null && _GameManager._Player.SelectedHero == "") // clicked unit on board to select them
         {
             // store hero into gamemanager as selected hero
-            _gmRewrite._Player.SelectedHero = h.HeroName;
-            _gmRewrite.player_clicked = !_gmRewrite.player_clicked;
+            _GameManager._Player.SelectedHero = h.HeroName;
+            _GameManager.player_clicked = !_GameManager.player_clicked;
+
         }
-        else if (_gmRewrite.player_clicked) // resolve clicking on movment tile
+        else if (_GameManager.player_clicked) // resolve clicking on movment tile
         {
-            _gmRewrite._Board.HideMovementRange(_gmRewrite._Player.Party[_gmRewrite._Player.SelectedHero]);
-            if (type == SpaceType.Movement) 
+            _GameManager._Board.HideMovementRange(_GameManager._Player.Party[_GameManager._Player.SelectedHero]);
+            if (type == SpaceType.Movement)
             {   
                 
-                Queue<Space> route = _gmRewrite._Board.FindPath(
-                    _gmRewrite._Player.Party[_gmRewrite._Player.SelectedHero].HeroGameObject.transform.position,
+                Queue<Space> route = _GameManager._Board.FindPath(
+                    _GameManager._Player.Party[_GameManager._Player.SelectedHero].HeroGameObject.transform.position,
                      SpaceObject.transform.position
                 );
                 
                 // Update MapData of Board to have Unit on respective space
-                _gmRewrite._Board.UpdateUnit(_gmRewrite._Player.Party[_gmRewrite._Player.SelectedHero], SpaceObject.transform.position);
+                _GameManager._Board.UpdateUnit(_GameManager._Player.Party[_GameManager._Player.SelectedHero], SpaceObject.transform.position);
                 
-                _gmRewrite._Player.MoveTo(SpaceObject.transform.position, route, _gmRewrite._Player.Party[_gmRewrite._Player.SelectedHero]);
-                
-                _gmRewrite._Player.UpdateMovementRange(_gmRewrite._Board.GetMovementRange(_gmRewrite._Player.Party[_gmRewrite._Player.SelectedHero]), _gmRewrite._Player.Party[_gmRewrite._Player.SelectedHero]);
+                _GameManager._Player.MoveTo(SpaceObject.transform.position, route, _GameManager._Player.Party[_GameManager._Player.SelectedHero]);
+        
+                _GameManager._Player.UpdateMovementRange(_GameManager._Board.GetMovementRange(_GameManager._Player.Party[_GameManager._Player.SelectedHero]), _GameManager._Player.Party[_GameManager._Player.SelectedHero]);
+        
+                _GameManager._Player.SelectedHero = "";
             }
             
-            _gmRewrite.player_clicked = false;
-            _gmRewrite.hero_grid_visible = false;
+            _GameManager.player_clicked = false;
+            _GameManager.hero_grid_visible = false;
         }
     }
 }
