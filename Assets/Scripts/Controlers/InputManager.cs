@@ -71,6 +71,18 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    public void GameBoardMovementTileHoverEnter(Vector3 position) 
+    {
+        Vector3 SelectedHeroPosition = _GameManager._Player.Party[_GameManager._Player.SelectedHero].Position;
+        Queue<Space> path = _GameManager._Board.FindPath(SelectedHeroPosition, position);
+        _GameManager._Board.DrawPath(path);
+    }
+
+    public void GameBoardMovementTileHoverExit(Vector3 position)
+    {
+        _GameManager._Board.DeletePath();
+    }
+
     public void GameBoardClick(GameObject SpaceObject, SpaceType type)
     {
         Hero h = (Hero)_GameManager._Board.GetUnit(SpaceObject.transform.position);
@@ -101,12 +113,9 @@ public class InputManager : MonoBehaviour
         
                 _GameManager._Player.UpdateMovementRange(_GameManager._Board.GetMovementRange(_GameManager._Player.Party[_GameManager._Player.SelectedHero]), _GameManager._Player.Party[_GameManager._Player.SelectedHero]);
         
-                _GameManager._Player.SelectedHero = "";
             }
 
-            // new WIP
-            _GameManager._Player.SelectedHero = "";
-            
+            _GameManager._Player.SelectedHero = "";            
             _GameManager.player_clicked = false;
             _GameManager.hero_grid_visible = false;
         }

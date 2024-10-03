@@ -5,9 +5,10 @@ using System.Collections.Generic;
 using Vector3 = UnityEngine.Vector3;
 using Scripts.Enums;
 using Newtonsoft.Json;
+using System.Linq;
 
 
-public class Board
+public class Board : MonoBehaviour
 {
     public int SpaceWidth = 10;
     public int SpaceLength = 10;
@@ -27,10 +28,10 @@ public class Board
     // private List<(int, int)> _Blocked_Locations;
 
     // FOR DRAWING line for pathing 
-    // private LineRenderer _lineRenderer;
-    // private GameObject _lineObj;
+    private LineRenderer _lineRenderer;
+    private GameObject _lineObj;
 
-    public Board()
+    public void Instantiate()
     {
         // FETCH JSON MAP DATA:
         _GameBoardObject = new GameObject("Board");
@@ -508,6 +509,38 @@ public class Board
             }
         }
         return false;
+    }
+
+    public void DrawPath(Queue<Space> path)
+    {
+        // _lineRenderer = null;
+        if (_lineRenderer == null)
+        {
+            GameObject lineObj = new GameObject("PathLine");
+            _lineRenderer = lineObj.AddComponent<LineRenderer>();
+
+            // Configure the LineRenderer
+            _lineRenderer.startWidth = 0.2f;
+            _lineRenderer.endWidth = 0.2f;
+            _lineRenderer.material = new Material(Shader.Find("Sprites/Default")); // Use a default material
+            _lineRenderer.positionCount = path.Count;
+            _lineRenderer.useWorldSpace = true;
+        }
+
+        Space[] queueArray = path.ToArray();  // Convert to array
+
+        for (int i = 0; i < queueArray.Length; i++) {
+            _lineRenderer.SetPosition(i, queueArray[i].Position);
+        }
+    }
+
+    public void DeletePath() {
+        if (_lineRenderer != null)
+        {
+            // Destroy the GameObject containing the LineRenderer
+            Destroy(_lineRenderer.gameObject);
+            _lineRenderer = null; // Clear reference
+        }
     }
 
 }

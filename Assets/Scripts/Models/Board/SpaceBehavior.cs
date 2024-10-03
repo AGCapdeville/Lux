@@ -15,7 +15,10 @@ public class SpaceBehavior : MonoBehaviour
     // Define a delegate for hover events
     public delegate void HoverAction(GameObject spaceObject);
     public static event HoverAction OnSpaceHoverEnter;
+    public static event HoverAction OnMovementTileHoverEnter;
     public static event HoverAction OnSpaceHoverExit;
+    public static event HoverAction OnMovementTileHoverExit;
+    
     public delegate void ClickAction(GameObject spaceObject, SpaceType type);
     public static event ClickAction OnSpaceClick;
 
@@ -57,7 +60,12 @@ public class SpaceBehavior : MonoBehaviour
             {
                 _renderer.material = _hoverTile;
                 OnSpaceHoverEnter?.Invoke(gameObject); // Trigger Hover Event
-            }
+            } 
+            else if (type == SpaceType.Movement) 
+            {
+                OnMovementTileHoverEnter?.Invoke(gameObject);
+            } 
+            
         }
         else
         {
@@ -76,7 +84,11 @@ public class SpaceBehavior : MonoBehaviour
             {
                 OnSpaceHoverExit?.Invoke(gameObject);
                 _renderer.materials = new Material[0];
-            }
+            }        
+            else if (type == SpaceType.Movement) 
+            {
+                OnMovementTileHoverExit?.Invoke(gameObject);
+            } 
         }
         else
         {

@@ -18,6 +18,8 @@ public class MouseObserver : MonoBehaviour
         // Subscribe to all of the GameObject Spaces
         SpaceBehavior.OnSpaceHoverEnter += HandleSpaceHoverEnter;
         SpaceBehavior.OnSpaceHoverExit += HandleSpaceHoverExit;
+        SpaceBehavior.OnMovementTileHoverEnter += HandleMovementTileHoverEnter;
+        SpaceBehavior.OnMovementTileHoverExit += HandleMovementTileHoverExit;
         SpaceBehavior.OnSpaceClick += HandleSpaceClick;
     }
 
@@ -26,6 +28,8 @@ public class MouseObserver : MonoBehaviour
         // Un-Subscribe to all of the GameObject Spaces
         SpaceBehavior.OnSpaceHoverEnter -= HandleSpaceHoverEnter;
         SpaceBehavior.OnSpaceHoverExit -= HandleSpaceHoverExit;
+        SpaceBehavior.OnMovementTileHoverEnter -= HandleMovementTileHoverEnter;
+        SpaceBehavior.OnMovementTileHoverExit -= HandleMovementTileHoverExit;
         SpaceBehavior.OnSpaceClick -= HandleSpaceClick;
 
     }
@@ -42,6 +46,20 @@ public class MouseObserver : MonoBehaviour
         IM.GameBoardHoverExit(spaceObject.transform.position);
         // Additional logic for when hovering over a space object ends
     }
+
+
+
+    private void HandleMovementTileHoverEnter(GameObject spaceObject)
+    {
+        IM.GameBoardMovementTileHoverEnter(spaceObject.transform.position);
+    }
+
+    private void HandleMovementTileHoverExit(GameObject spaceObject)
+    {
+        IM.GameBoardMovementTileHoverExit(spaceObject.transform.position);
+    }
+
+
 
     private void HandleSpaceClick(GameObject spaceObject, SpaceType type)
     {

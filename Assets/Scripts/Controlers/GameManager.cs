@@ -13,7 +13,8 @@ using UnityEngine.UIElements;
 
 public class  GameManager : MonoBehaviour
 {
-    public Board _Board { get; private set; }
+    public GameObject _BoardGameObject { get; private set; }
+    public Board _Board {get; private set; }
     public Player _Player { get; private set; }
     private static int _UnitIDCounter; // testing static access
     public static  GameManager _instance { get; private set; }
@@ -54,7 +55,14 @@ public class  GameManager : MonoBehaviour
         {
             //Do we want to desytory the board object when we are done with it?
             //Or do we want to just reinitalize all it's value and reconstruct the board?
-            _Board = new Board();
+
+            _BoardGameObject = Instantiate(
+                Resources.Load<GameObject>("Prefabs/Board"),
+                Vector3.zero,
+                Quaternion.identity
+            );
+            _Board = _BoardGameObject.GetComponent<Board>();
+            _Board.Instantiate();
 
             //Will there ever be more than one player? 
             _Player = new Player(0, "Player 1"); 
@@ -69,7 +77,7 @@ public class  GameManager : MonoBehaviour
                 Direction.North,
                 "Orion",
                 "Hero"
-                );
+            );
 
             _Player.AddHeroToParty(playerHero);
             
