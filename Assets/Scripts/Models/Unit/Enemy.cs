@@ -8,8 +8,8 @@ public class Enemy : Unit
     public GameObject EnemyPrefab { get; set; }
     public HashSet<Space> MovementRange { get; set; }
     public List<GameObject> MovementTiles { get; set; }
-    public Enemy(int id, float movement, int health, Vector3 position, Direction direction, string enemyName, string prefabName)
-        : base(id, movement, health, position, direction, "enemy")
+    public Enemy(int id, float movement, float range, int health, Vector3 position, Direction direction, string enemyName, string prefabName)
+        : base(id, movement, range, health, position, direction, "enemy")
     {
         EnemyName = enemyName;
         GameObject EnemyPrefab = Resources.Load<GameObject>("Prefabs/" + prefabName);

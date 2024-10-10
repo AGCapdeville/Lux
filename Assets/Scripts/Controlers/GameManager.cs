@@ -72,6 +72,7 @@ public class  GameManager : MonoBehaviour
             Hero playerHero = new Hero(
                 _UnitIDCounter++,
                 10,
+                1,
                 100,
                 Vector3.zero,
                 Direction.North,
@@ -88,6 +89,7 @@ public class  GameManager : MonoBehaviour
             Hero ally = new Hero(
                 _UnitIDCounter++,
                 10,
+                1,
                 100,
                 new Vector3(40, 0, 40),
                 Direction.North,
@@ -101,6 +103,7 @@ public class  GameManager : MonoBehaviour
             Enemy enemy = new Enemy(
                 _UnitIDCounter++,
                 10,
+                1,
                 100,
                 new Vector3(30,0,30),
                 Direction.North,
