@@ -10,8 +10,8 @@ using System.Linq;
 
 public class Board : MonoBehaviour
 {
-    public int SpaceWidth = 10;
-    public int SpaceLength = 10;
+    private int SpaceWidth = 10;
+    private int SpaceLength = 10;
 
     public List<GameObject> MovementTiles { get; set; } // The displayed movement for heros...
     public HashSet<Space> MovementGridSpaces { get; set; } // Hero movement spaces

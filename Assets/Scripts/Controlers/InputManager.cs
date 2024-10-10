@@ -120,4 +120,6 @@ public class InputManager : MonoBehaviour
             _GameManager.hero_grid_visible = false;
         }
     }
+
+
 }
