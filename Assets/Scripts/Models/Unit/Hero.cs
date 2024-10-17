@@ -7,6 +7,7 @@ public class Hero : Unit
     public GameObject HeroGameObject { get; set; }
     public GameObject HeroPrefab { get; set; }
     public HashSet<Space> MovementRange { get; set; }
+    public HashSet<Space> AttackRange { get; set; }
     public List<GameObject> MovementTiles { get; set; }
 
     public Hero(int id, float movement, float range,  int health, Vector3 position, Direction direction, string heroName, string prefabName)

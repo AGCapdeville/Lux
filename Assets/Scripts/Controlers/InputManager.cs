@@ -115,6 +115,12 @@ public class InputManager : MonoBehaviour
         
             }
 
+            if (type == SpaceType.Default && h != null )
+            {
+                h.AttackRange = _GameManager._Board.GetAttackRange(h);
+                _GameManager._Board.DisplayAttackRange(h);
+            }
+
             _GameManager._Player.SelectedHero = "";            
             _GameManager.player_clicked = false;
             _GameManager.hero_grid_visible = false;

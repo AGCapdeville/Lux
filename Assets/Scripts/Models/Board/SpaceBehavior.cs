@@ -26,6 +26,7 @@ public class SpaceBehavior : MonoBehaviour
     private Renderer _renderer;
     private Material _hoverTile;
     private Material _movementTile;
+    private Material _attackTile;
 
 
     private void Start()
@@ -36,6 +37,7 @@ public class SpaceBehavior : MonoBehaviour
         _renderer = GetComponent<Renderer>();
         _hoverTile = Resources.Load<Material>("Materials/YellowTile");
         _movementTile = Resources.Load<Material>("Materials/BlueTile");
+        _attackTile = Resources.Load<Material>("Materials/RedTile");
     }
 
     public void SetType(SpaceType newType)
@@ -48,6 +50,9 @@ public class SpaceBehavior : MonoBehaviour
                 break;
             case SpaceType.Default:
                 _renderer.materials = new Material[0];
+                break;
+            case SpaceType.Attack:
+                _renderer.material = _attackTile;
                 break;
         }
     }

@@ -66,13 +66,15 @@ public class  GameManager : MonoBehaviour
 
             //Will there ever be more than one player? 
             _Player = new Player(0, "Player 1"); 
+            
+            float basicRange = 1;
 
             //This will need to be removed eventually, somewhere else there should be a list of
             //all potental heros that is passed to the game manager to initialize
             Hero playerHero = new Hero(
                 _UnitIDCounter++,
                 10,
-                1,
+                basicRange,
                 100,
                 Vector3.zero,
                 Direction.North,
@@ -89,7 +91,7 @@ public class  GameManager : MonoBehaviour
             Hero ally = new Hero(
                 _UnitIDCounter++,
                 10,
-                1,
+                basicRange,
                 100,
                 new Vector3(40, 0, 40),
                 Direction.North,
@@ -103,7 +105,7 @@ public class  GameManager : MonoBehaviour
             Enemy enemy = new Enemy(
                 _UnitIDCounter++,
                 10,
-                1,
+                basicRange,
                 100,
                 new Vector3(30,0,30),
                 Direction.North,
