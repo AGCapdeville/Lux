@@ -296,7 +296,7 @@ public class Board : MonoBehaviour
             new Dictionary<string, int> { { "x", 0 }, { "z", SpaceLength }, {"wall_x", 0}, {"wall_z", SpaceLength/2} },
             new Dictionary<string, int> { { "x", SpaceWidth }, { "z", 0 }, {"wall_x", SpaceWidth/2}, {"wall_z", 0} },
             new Dictionary<string, int> { { "x", 0 }, { "z", -SpaceLength }, {"wall_x", 0}, {"wall_z", -SpaceLength/2} },
-            new Dictionary<string, int> { { "x", -SpaceWidth }, { "z", 0 }, {"wall_x", -SpaceLength/2}, {"wall_z", 0} }
+            new Dictionary<string, int> { { "x", -SpaceWidth }, { "z", 0 }, {"wall_x", -SpaceWidth/2}, {"wall_z", 0} }
         };
 
         foreach (var direction in cardinalDirections)
